@@ -24,7 +24,10 @@ class SubmissionHistory extends Component
                 'evaluations' => fn ($query) => $query->with('supervisor:id,name')->latest(),
             ])
             ->where('student_id', Auth::id())
+            // An active study takes precedence over earlier completed or rejected ones
+            ->orderByRaw("case when status in ('completed', 'rejected') then 1 else 0 end")
             ->latest()
+            ->latest('id')
             ->first();
     }
 

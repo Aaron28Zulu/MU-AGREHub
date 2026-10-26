@@ -44,7 +44,7 @@ class SupervisorPanelProvider extends PanelProvider
             ->path('supervisor')
             ->brandName('AgriHub Lecturer Portal')
             ->brandLogo(fn () => view('filament.brand.logo'))
-            ->brandLogoHeight('2rem')
+            ->brandLogoHeight('2.5rem')
             ->favicon(asset('favicon.ico'))
             ->colors([
                 'primary' => Color::hex('#2a523c'),
@@ -55,7 +55,6 @@ class SupervisorPanelProvider extends PanelProvider
                 'danger' => Color::Red,
             ])
             ->font('Instrument Sans')
-            ->viteTheme('resources/css/filament/lecturer.css')
             ->maxContentWidth(MaxWidth::SevenExtraLarge)
             ->sidebarCollapsibleOnDesktop()
             ->databaseNotifications()
@@ -84,6 +83,13 @@ class SupervisorPanelProvider extends PanelProvider
                     ->url(fn (): string => route('home'))
                     ->icon('heroicon-o-arrow-uturn-left'),
             ])
+            // Layer the AgriHub skin over Filament's own stylesheet (a viteTheme() would replace it).
+            ->renderHook(
+                PanelsRenderHook::HEAD_END,
+                fn (): string => file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot'))
+                    ? Blade::render("@vite('resources/css/filament/lecturer.css')")
+                    : '',
+            )
             ->renderHook(
                 PanelsRenderHook::USER_MENU_BEFORE,
                 fn (): string => Blade::render('<span class="agrihub-role-pill">{{ auth()->user()?->role?->label() }}</span>'),

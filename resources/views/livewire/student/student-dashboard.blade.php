@@ -158,7 +158,7 @@
                         <h2 id="supervisor-heading" class="eyebrow">Supervisor</h2>
                         @if ($project->supervisor)
                             <div class="mt-4 flex items-start gap-3">
-                                <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-forest-100 text-sm font-bold text-forest-800">{{ str($project->supervisor->name)->replace(['Dr. ', 'Prof. '], '')->substr(0, 2)->upper() }}</span>
+                                <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-forest-100 text-sm font-bold text-forest-800">{{ str($project->supervisor->name)->replace(['Dr. ', 'Prof. '], '')->explode(' ')->map(fn ($part) => mb_substr($part, 0, 1))->take(2)->implode('') }}</span>
                                 <div class="min-w-0">
                                     <p class="font-semibold">{{ $project->supervisor->name }}</p>
                                     <p class="text-sm text-muted">{{ $project->supervisor->department ?? 'School of Agriculture' }}</p>

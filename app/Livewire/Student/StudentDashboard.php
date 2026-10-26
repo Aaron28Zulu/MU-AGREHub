@@ -37,7 +37,10 @@ class StudentDashboard extends Component
                 'researchGaps',
             ])
             ->where('student_id', Auth::id())
+            // An active study takes precedence over earlier completed or rejected ones
+            ->orderByRaw("case when status in ('completed', 'rejected') then 1 else 0 end")
             ->latest()
+            ->latest('id')
             ->first();
     }
 
