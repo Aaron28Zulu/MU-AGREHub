@@ -4,28 +4,37 @@ declare(strict_types=1);
 
 namespace App\Providers\Filament;
 
+use App\Filament\Resources\ProjectResource;
+use App\Filament\Supervisor\Pages\Dashboard;
 use App\Filament\Supervisor\Resources\SupervisorProjectResource;
+use App\Filament\Supervisor\Widgets\ReviewQueueWidget;
 use App\Filament\Supervisor\Widgets\SupervisorStatsOverviewWidget;
+use App\Filament\Widgets\EmergingGapsTable;
+use App\Filament\Widgets\SaturatedDomainsChart;
 use App\Http\Middleware\EnsureUserIsSupervisor;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Pages;
+use Filament\Navigation\MenuItem;
+use Filament\Navigation\NavigationGroup;
+use Filament\Navigation\NavigationItem;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Filament\Widgets;
+use Filament\Support\Enums\MaxWidth;
+use Filament\View\PanelsRenderHook;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class SupervisorPanelProvider extends PanelProvider
 {
     /**
-     * Configure the dedicated Academic Supervisor Portal panel.
+     * Configure the lecturer portal (supervisors, deans, research directors and admins).
      */
     public function panel(Panel $panel): Panel
     {
@@ -33,21 +42,64 @@ class SupervisorPanelProvider extends PanelProvider
             ->default()
             ->id('supervisor')
             ->path('supervisor')
-            ->colors([
-                'primary' => Color::Emerald,
-                'gray' => Color::Slate,
-            ])
-            ->brandName('AgriHub | Supervisor Portal')
+            ->brandName('AgriHub Lecturer Portal')
+            ->brandLogo(fn () => view('filament.brand.logo'))
+            ->brandLogoHeight('2rem')
             ->favicon(asset('favicon.ico'))
+            ->colors([
+                'primary' => Color::hex('#2a523c'),
+                'gray' => Color::Stone,
+                'info' => Color::Sky,
+                'success' => Color::hex('#35674a'),
+                'warning' => Color::hex('#b07a24'),
+                'danger' => Color::Red,
+            ])
+            ->font('Instrument Sans')
+            ->viteTheme('resources/css/filament/lecturer.css')
+            ->maxContentWidth(MaxWidth::SevenExtraLarge)
+            ->sidebarCollapsibleOnDesktop()
+            ->databaseNotifications()
+            ->databaseNotificationsPolling('60s')
+            ->navigationGroups([
+                NavigationGroup::make('Supervision'),
+                NavigationGroup::make('Research intelligence'),
+                NavigationGroup::make('School oversight'),
+                NavigationGroup::make('Archive'),
+            ])
+            ->navigationItems([
+                NavigationItem::make('Public research archive')
+                    ->url(fn (): string => route('repository'))
+                    ->icon('heroicon-o-building-library')
+                    ->group('Archive')
+                    ->sort(1),
+                NavigationItem::make('Research gaps index')
+                    ->url(fn (): string => route('gaps'))
+                    ->icon('heroicon-o-light-bulb')
+                    ->group('Archive')
+                    ->sort(2),
+            ])
+            ->userMenuItems([
+                MenuItem::make()
+                    ->label('Back to the archive')
+                    ->url(fn (): string => route('home'))
+                    ->icon('heroicon-o-arrow-uturn-left'),
+            ])
+            ->renderHook(
+                PanelsRenderHook::USER_MENU_BEFORE,
+                fn (): string => Blade::render('<span class="agrihub-role-pill">{{ auth()->user()?->role?->label() }}</span>'),
+            )
             ->resources([
                 SupervisorProjectResource::class,
+                ProjectResource::class,
             ])
             ->pages([
-                Pages\Dashboard::class,
+                Dashboard::class,
             ])
             ->widgets([
                 SupervisorStatsOverviewWidget::class,
-                Widgets\AccountWidget::class,
+                ReviewQueueWidget::class,
+                SaturatedDomainsChart::class,
+                EmergingGapsTable::class,
             ])
             ->middleware([
                 EncryptCookies::class,

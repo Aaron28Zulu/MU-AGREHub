@@ -1,180 +1,67 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full bg-[#faf8f5] dark:bg-[#121412]">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Institutional Sign In | {{ config('app.name', 'AgriHub') }}</title>
+<x-shell title="Sign in">
+    <div class="bg-canvas">
+        <div class="container-page grid min-h-[calc(100vh-14rem)] items-center gap-12 py-14 lg:grid-cols-2">
+            <div class="hidden lg:block">
+                <p class="eyebrow text-forest-700">AgriHub Research Archive</p>
+                <h1 class="mt-4 text-4xl font-bold tracking-tight">Sign in to your research workspace</h1>
+                <p class="mt-4 max-w-md text-lg leading-relaxed text-ink-soft">Students track proposals and drafts. Lecturers review advisees in the lecturer portal. Faculty oversee the school's research.</p>
+                <ul class="mt-8 space-y-3 text-sm text-ink-soft">
+                    <li class="flex gap-3"><x-glyph name="check-circle" class="h-5 w-5 shrink-0 text-forest-700" /> Save records to your folder while you search</li>
+                    <li class="flex gap-3"><x-glyph name="check-circle" class="h-5 w-5 shrink-0 text-forest-700" /> Get notified when your supervisor reviews a submission</li>
+                    <li class="flex gap-3"><x-glyph name="check-circle" class="h-5 w-5 shrink-0 text-forest-700" /> Open full texts you're entitled to</li>
+                </ul>
+            </div>
 
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700&display=swap" rel="stylesheet" />
+            <div class="mx-auto w-full max-w-md">
+                <div class="panel p-8 shadow-sm">
+                    <h2 class="text-xl font-bold tracking-tight">Institutional sign in</h2>
+                    <p class="mt-1 text-sm text-muted">Use your school email address.</p>
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['"Instrument Sans"', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
-                    },
-                    colors: {
-                        primary: {
-                            50: '#f2f7f4',
-                            100: '#e3ede6',
-                            200: '#c5dacf',
-                            300: '#9cbfae',
-                            400: '#6d9f87',
-                            500: '#498166',
-                            600: '#35674f',
-                            700: '#2a523f',
-                            800: '#224233',
-                            900: '#1a3529',
-                            950: '#0d1e16',
-                        },
-                    }
-                }
-            }
-        }
-    </script>
-</head>
-<body class="h-full font-sans antialiased text-[#1c1e21] dark:text-[#f0f2f0] bg-[#faf8f5] dark:bg-[#121412] flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+                    @if ($errors->any())
+                        <div class="mt-5 rounded-md bg-red-50 p-3 text-sm text-red-800" role="alert">{{ $errors->first() }}</div>
+                    @endif
 
-    <div class="sm:mx-auto sm:w-full sm:max-w-md text-center">
-        <a href="{{ route('home') }}" class="inline-flex items-center gap-2.5 mb-3 group focus:outline-none">
-            <span class="w-9 h-9 rounded bg-[#1a3529] flex items-center justify-center text-[#faf8f5] font-semibold text-xs tracking-wider border border-[#2a523f]">
-                AG
-            </span>
-            <span class="text-xl font-bold tracking-tight text-[#181a18] dark:text-white">
-                AgriHub
-            </span>
-        </a>
-        <h1 class="text-lg font-bold text-[#181a18] dark:text-stone-200">
-            Institutional Access Portal
-        </h1>
-        <p class="text-xs text-[#737971] dark:text-stone-400 mt-0.5">
-            School of Agriculture and Natural Resources (MUSAGRICA)
-        </p>
-    </div>
-
-    <div class="mt-6 sm:mx-auto sm:w-full sm:max-w-md px-4 sm:px-0">
-        <div class="bg-white dark:bg-[#181b18] py-8 px-6 rounded-lg border border-[#e6e3da] dark:border-stone-800 sm:px-8">
-
-            @if (session('status'))
-                <div class="mb-5 p-3 rounded bg-[#f2f7f4] text-[#1a3529] dark:bg-emerald-950/40 dark:text-emerald-300 text-xs font-medium border border-[#c5dacf]">
-                    {{ session('status') }}
-                </div>
-            @endif
-
-            @if ($errors->any())
-                <div class="mb-5 p-3 rounded bg-red-50 text-red-700 dark:bg-red-950/40 dark:text-red-300 text-xs font-medium border border-red-200">
-                    {{ $errors->first() }}
-                </div>
-            @endif
-
-            <form action="{{ route('login.attempt') }}" method="POST" class="space-y-4">
-                @csrf
-
-                <div>
-                    <label for="email" class="block text-xs font-bold uppercase tracking-wider text-[#737971] dark:text-stone-400 mb-1">
-                        Institutional Email Address
-                    </label>
-                    <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        autocomplete="email"
-                        required
-                        value="{{ old('email') }}"
-                        placeholder="e.g. kelvin@agrihub.edu"
-                        class="w-full rounded border border-[#e6e3da] dark:border-stone-700 dark:bg-[#121412] text-xs sm:text-sm p-2.5 focus:outline-none focus:border-[#1a3529] focus:ring-1 focus:ring-[#1a3529] transition placeholder-[#8c928a]"
-                    />
-                </div>
-
-                <div>
-                    <div class="flex items-center justify-between mb-1">
-                        <label for="password" class="block text-xs font-bold uppercase tracking-wider text-[#737971] dark:text-stone-400">
-                            Password
+                    <form action="{{ route('login.attempt') }}" method="POST" class="mt-6 space-y-5">
+                        @csrf
+                        <div>
+                            <label for="email" class="field-label">Email address</label>
+                            <input id="email" name="email" type="email" autocomplete="email" required autofocus value="{{ old('email') }}" class="field" placeholder="name@agrihub.edu" />
+                        </div>
+                        <div>
+                            <label for="password" class="field-label">Password</label>
+                            <input id="password" name="password" type="password" autocomplete="current-password" required class="field" />
+                        </div>
+                        <label class="flex cursor-pointer items-center gap-2 text-sm text-ink-soft">
+                            <input type="checkbox" name="remember" class="h-4 w-4 rounded border-line-strong text-forest-700 focus:ring-forest-600" />
+                            Keep me signed in
                         </label>
-                        <span class="text-[11px] text-[#8c928a]">Default: password</span>
-                    </div>
-                    <input
-                        id="password"
-                        name="password"
-                        type="password"
-                        autocomplete="current-password"
-                        required
-                        placeholder="••••••••"
-                        class="w-full rounded border border-[#e6e3da] dark:border-stone-700 dark:bg-[#121412] text-xs sm:text-sm p-2.5 focus:outline-none focus:border-[#1a3529] focus:ring-1 focus:ring-[#1a3529] transition placeholder-[#8c928a]"
-                    />
+                        <button type="submit" class="btn-primary w-full">Sign in</button>
+                    </form>
+
+                    @if (app()->environment('local'))
+                        <div class="mt-8 border-t border-line pt-6">
+                            <p class="eyebrow">Demo accounts (local only)</p>
+                            <div class="mt-3 grid grid-cols-2 gap-2">
+                                @foreach ([
+                                    ['kelvin@agrihub.edu', 'Student', 'Kelvin Mwape'],
+                                    ['lukundo@agrihub.edu', 'Researcher', 'Lukundo Bwalya'],
+                                    ['cmulenga@agrihub.edu', 'Lecturer', 'Dr. C. Mulenga'],
+                                    ['dean@agrihub.edu', 'Dean', 'Dr. M. Phiri'],
+                                ] as [$demoEmail, $demoRole, $demoName])
+                                    <a href="{{ route('login.quick', ['email' => $demoEmail]) }}" class="rounded-md border border-line px-3 py-2.5 transition hover:border-forest-400 hover:bg-forest-50">
+                                        <span class="block text-sm font-semibold text-ink">{{ $demoRole }}</span>
+                                        <span class="block truncate text-xs text-muted">{{ $demoName }}</span>
+                                    </a>
+                                @endforeach
+                            </div>
+                            <p class="mt-3 text-xs text-muted">Seeded password: <code class="font-mono">password</code></p>
+                        </div>
+                    @endif
                 </div>
-
-                <div class="flex items-center justify-between text-xs pt-1">
-                    <label class="flex items-center gap-2 cursor-pointer text-[#636862] dark:text-stone-400">
-                        <input type="checkbox" name="remember" class="rounded text-[#1a3529] focus:ring-[#1a3529] border-[#e6e3da]">
-                        <span>Remember credentials</span>
-                    </label>
-                </div>
-
-                <div class="pt-2">
-                    <button
-                        type="submit"
-                        class="w-full py-2.5 px-4 rounded text-xs font-semibold text-[#faf8f5] bg-[#1a3529] hover:bg-[#224233] transition"
-                    >
-                        Authenticate to Workspace
-                    </button>
-                </div>
-            </form>
-
-            <!-- Quick Demo One-Click Role Switcher -->
-            <div class="mt-8 pt-6 border-t border-[#f0eee6] dark:border-stone-800">
-                <div class="text-center mb-3">
-                    <span class="text-[10px] font-bold uppercase tracking-wider text-[#8c928a]">
-                        Institutional Role Directory (One-Click Demo Access)
-                    </span>
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                    <a
-                        href="{{ route('login.quick', ['email' => 'kelvin@agrihub.edu']) }}"
-                        class="p-2.5 rounded border border-[#e6e3da] dark:border-stone-800 hover:border-[#1a3529] bg-[#faf8f5] dark:bg-[#121412] hover:bg-[#f2f7f4] transition text-left group"
-                    >
-                        <div class="text-xs font-bold text-[#181a18] dark:text-stone-200 group-hover:text-[#1a3529]">Student</div>
-                        <div class="text-[10px] text-[#737971] truncate">Kelvin Mwape</div>
-                    </a>
-
-                    <a
-                        href="{{ route('login.quick', ['email' => 'peter@agrihub.edu']) }}"
-                        class="p-2.5 rounded border border-[#e6e3da] dark:border-stone-800 hover:border-[#1a3529] bg-[#faf8f5] dark:bg-[#121412] hover:bg-[#f2f7f4] transition text-left group"
-                    >
-                        <div class="text-xs font-bold text-[#181a18] dark:text-stone-200 group-hover:text-[#1a3529]">Researcher</div>
-                        <div class="text-[10px] text-[#737971] truncate">Peter Mwaba</div>
-                    </a>
-
-                    <a
-                        href="{{ route('login.quick', ['email' => 'cmulenga@agrihub.edu']) }}"
-                        class="p-2.5 rounded border border-[#e6e3da] dark:border-stone-800 hover:border-[#1a3529] bg-[#faf8f5] dark:bg-[#121412] hover:bg-[#f2f7f4] transition text-left group"
-                    >
-                        <div class="text-xs font-bold text-[#181a18] dark:text-stone-200 group-hover:text-[#1a3529]">Supervisor</div>
-                        <div class="text-[10px] text-[#737971] truncate">Dr. C. Mulenga</div>
-                    </a>
-
-                    <a
-                        href="{{ route('login.quick', ['email' => 'admin@agrihub.edu']) }}"
-                        class="p-2.5 rounded border border-[#e6e3da] dark:border-stone-800 hover:border-[#1a3529] bg-[#faf8f5] dark:bg-[#121412] hover:bg-[#f2f7f4] transition text-left group"
-                    >
-                        <div class="text-xs font-bold text-[#181a18] dark:text-stone-200 group-hover:text-[#1a3529]">System Admin</div>
-                        <div class="text-[10px] text-[#737971] truncate">Admin User</div>
-                    </a>
-                </div>
+                <p class="mt-6 text-center text-sm">
+                    <a href="{{ route('repository') }}" class="font-medium text-forest-700 hover:underline">Continue to the archive without signing in</a>
+                </p>
             </div>
-
-            <div class="mt-6 text-center">
-                <a href="{{ route('home') }}" class="text-xs font-medium text-[#737971] hover:text-[#1a3529] transition">
-                    &larr; Return to Public Research Repository
-                </a>
-            </div>
-
         </div>
     </div>
-
-</body>
-</html>
+</x-shell>

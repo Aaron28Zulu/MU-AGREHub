@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace App\Livewire\Student;
 
 use App\Enums\ProjectStatus;
+use App\Enums\SimilarityCheckStatus;
+use App\Jobs\RunSimilarityAnalysisJob;
 use App\Models\Project;
+use Filament\Notifications\Notification;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -131,10 +134,22 @@ class MilestoneSubmitter extends Component
             'status' => $nextStatus->value,
         ]);
 
-        // 6. Reset component form state
+        // 6. Queue the originality check and alert the supervisor
+        $this->project->update(['similarity_check_status' => SimilarityCheckStatus::PROCESSING]);
+        RunSimilarityAnalysisJob::dispatch($this->project);
+
+        if ($this->project->supervisor) {
+            Notification::make()
+                ->title('New submission awaiting review')
+                ->body("{$this->project->student?->name} uploaded {$version} ({$milestoneStage}) for '{$this->project->title}'.")
+                ->icon('heroicon-o-document-arrow-up')
+                ->sendToDatabase($this->project->supervisor);
+        }
+
+        // 7. Reset component form state
         $this->reset(['document', 'submission_notes']);
 
-        // 7. Notify user and emit reactive event for parent dashboard
+        // 8. Notify user and emit reactive event for parent dashboard
         session()->flash('submission_success', "Milestone draft ({$version} · {$milestoneStage}) uploaded successfully. Status transitioned to {$nextStatus->label()}.");
         $this->dispatch('milestone-submitted');
     }

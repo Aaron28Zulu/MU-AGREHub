@@ -17,6 +17,7 @@ interface ProjectRepositoryInterface
      *
      * @param array{
      *     search?: ?string,
+     *     field?: ?string,
      *     category?: ?string,
      *     categories?: ?array,
      *     year?: ?int,

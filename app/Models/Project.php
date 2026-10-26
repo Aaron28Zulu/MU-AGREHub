@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\URL;
@@ -153,6 +154,16 @@ class Project extends Model
     }
 
     /**
+     * Users who saved this record to their research folder.
+     *
+     * @return BelongsToMany<User, $this>
+     */
+    public function savedBy(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'saved_projects')->withTimestamps();
+    }
+
+    /**
      * Scope a query to only include completed projects visible to public discovery.
      *
      * @param  Builder<Project>  $query
@@ -175,6 +186,30 @@ class Project extends Model
             'projects.document.preview',
             now()->addMinutes(30),
             ['project' => $this->id]
+        );
+    }
+
+    /**
+     * Plain-text abstract with any rich-text markup removed.
+     */
+    public function plainAbstract(): string
+    {
+        return trim(html_entity_decode(strip_tags((string) $this->abstract)));
+    }
+
+    /**
+     * APA-style citation for the catalogue record.
+     */
+    public function citation(): string
+    {
+        $author = $this->student?->name ?? 'Unknown author';
+        $year = $this->completion_year ?? 'n.d.';
+
+        return sprintf(
+            '%s (%s). %s [Research project]. School of Agriculture and Natural Resources, AgriHub Research Archive.',
+            $author,
+            $year,
+            $this->title
         );
     }
 }

@@ -29,4 +29,35 @@ enum ProjectStatus: string
     {
         return $this === self::COMPLETED;
     }
+
+    /**
+     * Whether the project is still moving through the supervision pipeline.
+     */
+    public function isActive(): bool
+    {
+        return ! in_array($this, [self::COMPLETED, self::REJECTED], true);
+    }
+
+    /**
+     * Whether the project is waiting on a supervisor decision.
+     */
+    public function awaitsSupervisor(): bool
+    {
+        return in_array($this, [self::PROPOSAL_SUBMITTED, self::UNDER_REVIEW], true);
+    }
+
+    /**
+     * Filament colour token used for status badges.
+     */
+    public function color(): string
+    {
+        return match ($this) {
+            self::DRAFT => 'gray',
+            self::PROPOSAL_SUBMITTED => 'primary',
+            self::UNDER_SUPERVISION => 'warning',
+            self::UNDER_REVIEW => 'info',
+            self::COMPLETED => 'success',
+            self::REJECTED => 'danger',
+        };
+    }
 }

@@ -6,6 +6,7 @@ namespace App\Filament\Supervisor\Actions\Concerns;
 
 use App\Enums\ProjectStatus;
 use App\Enums\SimilarityCheckStatus;
+use App\Jobs\AnalyzeProjectGapsJob;
 use App\Jobs\RunSimilarityAnalysisJob;
 use App\Models\Project;
 use App\Models\SupervisorEvaluation;
@@ -94,24 +95,24 @@ trait HasEvaluationFormAndAction
 
                         ToggleButtons::make('decision')
                             ->label('Milestone Transition Decision')
-                            ->options([
-                                'approve' => 'Approve Milestone',
-                                'revisions' => 'Request Revisions',
-                                'reject' => 'Reject Manuscript',
-                            ])
+                            ->options(fn (?Project $record): array => static::decisionOptions($record))
                             ->colors([
                                 'approve' => 'success',
+                                'continue' => 'info',
                                 'revisions' => 'warning',
                                 'reject' => 'danger',
                             ])
                             ->icons([
                                 'approve' => 'heroicon-m-check-circle',
+                                'continue' => 'heroicon-m-forward',
                                 'revisions' => 'heroicon-m-arrow-path',
                                 'reject' => 'heroicon-m-x-circle',
                             ])
                             ->default('approve')
+                            ->inline()
                             ->live()
-                            ->required(),
+                            ->required()
+                            ->columnSpanFull(),
                     ]),
 
                     Textarea::make('feedback')
@@ -136,6 +137,45 @@ trait HasEvaluationFormAndAction
     }
 
     /**
+     * Decision choices offered for the project's current milestone.
+     *
+     * @return array<string, string>
+     */
+    public static function decisionOptions(?Project $record): array
+    {
+        if ($record !== null && in_array($record->status, [ProjectStatus::DRAFT, ProjectStatus::PROPOSAL_SUBMITTED], true)) {
+            return [
+                'approve' => 'Approve proposal',
+                'revisions' => 'Request revisions',
+                'reject' => 'Reject proposal',
+            ];
+        }
+
+        return [
+            'approve' => 'Approve final manuscript',
+            'continue' => 'Accept milestone, continue supervision',
+            'revisions' => 'Request revisions',
+            'reject' => 'Reject manuscript',
+        ];
+    }
+
+    /**
+     * Map a supervisor decision onto the next workflow state.
+     * Approving a proposal opens supervision; approving a manuscript completes the study.
+     */
+    public static function resolveTargetStatus(Project $record, string $decision): ProjectStatus
+    {
+        $isProposalStage = in_array($record->status, [ProjectStatus::DRAFT, ProjectStatus::PROPOSAL_SUBMITTED], true);
+
+        return match ($decision) {
+            'approve' => $isProposalStage ? ProjectStatus::UNDER_SUPERVISION : ProjectStatus::COMPLETED,
+            'continue', 'revisions' => ProjectStatus::UNDER_SUPERVISION,
+            'reject' => ProjectStatus::REJECTED,
+            default => $record->status,
+        };
+    }
+
+    /**
      * Execute the evaluation submission logic.
      */
     public static function executeEvaluation(Project $record, array $data): void
@@ -157,11 +197,7 @@ trait HasEvaluationFormAndAction
             ]);
 
             // 2. Map decision to state transitions
-            $targetStatus = match ($decision) {
-                'approve' => ProjectStatus::COMPLETED,
-                'revisions' => ProjectStatus::UNDER_SUPERVISION,
-                'reject' => ProjectStatus::REJECTED,
-            };
+            $targetStatus = static::resolveTargetStatus($record, $decision);
 
             $updatePayload = [
                 'status' => $targetStatus->value,
@@ -183,7 +219,12 @@ trait HasEvaluationFormAndAction
             }
         });
 
-        // 4. Toast notification to supervisor
+        // 4. Completed studies feed the institutional research gap index
+        if ($record->status === ProjectStatus::COMPLETED) {
+            AnalyzeProjectGapsJob::dispatch($record);
+        }
+
+        // 5. Toast notification to supervisor
         Notification::make()
             ->title('Evaluation Recorded')
             ->body('Milestone review submitted and student advised.')

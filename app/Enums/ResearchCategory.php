@@ -20,4 +20,17 @@ enum ResearchCategory: string
             self::PLANT_PROTECTION => 'Plant Protection & Entomology',
         };
     }
+
+    /**
+     * One-line scope note shown when browsing subjects.
+     */
+    public function description(): string
+    {
+        return match ($this) {
+            self::CROP_SCIENCE => 'Agronomy, soil fertility, crop physiology and breeding.',
+            self::ANIMAL_SCIENCE => 'Livestock nutrition, health, genetics and production systems.',
+            self::AGRIBUSINESS => 'Markets, value chains, farm economics and policy.',
+            self::PLANT_PROTECTION => 'Pests, diseases, weeds and integrated management.',
+        };
+    }
 }

@@ -60,9 +60,18 @@ class StudentDashboard extends Component
         };
     }
 
+    /**
+     * Mark every unread supervisor update as read.
+     */
+    public function markNotificationsRead(): void
+    {
+        Auth::user()?->unreadNotifications->markAsRead();
+    }
+
     public function render(): View
     {
         return view('livewire.student.student-dashboard', [
+            'notifications' => Auth::user()?->notifications()->latest()->take(5)->get() ?? collect(),
             'stepIndex' => $this->getPipelineStepIndex(),
             'evaluations' => $this->project ? $this->project->evaluations : collect(),
             'manuscripts' => $this->project ? $this->project->manuscripts : collect(),

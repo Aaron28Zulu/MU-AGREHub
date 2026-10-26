@@ -7,6 +7,7 @@ namespace App\Filament\Resources;
 use App\Enums\ProjectStatus;
 use App\Enums\ResearchCategory;
 use App\Enums\UserRole;
+use App\Filament\Resources\ProjectResource\Pages;
 use App\Models\Project;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
@@ -18,8 +19,6 @@ use Filament\Resources\Resource;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
-use Filament\Tables\Actions\ViewAction;
-use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -31,9 +30,35 @@ class ProjectResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
 
-    protected static ?string $navigationGroup = 'Research Repository';
+    protected static ?string $navigationGroup = 'School oversight';
+
+    protected static ?string $navigationLabel = 'All projects';
+
+    protected static ?string $modelLabel = 'research project';
 
     protected static ?int $navigationSort = 1;
+
+    /**
+     * Only deans, research directors and administrators see the school-wide register.
+     */
+    public static function canViewAny(): bool
+    {
+        return auth()->user()?->hasOversight() ?? false;
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        $awaiting = Project::query()
+            ->whereIn('status', [ProjectStatus::PROPOSAL_SUBMITTED->value, ProjectStatus::UNDER_REVIEW->value])
+            ->count();
+
+        return $awaiting > 0 ? (string) $awaiting : null;
+    }
+
+    public static function getNavigationBadgeTooltip(): ?string
+    {
+        return 'Awaiting a supervisor decision';
+    }
 
     public static function form(Form $form): Form
     {
@@ -80,7 +105,7 @@ class ProjectResource extends Resource
 
                 FileUpload::make('full_document_path')
                     ->label('Manuscript (PDF/DOCX)')
-                    ->disk('local')
+                    ->disk('secure_research')
                     ->directory('manuscripts')
                     ->acceptedFileTypes(['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'])
                     ->visible(fn () => auth()->user()?->hasAnyRole([
@@ -92,7 +117,7 @@ class ProjectResource extends Resource
 
                 FileUpload::make('raw_data_path')
                     ->label('Raw Data Assets')
-                    ->disk('local')
+                    ->disk('secure_research')
                     ->directory('raw_datasets')
                     ->visible(fn () => auth()->user()?->hasAnyRole([
                         UserRole::ADMIN->value,
@@ -110,22 +135,20 @@ class ProjectResource extends Resource
             ->columns([
                 TextColumn::make('title')
                     ->searchable()
-                    ->limit(45)
+                    ->wrap()
+                    ->weight('medium')
                     ->sortable(),
 
                 TextColumn::make('category')
-                    ->badge()
+                    ->formatStateUsing(fn (ResearchCategory $state): string => $state->label())
+                    ->color('gray')
                     ->sortable(),
 
-                BadgeColumn::make('status')
-                    ->colors([
-                        'primary' => ProjectStatus::PROPOSAL_SUBMITTED->value,
-                        'warning' => ProjectStatus::UNDER_SUPERVISION->value,
-                        'info' => ProjectStatus::UNDER_REVIEW->value,
-                        'success' => ProjectStatus::COMPLETED->value,
-                        'danger' => ProjectStatus::REJECTED->value,
-                        'secondary' => ProjectStatus::DRAFT->value,
-                    ]),
+                TextColumn::make('status')
+                    ->badge()
+                    ->formatStateUsing(fn (ProjectStatus $state): string => $state->label())
+                    ->color(fn (ProjectStatus $state): string => $state->color())
+                    ->sortable(),
 
                 TextColumn::make('student.name')
                     ->label('Student')
@@ -153,10 +176,20 @@ class ProjectResource extends Resource
                     )),
 
                 SelectFilter::make('completion_year')
-                    ->attribute('completion_year'),
+                    ->label('Year')
+                    ->options(fn (): array => Project::query()
+                        ->whereNotNull('completion_year')
+                        ->distinct()
+                        ->orderByDesc('completion_year')
+                        ->pluck('completion_year', 'completion_year')
+                        ->all()),
+
+                SelectFilter::make('supervisor_id')
+                    ->label('Supervisor')
+                    ->relationship('supervisor', 'name'),
             ])
+            ->defaultSort('updated_at', 'desc')
             ->actions([
-                ViewAction::make(),
                 EditAction::make(),
             ])
             ->bulkActions([
@@ -164,6 +197,15 @@ class ProjectResource extends Resource
                     DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListProjects::route('/'),
+            'create' => Pages\CreateProject::route('/create'),
+            'edit' => Pages\EditProject::route('/{record}/edit'),
+        ];
     }
 
     public static function getEloquentQuery(): Builder

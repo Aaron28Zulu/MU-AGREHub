@@ -8,6 +8,9 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProjectDocumentController;
 use App\Http\Middleware\EnsureUserIsStudent;
 use App\Livewire\PublicRepository;
+use App\Livewire\ResearchFolder;
+use App\Livewire\ResearchGapExplorer;
+use App\Livewire\ResearchRecord;
 use App\Livewire\Student\StudentDashboard;
 use App\Livewire\Student\SubmissionHistory;
 use App\Livewire\StudentSubmissionWizard;
@@ -17,6 +20,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', HomeController::class)->name('home');
 Route::get('/catalog', PublicRepository::class)->name('catalog');
 Route::get('/repository', PublicRepository::class)->name('repository');
+Route::get('/repository/{project}', ResearchRecord::class)->name('repository.show');
+Route::get('/research-gaps', ResearchGapExplorer::class)->name('gaps');
+
+// Saved records folder for any signed-in user
+Route::get('/folder', ResearchFolder::class)->name('folder')->middleware('auth');
 
 // Authentication Routes
 Route::middleware('guest')->group(function () {
