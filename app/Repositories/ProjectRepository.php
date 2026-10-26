@@ -41,6 +41,7 @@ class ProjectRepository implements ProjectRepositoryInterface
      *
      * @param array{
      *     search?: ?string,
+     *     field?: ?string,
      *     category?: ?string,
      *     categories?: ?array,
      *     year?: ?int,
@@ -66,10 +67,25 @@ class ProjectRepository implements ProjectRepositoryInterface
             ->when(! empty($filters['search']), function (Builder $query) use ($filters) {
                 $term = '%'.trim((string) $filters['search']).'%';
                 $like = DB::connection()->getDriverName() === 'pgsql' ? 'ilike' : 'like';
-                $query->where(function (Builder $subQuery) use ($term, $like) {
-                    $subQuery->where('title', $like, $term)
-                        ->orWhere('abstract', $like, $term);
-                });
+                $field = (string) ($filters['field'] ?? 'all');
+                $person = fn (string $relation) => fn (Builder $q) => $q->whereHas(
+                    $relation,
+                    fn (Builder $userQuery) => $userQuery->where('name', $like, $term)
+                );
+
+                match ($field) {
+                    'title' => $query->where('title', $like, $term),
+                    'abstract' => $query->where('abstract', $like, $term),
+                    'author' => $person('student')($query),
+                    'supervisor' => $person('supervisor')($query),
+                    default => $query->where(function (Builder $subQuery) use ($term, $like) {
+                        $subQuery->where('title', $like, $term)
+                            ->orWhere('abstract', $like, $term)
+                            ->orWhereHas('student', fn (Builder $q) => $q->where('name', $like, $term))
+                            ->orWhereHas('supervisor', fn (Builder $q) => $q->where('name', $like, $term))
+                            ->orWhereHas('researchGaps', fn (Builder $q) => $q->where('extracted_gap_text', $like, $term));
+                    }),
+                };
             })
             ->when(! empty($filters['categories'] ?? $filters['category'] ?? null), function (Builder $query) use ($filters) {
                 $cats = $filters['categories'] ?? [$filters['category']];

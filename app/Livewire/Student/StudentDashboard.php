@@ -37,7 +37,10 @@ class StudentDashboard extends Component
                 'researchGaps',
             ])
             ->where('student_id', Auth::id())
+            // An active study takes precedence over earlier completed or rejected ones
+            ->orderByRaw("case when status in ('completed', 'rejected') then 1 else 0 end")
             ->latest()
+            ->latest('id')
             ->first();
     }
 
@@ -60,9 +63,18 @@ class StudentDashboard extends Component
         };
     }
 
+    /**
+     * Mark every unread supervisor update as read.
+     */
+    public function markNotificationsRead(): void
+    {
+        Auth::user()?->unreadNotifications->markAsRead();
+    }
+
     public function render(): View
     {
         return view('livewire.student.student-dashboard', [
+            'notifications' => Auth::user()?->notifications()->latest()->take(5)->get() ?? collect(),
             'stepIndex' => $this->getPipelineStepIndex(),
             'evaluations' => $this->project ? $this->project->evaluations : collect(),
             'manuscripts' => $this->project ? $this->project->manuscripts : collect(),

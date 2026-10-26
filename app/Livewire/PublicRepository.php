@@ -6,6 +6,7 @@ namespace App\Livewire;
 
 use App\Enums\ProjectStatus;
 use App\Enums\ResearchCategory;
+use App\Livewire\Concerns\ManagesResearchFolder;
 use App\Models\Project;
 use App\Repositories\Contracts\ProjectRepositoryInterface;
 use Illuminate\Contracts\View\View;
@@ -18,10 +19,27 @@ use Livewire\WithPagination;
 #[Layout('layouts.app')]
 class PublicRepository extends Component
 {
+    use ManagesResearchFolder;
     use WithPagination;
+
+    /**
+     * Searchable fields offered in the search bar selector.
+     *
+     * @var array<string, string>
+     */
+    public const SEARCH_FIELDS = [
+        'all' => 'All fields',
+        'title' => 'Title',
+        'abstract' => 'Abstract',
+        'author' => 'Author',
+        'supervisor' => 'Supervisor',
+    ];
 
     #[Url(as: 'search')]
     public string $search = '';
+
+    #[Url(as: 'field')]
+    public string $field = 'all';
 
     /**
      * @var array<string>
@@ -58,6 +76,11 @@ class PublicRepository extends Component
             $yr = request()->query('year');
             $this->selectedYears = is_array($yr) ? $yr : [$yr];
         }
+    }
+
+    public function updatingField(): void
+    {
+        $this->resetPage();
     }
 
     public function updatingSearch(): void
@@ -130,6 +153,7 @@ class PublicRepository extends Component
     public function resetFilters(): void
     {
         $this->reset(['search', 'selectedCategories', 'selectedYears', 'onlyWithGaps']);
+        $this->field = 'all';
         $this->sort = 'latest';
         $this->resetPage();
     }
@@ -182,6 +206,7 @@ class PublicRepository extends Component
     {
         $projects = $repository->getPublicCatalog([
             'search' => $this->search,
+            'field' => $this->field,
             'categories' => $this->selectedCategories,
             'years' => $this->selectedYears,
             'only_with_gaps' => $this->onlyWithGaps,
@@ -202,6 +227,8 @@ class PublicRepository extends Component
             'categories' => ResearchCategory::cases(),
             'categoryCounts' => $categoryCounts,
             'availableYears' => $availableYears,
-        ]);
+            'savedIds' => $this->savedProjectIds(),
+            'searchFields' => self::SEARCH_FIELDS,
+        ])->title('Search the archive');
     }
 }

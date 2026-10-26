@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Auth;
 
-use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -58,6 +57,9 @@ class AuthController extends Controller
      */
     public function quickLogin(string $email): RedirectResponse
     {
+        // Demo switcher must never be reachable outside local development.
+        abort_unless(app()->environment(['local', 'testing']), 404);
+
         $user = User::where('email', $email)->first();
 
         if (! $user) {
@@ -89,11 +91,11 @@ class AuthController extends Controller
      */
     protected function getRoleRedirectPath(User $user): string
     {
-        if ($user->hasAnyRole([UserRole::STUDENT->value, UserRole::RESEARCHER->value])) {
+        if ($user->isStudent()) {
             return route('student.dashboard');
         }
 
-        if ($user->hasRole(UserRole::SUPERVISOR->value)) {
+        if ($user->isFaculty()) {
             return '/supervisor';
         }
 

@@ -62,12 +62,12 @@ class GapAggregationRepository
 
             if ($count >= self::HIGH_SATURATION_THRESHOLD) {
                 // Saturated / High volume: Amber/Orange accent
-                $backgroundColors[] = 'rgba(245, 158, 11, 0.75)';
-                $borderColors[] = 'rgb(245, 158, 11)';
+                $backgroundColors[] = 'rgba(176, 122, 36, 0.85)';
+                $borderColors[] = 'rgb(176, 122, 36)';
             } else {
                 // Emerging / Low volume: Emerald/Green accent
-                $backgroundColors[] = 'rgba(16, 185, 129, 0.75)';
-                $borderColors[] = 'rgb(16, 185, 129)';
+                $backgroundColors[] = 'rgba(53, 103, 74, 0.85)';
+                $borderColors[] = 'rgb(53, 103, 74)';
             }
         }
 

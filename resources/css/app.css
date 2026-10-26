@@ -2,34 +2,134 @@
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
+@source '../views';
 
 @theme {
-    --font-sans: 'Instrument Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-sans: 'Instrument Sans', 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-serif: 'Source Serif 4', 'Source Serif Pro', Georgia, 'Times New Roman', serif;
 
-    /* Restrained Institutional Botanical Palette */
-    --color-forest-50: #f2f7f4;
-    --color-forest-100: #e3ede6;
-    --color-forest-200: #c5dacf;
-    --color-forest-300: #9cbfae;
-    --color-forest-400: #6d9f87;
-    --color-forest-500: #498166;
-    --color-forest-600: #35674f;
-    --color-forest-700: #2a523f;
-    --color-forest-800: #224233;
-    --color-forest-900: #1a3529;
-    --color-forest-950: #0d1e16;
+    /* Deep botanical green: primary actions, links, active states */
+    --color-forest-50: #f1f6f2;
+    --color-forest-100: #e1ece4;
+    --color-forest-200: #c3d9ca;
+    --color-forest-300: #98bda4;
+    --color-forest-400: #689c7b;
+    --color-forest-500: #487f5e;
+    --color-forest-600: #35674a;
+    --color-forest-700: #2a523c;
+    --color-forest-800: #224232;
+    --color-forest-900: #1a3428;
+    --color-forest-950: #0e1f17;
 
-    /* Warm Paper and Archival Surface Tones */
-    --color-paper-base: #faf8f5;
-    --color-paper-card: #ffffff;
-    --color-paper-muted: #f4f1ea;
-    --color-paper-border: #e6e3da;
-    --color-paper-dark: #121412;
+    /* Neutral foundation */
+    --color-ink: #16201a;
+    --color-ink-soft: #3c4740;
+    --color-muted: #5f6a63;
+    --color-subtle: #8a938c;
+    --color-line: #e2e5de;
+    --color-line-strong: #cfd4cb;
+    --color-canvas: #f5f6f2;
+    --color-paper: #fbfbf8;
+
+    /* Earth accent for research signals */
+    --color-ochre-50: #fbf5ea;
+    --color-ochre-100: #f4e6c9;
+    --color-ochre-500: #b07a24;
+    --color-ochre-700: #7d5414;
 }
 
-/* Custom subtle scrollbar and academic print-ready resets */
 @layer base {
+    html {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
     body {
+        @apply bg-white text-ink;
         font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
     }
+
+    ::selection {
+        @apply bg-forest-100 text-forest-900;
+    }
+
+    [x-cloak] {
+        display: none !important;
+    }
+}
+
+@utility container-page {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+}
+
+@utility eyebrow {
+    @apply text-[11px] font-semibold tracking-[0.12em] text-muted uppercase;
+}
+
+@utility record-title {
+    @apply font-serif font-semibold text-ink leading-snug;
+}
+
+@utility link {
+    @apply text-forest-700 underline-offset-4 hover:text-forest-900 hover:underline;
+}
+
+@utility btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-md px-4 py-2.5 text-sm font-semibold transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-forest-600 disabled:cursor-not-allowed disabled:opacity-60;
+}
+
+@utility btn-primary {
+    @apply btn bg-forest-700 text-white hover:bg-forest-800;
+}
+
+@utility btn-secondary {
+    @apply btn border border-line-strong bg-white text-ink hover:border-forest-600 hover:text-forest-800;
+}
+
+@utility btn-ghost {
+    @apply btn px-3 text-ink-soft hover:bg-canvas hover:text-ink;
+}
+
+@utility btn-sm {
+    @apply px-3 py-1.5 text-xs;
+}
+
+@utility field {
+    @apply block w-full rounded-md border border-line-strong bg-white px-3.5 py-2.5 text-sm text-ink placeholder:text-subtle transition focus:border-forest-600 focus:ring-2 focus:ring-forest-600/15 focus:outline-none;
+}
+
+@utility field-label {
+    @apply mb-1.5 block text-sm font-medium text-ink;
+}
+
+@utility field-hint {
+    @apply mt-1.5 text-xs text-muted;
+}
+
+@utility field-error {
+    @apply mt-1.5 text-xs font-medium text-red-700;
+}
+
+@utility panel {
+    @apply rounded-lg border border-line bg-white;
+}
+
+@utility chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-2.5 py-1 text-xs font-medium text-ink-soft;
+}
+
+@utility tag {
+    @apply inline-flex items-center rounded px-2 py-0.5 text-[11px] font-semibold tracking-wide;
+}
+
+@utility facet-heading {
+    @apply flex w-full items-center justify-between py-3 text-sm font-semibold text-ink;
+}
+
+@utility nav-link {
+    @apply relative inline-flex h-full items-center px-1 text-sm font-medium text-ink-soft transition hover:text-ink;
+}
+
+@utility nav-link-active {
+    @apply text-forest-800 after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:bg-forest-700;
 }

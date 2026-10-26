@@ -38,6 +38,8 @@ class SupervisorProjectResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Advisee Projects';
 
+    protected static ?string $navigationLabel = 'My advisees';
+
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
 
     protected static ?string $navigationGroup = 'Supervision';

@@ -9,6 +9,7 @@ use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -87,16 +88,55 @@ class User extends Authenticatable implements FilamentUser
     }
 
     /**
+     * Catalogue records the user saved to their research folder.
+     *
+     * @return BelongsToMany<Project, $this>
+     */
+    public function savedProjects(): BelongsToMany
+    {
+        return $this->belongsToMany(Project::class, 'saved_projects')->withTimestamps();
+    }
+
+    /**
+     * Whether the user belongs to the student-facing portal.
+     */
+    public function isStudent(): bool
+    {
+        return $this->hasAnyRole([UserRole::STUDENT->value, UserRole::RESEARCHER->value]);
+    }
+
+    /**
+     * Whether the user may open the lecturer (Filament) portal.
+     */
+    public function isFaculty(): bool
+    {
+        return $this->hasAnyRole([
+            UserRole::SUPERVISOR->value,
+            UserRole::ADMIN->value,
+            UserRole::DEAN->value,
+            UserRole::RESEARCH_DIRECTOR->value,
+        ]);
+    }
+
+    /**
+     * Whether the user holds school-wide oversight (dean, director or admin).
+     */
+    public function hasOversight(): bool
+    {
+        return $this->hasAnyRole([
+            UserRole::ADMIN->value,
+            UserRole::DEAN->value,
+            UserRole::RESEARCH_DIRECTOR->value,
+        ]);
+    }
+
+    /**
      * Determine whether the user can access the given Filament panel.
      */
     public function canAccessPanel(Panel $panel): bool
     {
         if ($panel->getId() === 'supervisor') {
-            return $this->hasRole(UserRole::SUPERVISOR->value) || $this->hasAnyRole([
-                UserRole::ADMIN->value,
-                UserRole::DEAN->value,
-                UserRole::RESEARCH_DIRECTOR->value,
-            ]);
+            return $this->isFaculty();
         }
 
         return false;
