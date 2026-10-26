@@ -131,12 +131,50 @@ class User extends Authenticatable implements FilamentUser
     }
 
     /**
+     * Whether the user sits on the MUSAGRICA Office of Research and Innovation.
+     */
+    public function isResearchOfficer(): bool
+    {
+        return $this->hasRole(UserRole::RESEARCH_OFFICER->value);
+    }
+
+    /**
+     * Whether the user coordinates the office's programmes: office members plus school oversight.
+     */
+    public function managesResearchOffice(): bool
+    {
+        return $this->isResearchOfficer() || $this->hasOversight();
+    }
+
+    /**
+     * Challenge entries the user submitted.
+     *
+     * @return HasMany<ChallengeEntry, $this>
+     */
+    public function challengeEntries(): HasMany
+    {
+        return $this->hasMany(ChallengeEntry::class, 'student_id');
+    }
+
+    /**
+     * Office events the user registered for.
+     *
+     * @return BelongsToMany<AssociationEvent, $this>
+     */
+    public function registeredEvents(): BelongsToMany
+    {
+        return $this->belongsToMany(AssociationEvent::class, 'event_registrations')
+            ->withPivot(['wants_to_speak', 'position'])
+            ->withTimestamps();
+    }
+
+    /**
      * Determine whether the user can access the given Filament panel.
      */
     public function canAccessPanel(Panel $panel): bool
     {
         if ($panel->getId() === 'supervisor') {
-            return $this->isFaculty();
+            return $this->isFaculty() || $this->isResearchOfficer();
         }
 
         return false;

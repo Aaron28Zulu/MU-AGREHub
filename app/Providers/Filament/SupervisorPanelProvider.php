@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace App\Providers\Filament;
 
+use App\Filament\Resources\AssociationEventResource;
+use App\Filament\Resources\ChallengeEntryResource;
+use App\Filament\Resources\CropPlotResource;
+use App\Filament\Resources\InnovationChallengeResource;
 use App\Filament\Resources\ProjectResource;
 use App\Filament\Supervisor\Pages\Dashboard;
 use App\Filament\Supervisor\Resources\SupervisorProjectResource;
 use App\Filament\Supervisor\Widgets\ReviewQueueWidget;
 use App\Filament\Supervisor\Widgets\SupervisorStatsOverviewWidget;
 use App\Filament\Widgets\EmergingGapsTable;
+use App\Filament\Widgets\ResearchOfficeStatsWidget;
 use App\Filament\Widgets\SaturatedDomainsChart;
 use App\Http\Middleware\EnsureUserIsSupervisor;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -61,6 +66,7 @@ class SupervisorPanelProvider extends PanelProvider
             ->databaseNotificationsPolling('60s')
             ->navigationGroups([
                 NavigationGroup::make('Supervision'),
+                NavigationGroup::make('Research & Innovation Office'),
                 NavigationGroup::make('Research intelligence'),
                 NavigationGroup::make('School oversight'),
                 NavigationGroup::make('Archive'),
@@ -76,6 +82,11 @@ class SupervisorPanelProvider extends PanelProvider
                     ->icon('heroicon-o-light-bulb')
                     ->group('Archive')
                     ->sort(2),
+                NavigationItem::make('Innovation pages')
+                    ->url(fn (): string => route('innovation'))
+                    ->icon('heroicon-o-sparkles')
+                    ->group('Archive')
+                    ->sort(3),
             ])
             ->userMenuItems([
                 MenuItem::make()
@@ -97,11 +108,16 @@ class SupervisorPanelProvider extends PanelProvider
             ->resources([
                 SupervisorProjectResource::class,
                 ProjectResource::class,
+                InnovationChallengeResource::class,
+                ChallengeEntryResource::class,
+                AssociationEventResource::class,
+                CropPlotResource::class,
             ])
             ->pages([
                 Dashboard::class,
             ])
             ->widgets([
+                ResearchOfficeStatsWidget::class,
                 SupervisorStatsOverviewWidget::class,
                 ReviewQueueWidget::class,
                 SaturatedDomainsChart::class,

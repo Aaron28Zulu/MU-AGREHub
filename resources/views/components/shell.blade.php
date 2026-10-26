@@ -8,6 +8,7 @@
     $navigation = array_filter([
         ['label' => 'Search', 'route' => 'repository', 'active' => ['repository', 'catalog', 'repository.show']],
         ['label' => 'Research gaps', 'route' => 'gaps', 'active' => ['gaps']],
+        ['label' => 'Innovation', 'route' => 'innovation', 'active' => ['innovation', 'innovation.*']],
         $isStudent ? ['label' => 'My research', 'route' => 'student.dashboard', 'active' => ['student.dashboard', 'student.proposal.*']] : null,
         $isStudent ? ['label' => 'Submissions', 'route' => 'student.manuscripts', 'active' => ['student.manuscripts']] : null,
         $user ? ['label' => 'Folder', 'route' => 'folder', 'active' => ['folder']] : null,
@@ -44,8 +45,8 @@
                 <span class="text-forest-300">Research Archive &amp; Project Database</span>
             </p>
             <div class="flex shrink-0 items-center gap-4">
-                @if ($isFaculty)
-                    <a href="{{ url('/supervisor') }}" class="font-medium text-white hover:underline">Lecturer portal</a>
+                @if ($isFaculty || $user?->isResearchOfficer())
+                    <a href="{{ url('/supervisor') }}" class="font-medium text-white hover:underline">{{ $isFaculty ? 'Lecturer portal' : 'Office workspace' }}</a>
                 @endif
                 @auth
                     <span class="hidden text-forest-300 md:inline">{{ $user->role?->label() }}</span>
@@ -171,6 +172,7 @@
                 <ul class="mt-3 space-y-2 text-sm">
                     <li><a href="{{ route('repository') }}" class="text-ink-soft hover:text-forest-800">Search the archive</a></li>
                     <li><a href="{{ route('gaps') }}" class="text-ink-soft hover:text-forest-800">Research gaps</a></li>
+                    <li><a href="{{ route('innovation') }}" class="text-ink-soft hover:text-forest-800">Research &amp; Innovation Office</a></li>
                     <li><a href="{{ route('home') }}#subjects" class="text-ink-soft hover:text-forest-800">Browse subjects</a></li>
                 </ul>
             </div>

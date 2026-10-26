@@ -46,6 +46,11 @@ class SupervisorProjectResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
+    public static function canViewAny(): bool
+    {
+        return auth()->user()?->isFaculty() ?? false;
+    }
+
     /**
      * Strict Eloquent Query Scope:
      * Academic supervisors must ONLY see research projects assigned to them.

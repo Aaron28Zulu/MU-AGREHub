@@ -33,4 +33,14 @@ enum ResearchCategory: string
             self::PLANT_PROTECTION => 'Pests, diseases, weeds and integrated management.',
         };
     }
+
+    /**
+     * Value => label map for select inputs.
+     *
+     * @return array<string, string>
+     */
+    public static function options(): array
+    {
+        return collect(self::cases())->mapWithKeys(fn (self $case): array => [$case->value => $case->label()])->all();
+    }
 }

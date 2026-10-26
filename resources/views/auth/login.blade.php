@@ -47,6 +47,7 @@
                                     ['lukundo@agrihub.edu', 'Researcher', 'Lukundo Bwalya'],
                                     ['cmulenga@agrihub.edu', 'Lecturer', 'Dr. C. Mulenga'],
                                     ['dean@agrihub.edu', 'Dean', 'Dr. M. Phiri'],
+                                    ['ethel@agrihub.edu', 'Research Office', 'Ethel Kunda'],
                                 ] as [$demoEmail, $demoRole, $demoName])
                                     <a href="{{ route('login.quick', ['email' => $demoEmail]) }}" class="rounded-md border border-line px-3 py-2.5 transition hover:border-forest-400 hover:bg-forest-50">
                                         <span class="block text-sm font-semibold text-ink">{{ $demoRole }}</span>

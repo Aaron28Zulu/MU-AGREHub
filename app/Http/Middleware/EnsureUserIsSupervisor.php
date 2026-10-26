@@ -38,6 +38,7 @@ class EnsureUserIsSupervisor extends FilamentAuthenticate
             UserRole::ADMIN->value,
             UserRole::DEAN->value,
             UserRole::RESEARCH_DIRECTOR->value,
+            UserRole::RESEARCH_OFFICER->value,
         ])) {
             throw new HttpResponseException(
                 redirect('/')->with('error', 'Access restricted to authorized academic supervisors.')

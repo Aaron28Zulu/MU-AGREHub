@@ -163,6 +163,18 @@
         </div>
     </section>
 
+    {{-- Office of Research and Innovation --}}
+    <section class="border-b border-line bg-forest-950 text-forest-100">
+        <div class="container-page flex flex-col gap-6 py-12 lg:flex-row lg:items-center lg:justify-between">
+            <div class="max-w-2xl">
+                <p class="eyebrow text-forest-300">MUSAGRICA Office of Research and Innovation</p>
+                <h2 class="mt-3 text-2xl font-bold tracking-tight text-white">Take your idea further than the archive.</h2>
+                <p class="mt-2 leading-relaxed">Enter the Vision 2030 Research and Innovation Challenge, join the Agricultural Debate, and log field data from the school's continuous crop production plots.</p>
+            </div>
+            <a href="{{ route('innovation') }}" class="btn shrink-0 bg-white text-forest-900 hover:bg-forest-50">Research &amp; Innovation <x-glyph name="arrow-right" class="h-4 w-4" /></a>
+        </div>
+    </section>
+
     {{-- How the archive works --}}
     <section class="container-page py-16">
         <h2 class="text-2xl font-bold tracking-tight">One archive, three ways in</h2>
