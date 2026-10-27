@@ -51,7 +51,8 @@ return new class extends Migration
             $table->foreignId('mentor_id')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
 
-            $table->unique(['innovation_challenge_id', 'student_id', 'title']);
+            // The generated name is 65 characters, over MySQL's 64-character identifier limit.
+            $table->unique(['innovation_challenge_id', 'student_id', 'title'], 'challenge_entries_student_title_unique');
         });
 
         Schema::create('entry_reviews', function (Blueprint $table): void {

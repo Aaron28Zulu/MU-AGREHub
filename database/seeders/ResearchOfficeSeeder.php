@@ -18,6 +18,7 @@ use App\Models\InnovationChallenge;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 /**
  * Seeds the Office of Research and Innovation's semester work plan: the ARIS launch workshop,
@@ -27,6 +28,11 @@ class ResearchOfficeSeeder extends Seeder
 {
     public function run(): void
     {
+        // Safe to run on its own, before or after RoleAndUserSeeder.
+        foreach (UserRole::cases() as $role) {
+            Role::firstOrCreate(['name' => $role->value, 'guard_name' => 'web']);
+        }
+
         $ethel = User::updateOrCreate(['email' => 'ethel@agrihub.edu'], [
             'name' => 'Ethel Kunda',
             'password' => Hash::make('password'),
