@@ -33,7 +33,7 @@ class LandingPageTest extends TestCase
         $response = $this->get(route('home'));
 
         $response->assertOk();
-        $response->assertSee("Every school's research, in one place");
+        $response->assertSee("Every school's research, in one place", false);
         $response->assertSee('Research Repository Interface System');
         $response->assertSee('Explore Archive');
         $response->assertSee('Submit Research Proposal');
