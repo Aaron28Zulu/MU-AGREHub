@@ -12,7 +12,7 @@ class ManageAssociationEvents extends ManageRecords
 {
     protected static string $resource = AssociationEventResource::class;
 
-    protected ?string $subheading = 'Plan debates, workshops and field days, see who registered, and publish the outcomes afterwards.';
+    protected ?string $subheading = 'Plan debates, workshops and field visits, see who registered, and publish the outcomes afterwards.';
 
     protected function getHeaderActions(): array
     {

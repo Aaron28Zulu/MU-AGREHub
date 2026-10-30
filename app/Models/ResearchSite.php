@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Enums\PlotStatus;
+use App\Enums\ResearchCategory;
+use App\Enums\SiteStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * A field plot in the Continuous Crop Production Initiative, where students practise
- * production and collect field data for research.
+ * A field, lab, school, clinic or community site where students collect data
+ * that builds a shared dataset for research.
  */
-class CropPlot extends Model
+class ResearchSite extends Model
 {
     /**
      * Mirrors the column defaults so freshly created models behave like stored ones.
@@ -21,7 +22,7 @@ class CropPlot extends Model
      * @var array<string, mixed>
      */
     protected $attributes = [
-        'status' => 'preparing',
+        'status' => 'setup',
     ];
 
     /**
@@ -29,14 +30,14 @@ class CropPlot extends Model
      */
     protected $fillable = [
         'name',
-        'crop',
-        'variety',
+        'focus',
+        'category',
+        'method',
         'location',
-        'area_m2',
-        'season',
+        'period',
         'status',
-        'planted_on',
-        'expected_harvest_on',
+        'started_on',
+        'ends_on',
         'objectives',
         'coordinator_id',
         'project_id',
@@ -48,10 +49,10 @@ class CropPlot extends Model
     protected function casts(): array
     {
         return [
-            'status' => PlotStatus::class,
-            'area_m2' => 'decimal:2',
-            'planted_on' => 'date',
-            'expected_harvest_on' => 'date',
+            'status' => SiteStatus::class,
+            'category' => ResearchCategory::class,
+            'started_on' => 'date',
+            'ends_on' => 'date',
         ];
     }
 
@@ -64,7 +65,7 @@ class CropPlot extends Model
     }
 
     /**
-     * Research project the plot's data feeds into, if any.
+     * Research project the site's data feeds into, if any.
      *
      * @return BelongsTo<Project, $this>
      */
@@ -74,20 +75,20 @@ class CropPlot extends Model
     }
 
     /**
-     * @return HasMany<PlotObservation, $this>
+     * @return HasMany<SiteObservation, $this>
      */
     public function observations(): HasMany
     {
-        return $this->hasMany(PlotObservation::class);
+        return $this->hasMany(SiteObservation::class);
     }
 
     /**
-     * Days since planting, or null before the crop is in the ground.
+     * Days since data collection started, or null before it begins.
      */
-    public function daysAfterPlanting(): ?int
+    public function daysActive(): ?int
     {
-        return $this->planted_on && $this->planted_on->isPast()
-            ? (int) $this->planted_on->diffInDays(now())
+        return $this->started_on && $this->started_on->isPast()
+            ? (int) $this->started_on->diffInDays(now())
             : null;
     }
 }

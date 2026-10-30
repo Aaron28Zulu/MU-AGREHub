@@ -102,8 +102,12 @@
                                 <label for="category" class="field-label">Subject <span class="text-red-700">*</span></label>
                                 <select id="category" wire:model="category" class="field">
                                     <option value="">Select a subject</option>
-                                    @foreach ($categories as $cat)
-                                        <option value="{{ $cat->value }}">{{ $cat->label() }}</option>
+                                    @foreach ($schools as $school => $subjects)
+                                        <optgroup label="{{ $school }}">
+                                            @foreach ($subjects as $cat)
+                                                <option value="{{ $cat->value }}">{{ $cat->label() }}</option>
+                                            @endforeach
+                                        </optgroup>
                                     @endforeach
                                 </select>
                                 @error('category') <p class="field-error">{{ $message }}</p> @enderror
@@ -112,7 +116,7 @@
 
                         <div>
                             <label for="problem_statement" class="field-label">Problem statement <span class="text-red-700">*</span></label>
-                            <textarea id="problem_statement" wire:model="problem_statement" rows="4" class="field leading-relaxed" placeholder="What challenge in Zambian agriculture does this address, and who is affected?"></textarea>
+                            <textarea id="problem_statement" wire:model="problem_statement" rows="4" class="field leading-relaxed" placeholder="What challenge in your field or community does this address, and who is affected?"></textarea>
                             @error('problem_statement') <p class="field-error">{{ $message }}</p> @enderror
                         </div>
                         <div>
@@ -122,7 +126,7 @@
                         </div>
                         <div>
                             <label for="expected_impact" class="field-label">Expected impact <span class="text-red-700">*</span></label>
-                            <textarea id="expected_impact" wire:model="expected_impact" rows="3" class="field leading-relaxed" placeholder="How does this support MUSAGRICA Vision 2030 and agricultural development?"></textarea>
+                            <textarea id="expected_impact" wire:model="expected_impact" rows="3" class="field leading-relaxed" placeholder="How does this support Vision 2030 and national development?"></textarea>
                             @error('expected_impact') <p class="field-error">{{ $message }}</p> @enderror
                         </div>
 
@@ -147,7 +151,7 @@
             @elseif ($challenge->isAcceptingEntries())
                 <section class="panel p-6 text-sm text-ink-soft">
                     @auth
-                        Entries are submitted by registered students of the School of Agriculture and Natural Resources.
+                        Entries are open to registered students of every school at Mulungushi University.
                     @else
                         <a href="{{ route('login') }}" class="link font-semibold">Sign in</a> with your student account to submit an entry.
                     @endauth
@@ -192,7 +196,7 @@
                 @if ($challenge->coordinator)
                     <p class="mt-1">{{ $challenge->coordinator->name }}</p>
                 @endif
-                <p class="mt-3">Selected projects receive guidance from the office and are published in collaboration with MUSAGRICA.</p>
+                <p class="mt-3">Selected projects receive guidance from the office and are published in collaboration with the university.</p>
             </div>
         </aside>
     </div>

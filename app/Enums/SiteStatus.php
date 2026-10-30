@@ -5,20 +5,20 @@ declare(strict_types=1);
 namespace App\Enums;
 
 /**
- * Growth stage of a plot in the continuous crop production initiative.
+ * Stage of a research site where students collect data for a study.
  */
-enum PlotStatus: string
+enum SiteStatus: string
 {
-    case PREPARING = 'preparing';
-    case GROWING = 'growing';
-    case HARVESTED = 'harvested';
+    case SETUP = 'setup';
+    case ACTIVE = 'active';
+    case CLOSED = 'closed';
 
     public function label(): string
     {
         return match ($this) {
-            self::PREPARING => 'Land preparation',
-            self::GROWING => 'In the field',
-            self::HARVESTED => 'Harvested',
+            self::SETUP => 'Setting up',
+            self::ACTIVE => 'Collecting data',
+            self::CLOSED => 'Closed',
         };
     }
 
@@ -28,9 +28,9 @@ enum PlotStatus: string
     public function color(): string
     {
         return match ($this) {
-            self::PREPARING => 'gray',
-            self::GROWING => 'success',
-            self::HARVESTED => 'warning',
+            self::SETUP => 'gray',
+            self::ACTIVE => 'success',
+            self::CLOSED => 'warning',
         };
     }
 
@@ -45,10 +45,10 @@ enum PlotStatus: string
     }
 
     /**
-     * Whether students can still record field observations against the plot.
+     * Whether students can still record observations at the site.
      */
     public function acceptsObservations(): bool
     {
-        return $this !== self::HARVESTED;
+        return $this !== self::CLOSED;
     }
 }

@@ -7,9 +7,9 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * Programmes run by the MUSAGRICA Office of Research and Innovation:
- * the Vision 2030 Research and Innovation Challenge, office events such as the
- * Agricultural Debate, and the Continuous Crop Production Initiative.
+ * Programmes run by the university's Office of Research and Innovation:
+ * the Vision 2030 Research and Innovation Challenge, office events such as
+ * debates and workshops, and the research sites where students log study data.
  */
 return new class extends Migration
 {
@@ -96,26 +96,26 @@ return new class extends Migration
             $table->unique(['association_event_id', 'user_id']);
         });
 
-        Schema::create('crop_plots', function (Blueprint $table): void {
+        Schema::create('research_sites', function (Blueprint $table): void {
             $table->id();
             $table->string('name');
-            $table->string('crop');
-            $table->string('variety')->nullable();
+            $table->string('focus');
+            $table->string('category')->index();
+            $table->string('method')->nullable();
             $table->string('location')->nullable();
-            $table->decimal('area_m2', 10, 2)->nullable();
-            $table->string('season');
-            $table->string('status')->default('preparing')->index();
-            $table->date('planted_on')->nullable();
-            $table->date('expected_harvest_on')->nullable();
+            $table->string('period');
+            $table->string('status')->default('setup')->index();
+            $table->date('started_on')->nullable();
+            $table->date('ends_on')->nullable();
             $table->text('objectives')->nullable();
             $table->foreignId('coordinator_id')->nullable()->constrained('users')->nullOnDelete();
             $table->foreignId('project_id')->nullable()->constrained()->nullOnDelete();
             $table->timestamps();
         });
 
-        Schema::create('plot_observations', function (Blueprint $table): void {
+        Schema::create('site_observations', function (Blueprint $table): void {
             $table->id();
-            $table->foreignId('crop_plot_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('research_site_id')->constrained()->cascadeOnDelete();
             $table->foreignId('recorded_by')->constrained('users')->cascadeOnDelete();
             $table->date('observed_on')->index();
             $table->string('activity');
@@ -132,8 +132,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('plot_observations');
-        Schema::dropIfExists('crop_plots');
+        Schema::dropIfExists('site_observations');
+        Schema::dropIfExists('research_sites');
         Schema::dropIfExists('event_registrations');
         Schema::dropIfExists('association_events');
         Schema::dropIfExists('entry_reviews');

@@ -148,7 +148,7 @@ class StudentSubmissionWizard extends Component
         $supervisors = User::role('supervisor')->get(['id', 'name', 'department']);
 
         return view('livewire.student-submission-wizard', [
-            'categories' => ResearchCategory::cases(),
+            'schools' => ResearchCategory::bySchool(),
             'supervisors' => $supervisors,
             'similarRecords' => $this->similarRecords(),
         ])->title('Register a proposal');

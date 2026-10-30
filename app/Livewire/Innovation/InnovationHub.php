@@ -6,18 +6,18 @@ namespace App\Livewire\Innovation;
 
 use App\Enums\ChallengeStatus;
 use App\Enums\EntryStatus;
-use App\Enums\PlotStatus;
+use App\Enums\SiteStatus;
 use App\Models\AssociationEvent;
 use App\Models\ChallengeEntry;
-use App\Models\CropPlot;
 use App\Models\InnovationChallenge;
+use App\Models\ResearchSite;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 /**
- * Public front page of the MUSAGRICA Office of Research and Innovation: the current
- * innovation challenge, upcoming debates and workshops, and the crop production plots.
+ * Public front page of the Office of Research and Innovation: the current
+ * innovation challenge, upcoming debates and workshops, and the research sites.
  */
 #[Layout('layouts.app')]
 class InnovationHub extends Component
@@ -44,10 +44,10 @@ class InnovationHub extends Component
             'pastChallenges' => $challenges->slice(1),
             'upcomingEvents' => AssociationEvent::query()->published()->upcoming()->withCount('attendees')->take(4)->get(),
             'pastEvents' => AssociationEvent::query()->published()->where('starts_at', '<', now()->startOfDay())->latest('starts_at')->take(3)->get(),
-            'plots' => CropPlot::query()
+            'sites' => ResearchSite::query()
                 ->withCount('observations')
-                ->orderByRaw('case when status = ? then 0 when status = ? then 1 else 2 end', [PlotStatus::GROWING->value, PlotStatus::PREPARING->value])
-                ->latest('planted_on')
+                ->orderByRaw('case when status = ? then 0 when status = ? then 1 else 2 end', [SiteStatus::ACTIVE->value, SiteStatus::SETUP->value])
+                ->latest('started_on')
                 ->take(6)
                 ->get(),
             'recognised' => $recognised,

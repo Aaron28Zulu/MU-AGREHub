@@ -15,7 +15,7 @@ use Illuminate\View\View;
 class HomeController extends Controller
 {
     /**
-     * Show the AgriHub discovery landing page.
+     * Show the RRIS discovery landing page.
      * Only completed (publicly catalogued) studies are surfaced here.
      */
     public function __invoke(): View

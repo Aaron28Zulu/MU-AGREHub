@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Livewire\Innovation;
 
-use App\Enums\FieldActivity;
-use App\Models\CropPlot;
+use App\Enums\SiteActivity;
+use App\Models\ResearchSite;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
@@ -15,14 +15,14 @@ use Livewire\Component;
 use Livewire\WithPagination;
 
 /**
- * A crop production plot: its details, the running field log, and the form students use to add records.
+ * A research site: its details, the running data log, and the form students use to add records.
  */
 #[Layout('layouts.app')]
-class FieldPlotPage extends Component
+class ResearchSitePage extends Component
 {
     use WithPagination;
 
-    public CropPlot $plot;
+    public ResearchSite $site;
 
     public string $observed_on = '';
 
@@ -36,9 +36,9 @@ class FieldPlotPage extends Component
 
     public string $notes = '';
 
-    public function mount(CropPlot $plot): void
+    public function mount(ResearchSite $site): void
     {
-        $this->plot = $plot;
+        $this->site = $site;
         $this->observed_on = now()->toDateString();
     }
 
@@ -49,15 +49,15 @@ class FieldPlotPage extends Component
 
         abort_unless($user && ($user->isStudent() || $user->managesResearchOffice()), 403);
 
-        if (! $this->plot->status->acceptsObservations()) {
-            $this->addError('activity', 'This plot has been harvested and is closed for new records.');
+        if (! $this->site->status->acceptsObservations()) {
+            $this->addError('activity', 'This site is closed for new records.');
 
             return;
         }
 
         $validated = $this->validate([
             'observed_on' => ['required', 'date', 'before_or_equal:today'],
-            'activity' => ['required', Rule::enum(FieldActivity::class)],
+            'activity' => ['required', Rule::enum(SiteActivity::class)],
             'metric' => ['nullable', 'string', 'max:100', 'required_with:value'],
             'value' => ['nullable', 'numeric', 'min:0', 'required_with:metric'],
             'unit' => ['nullable', 'string', 'max:32'],
@@ -66,7 +66,7 @@ class FieldPlotPage extends Component
             'notes.required_without' => 'Add a note or a measurement so the record is useful.',
         ]);
 
-        $this->plot->observations()->create([
+        $this->site->observations()->create([
             ...array_map(fn ($field) => $field === '' ? null : $field, $validated),
             'recorded_by' => $user->id,
         ]);
@@ -74,7 +74,7 @@ class FieldPlotPage extends Component
         $this->reset(['activity', 'metric', 'value', 'unit', 'notes']);
         $this->resetPage();
 
-        session()->flash('success', 'Field record saved.');
+        session()->flash('success', 'Record saved.');
     }
 
     public function render(): View
@@ -82,15 +82,15 @@ class FieldPlotPage extends Component
         /** @var User|null $user */
         $user = Auth::user();
 
-        return view('livewire.innovation.field-plot-page', [
-            'observations' => $this->plot->observations()
+        return view('livewire.innovation.research-site-page', [
+            'observations' => $this->site->observations()
                 ->with('recorder:id,name')
                 ->latest('observed_on')
                 ->latest('id')
                 ->paginate(15),
-            'canRecord' => $user && ($user->isStudent() || $user->managesResearchOffice()) && $this->plot->status->acceptsObservations(),
-            'activities' => FieldActivity::cases(),
-            'contributors' => $this->plot->observations()->distinct()->count('recorded_by'),
-        ])->title($this->plot->name);
+            'canRecord' => $user && ($user->isStudent() || $user->managesResearchOffice()) && $this->site->status->acceptsObservations(),
+            'activities' => SiteActivity::cases(),
+            'contributors' => $this->site->observations()->distinct()->count('recorded_by'),
+        ])->title($this->site->name);
     }
 }

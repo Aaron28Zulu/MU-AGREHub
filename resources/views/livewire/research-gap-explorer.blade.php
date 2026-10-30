@@ -86,7 +86,7 @@
                     @foreach ($gaps as $gap)
                         <li wire:key="gap-{{ $gap->id }}" class="py-5">
                             <div class="flex flex-wrap items-center gap-2 text-xs">
-                                <span class="font-semibold tracking-wide text-ochre-700 uppercase">{{ $gap->domain?->name ?? 'General agricultural sciences' }}</span>
+                                <span class="font-semibold tracking-wide text-ochre-700 uppercase">{{ $gap->domain?->name ?? 'General research' }}</span>
                                 @if ($gap->is_saturated)
                                     <span class="tag bg-ochre-50 text-ochre-700">Well-studied</span>
                                 @elseif ($gap->is_emerging)

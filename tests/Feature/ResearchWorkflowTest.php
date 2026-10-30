@@ -51,7 +51,7 @@ class ResearchWorkflowTest extends TestCase
         return Project::create([
             'title' => 'Groundnut Rosette Virus Tolerance',
             'abstract' => 'Screening groundnut lines for tolerance to rosette virus under field conditions.',
-            'category' => ResearchCategory::PLANT_PROTECTION,
+            'category' => ResearchCategory::ENVIRONMENTAL_SCIENCE,
             'status' => $status,
             'student_id' => $this->student->id,
             'supervisor_id' => $this->supervisor->id,
@@ -157,7 +157,7 @@ class ResearchWorkflowTest extends TestCase
         Project::create([
             'title' => 'Groundnut Aflatoxin Contamination in Storage',
             'abstract' => 'Assessing aflatoxin levels in stored groundnuts.',
-            'category' => ResearchCategory::AGRIBUSINESS,
+            'category' => ResearchCategory::ECONOMICS,
             'status' => ProjectStatus::COMPLETED,
             'student_id' => $this->supervisor->id,
             'completion_year' => 2024,

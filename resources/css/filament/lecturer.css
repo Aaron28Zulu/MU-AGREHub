@@ -1,23 +1,23 @@
 /*
- * AgriHub lecturer portal skin.
+ * RRIS lecturer portal skin.
  * Plain CSS layered over Filament's compiled styles so it builds with the app's Vite pipeline
  * (no separate Tailwind 3 theme build needed). Targets Filament's stable `fi-*` hooks.
  */
 
 :root {
-    --agrihub-paper: #fbfbf8;
-    --agrihub-canvas: #f5f6f2;
-    --agrihub-line: #e2e5de;
-    --agrihub-ink: #16201a;
-    --agrihub-forest: #2a523c;
-    --agrihub-forest-deep: #0e1f17;
-    --agrihub-ochre: #b07a24;
+    --rris-paper: #fbfbf8;
+    --rris-canvas: #f5f6f2;
+    --rris-line: #e2e5de;
+    --rris-ink: #16201a;
+    --rris-forest: #2a523c;
+    --rris-forest-deep: #0e1f17;
+    --rris-ochre: #b07a24;
 }
 
 /* Page canvas */
 .fi-body,
 .fi-layout {
-    background-color: var(--agrihub-canvas);
+    background-color: var(--rris-canvas);
 }
 
 .fi-main {
@@ -27,12 +27,12 @@
 /* Sidebar: deep botanical rail with quiet labels */
 .fi-sidebar {
     background-color: #ffffff;
-    border-inline-end: 1px solid var(--agrihub-line);
+    border-inline-end: 1px solid var(--rris-line);
 }
 
 .fi-sidebar-header {
     background-color: #ffffff;
-    border-bottom: 1px solid var(--agrihub-line);
+    border-bottom: 1px solid var(--rris-line);
     box-shadow: none !important;
 }
 
@@ -49,37 +49,37 @@
 
 .fi-sidebar-item-active .fi-sidebar-item-button {
     background-color: #f1f6f2;
-    box-shadow: inset 3px 0 0 var(--agrihub-forest);
+    box-shadow: inset 3px 0 0 var(--rris-forest);
 }
 
 .fi-sidebar-item-active .fi-sidebar-item-label,
 .fi-sidebar-item-active .fi-sidebar-item-icon {
-    color: var(--agrihub-forest) !important;
+    color: var(--rris-forest) !important;
 }
 
 /* Topbar */
 .fi-topbar nav {
     background-color: rgba(255, 255, 255, 0.92);
     backdrop-filter: blur(6px);
-    border-bottom: 1px solid var(--agrihub-line);
+    border-bottom: 1px solid var(--rris-line);
     box-shadow: none;
 }
 
-.agrihub-role-pill {
+.rris-role-pill {
     display: inline-flex;
     align-items: center;
     margin-inline-end: 0.75rem;
     padding: 0.2rem 0.6rem;
     border-radius: 9999px;
     background: #f1f6f2;
-    color: var(--agrihub-forest);
+    color: var(--rris-forest);
     font-size: 0.75rem;
     font-weight: 600;
     white-space: nowrap;
 }
 
 @media (max-width: 640px) {
-    .agrihub-role-pill {
+    .rris-role-pill {
         display: none;
     }
 }
@@ -87,7 +87,7 @@
 /* Headings read like the archive: editorial and calm */
 .fi-header-heading {
     letter-spacing: -0.02em;
-    color: var(--agrihub-ink);
+    color: var(--rris-ink);
 }
 
 .fi-header-subheading {
@@ -103,7 +103,7 @@
 .fi-in-section {
     border-radius: 0.75rem !important;
     box-shadow: none !important;
-    --tw-ring-color: var(--agrihub-line) !important;
+    --tw-ring-color: var(--rris-line) !important;
 }
 
 .fi-section-header-heading,
@@ -123,7 +123,7 @@
 
 /* Tables */
 .fi-ta-header-cell {
-    background-color: var(--agrihub-paper);
+    background-color: var(--rris-paper);
 }
 
 .fi-ta-header-cell-label {
@@ -140,7 +140,7 @@
 /* Tabs on list pages */
 .fi-tabs {
     box-shadow: none !important;
-    --tw-ring-color: var(--agrihub-line) !important;
+    --tw-ring-color: var(--rris-line) !important;
 }
 
 .fi-tabs-item-active {
@@ -159,13 +159,13 @@
 
 /* Slide-over review panel */
 .fi-modal-slide-over-window {
-    background-color: var(--agrihub-paper);
+    background-color: var(--rris-paper);
 }
 
 /* Dark mode keeps Filament's palette but uses the deep forest canvas */
 .dark .fi-body,
 .dark .fi-layout {
-    background-color: var(--agrihub-forest-deep);
+    background-color: var(--rris-forest-deep);
 }
 
 .dark .fi-sidebar,
@@ -189,7 +189,7 @@
     background-color: transparent;
 }
 
-.dark .agrihub-role-pill {
+.dark .rris-role-pill {
     background: rgba(152, 189, 164, 0.15);
     color: #c3d9ca;
 }

@@ -22,7 +22,7 @@
                 <div class="mt-6 space-y-5">
                     <div>
                         <label for="title" class="field-label">Proposed title <span class="text-red-700">*</span></label>
-                        <input type="text" id="title" wire:model.live.debounce.600ms="title" class="field" placeholder="e.g. Biochar and legume intercropping for soil nutrient dynamics in semi-arid farms" />
+                        <input type="text" id="title" wire:model.live.debounce.600ms="title" class="field" placeholder="e.g. Mobile money adoption among market traders in Kabwe" />
                         @error('title') <p class="field-error">{{ $message }}</p> @enderror
                     </div>
 
@@ -31,8 +31,12 @@
                             <label for="category" class="field-label">Subject <span class="text-red-700">*</span></label>
                             <select id="category" wire:model="category" class="field">
                                 <option value="">Select a subject</option>
-                                @foreach ($categories as $cat)
-                                    <option value="{{ $cat->value }}">{{ $cat->label() }}</option>
+                                @foreach ($schools as $school => $subjects)
+                                    <optgroup label="{{ $school }}">
+                                        @foreach ($subjects as $cat)
+                                            <option value="{{ $cat->value }}">{{ $cat->label() }}</option>
+                                        @endforeach
+                                    </optgroup>
                                 @endforeach
                             </select>
                             @error('category') <p class="field-error">{{ $message }}</p> @enderror
@@ -88,7 +92,7 @@
                     @foreach ($research_gaps as $index => $gap)
                         <div wire:key="gap-input-{{ $index }}" class="flex items-center gap-2">
                             <label for="gap-{{ $index }}" class="sr-only">Research gap {{ $index + 1 }}</label>
-                            <input id="gap-{{ $index }}" type="text" wire:model="research_gaps.{{ $index }}" class="field" placeholder="e.g. No baseline soil microbiota data for rainfed low-altitude zones" />
+                            <input id="gap-{{ $index }}" type="text" wire:model="research_gaps.{{ $index }}" class="field" placeholder="e.g. No baseline data on informal traders outside the central business district" />
                             @if (count($research_gaps) > 1)
                                 <button type="button" wire:click="removeGap({{ $index }})" class="rounded-md p-2 text-subtle hover:bg-canvas hover:text-red-700" aria-label="Remove gap {{ $index + 1 }}">
                                     <x-glyph name="trash" class="h-4 w-4" />

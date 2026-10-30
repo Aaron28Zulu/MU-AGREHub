@@ -119,7 +119,7 @@ class User extends Authenticatable implements FilamentUser
     }
 
     /**
-     * Whether the user holds school-wide oversight (dean, director or admin).
+     * Whether the user holds oversight across the archive (dean, director or admin).
      */
     public function hasOversight(): bool
     {
@@ -131,7 +131,7 @@ class User extends Authenticatable implements FilamentUser
     }
 
     /**
-     * Whether the user sits on the MUSAGRICA Office of Research and Innovation.
+     * Whether the user sits on the Office of Research and Innovation.
      */
     public function isResearchOfficer(): bool
     {

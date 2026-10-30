@@ -16,7 +16,7 @@ class ProcessResearchGapsCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'agrihub:process-gaps {--limit=100 : Maximum number of projects to dispatch}';
+    protected $signature = 'rris:process-gaps {--limit=100 : Maximum number of projects to dispatch}';
 
     /**
      * The console command description.

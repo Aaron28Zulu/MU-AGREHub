@@ -70,9 +70,9 @@ class ProjectResource extends Resource
                     ->columnSpanFull(),
 
                 Select::make('category')
-                    ->options(collect(ResearchCategory::cases())->mapWithKeys(
-                        fn (ResearchCategory $c) => [$c->value => $c->label()]
-                    ))
+                    ->label('Subject')
+                    ->options(ResearchCategory::options())
+                    ->searchable()
                     ->required(),
 
                 Select::make('status')
@@ -166,9 +166,8 @@ class ProjectResource extends Resource
             ])
             ->filters([
                 SelectFilter::make('category')
-                    ->options(collect(ResearchCategory::cases())->mapWithKeys(
-                        fn (ResearchCategory $c) => [$c->value => $c->label()]
-                    )),
+                    ->label('Subject')
+                    ->options(ResearchCategory::options()),
 
                 SelectFilter::make('status')
                     ->options(collect(ProjectStatus::cases())->mapWithKeys(

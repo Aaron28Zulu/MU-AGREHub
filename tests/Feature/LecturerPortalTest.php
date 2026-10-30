@@ -54,7 +54,7 @@ class LecturerPortalTest extends TestCase
         return Project::create([
             'title' => $title,
             'abstract' => 'Abstract text for the lecturer portal tests.',
-            'category' => ResearchCategory::ANIMAL_SCIENCE,
+            'category' => ResearchCategory::NATURAL_SCIENCES,
             'status' => $status,
             'student_id' => $this->student->id,
             'supervisor_id' => $supervisor->id,

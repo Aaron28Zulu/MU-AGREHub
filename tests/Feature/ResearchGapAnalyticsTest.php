@@ -41,12 +41,12 @@ class ResearchGapAnalyticsTest extends TestCase
         Project::create([
             'title' => 'Completed Soil Study',
             'abstract' => 'Comprehensive soil fertility evaluation.',
-            'category' => ResearchCategory::CROP_SCIENCE,
+            'category' => ResearchCategory::AGRICULTURE,
             'status' => ProjectStatus::COMPLETED,
             'student_id' => $student->id,
         ]);
 
-        $this->artisan('agrihub:process-gaps')
+        $this->artisan('rris:process-gaps')
             ->assertSuccessful();
 
         Queue::assertPushed(AnalyzeProjectGapsJob::class, 1);
@@ -59,7 +59,7 @@ class ResearchGapAnalyticsTest extends TestCase
         $project = Project::create([
             'title' => 'Formulation of Black Soldier Fly Larval Protein',
             'abstract' => 'Evaluation of insect meal as a replacement for conventional poultry fishmeal.',
-            'category' => ResearchCategory::ANIMAL_SCIENCE,
+            'category' => ResearchCategory::NATURAL_SCIENCES,
             'status' => ProjectStatus::COMPLETED,
             'student_id' => $student->id,
         ]);
@@ -86,7 +86,7 @@ class ResearchGapAnalyticsTest extends TestCase
         $project = Project::create([
             'title' => 'Solar Drip Irrigation Analysis',
             'abstract' => 'Sensor-actuated irrigation.',
-            'category' => ResearchCategory::CROP_SCIENCE,
+            'category' => ResearchCategory::AGRICULTURE,
             'status' => ProjectStatus::COMPLETED,
             'student_id' => $student->id,
         ]);

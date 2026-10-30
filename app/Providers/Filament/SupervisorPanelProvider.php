@@ -6,9 +6,9 @@ namespace App\Providers\Filament;
 
 use App\Filament\Resources\AssociationEventResource;
 use App\Filament\Resources\ChallengeEntryResource;
-use App\Filament\Resources\CropPlotResource;
 use App\Filament\Resources\InnovationChallengeResource;
 use App\Filament\Resources\ProjectResource;
+use App\Filament\Resources\ResearchSiteResource;
 use App\Filament\Supervisor\Pages\Dashboard;
 use App\Filament\Supervisor\Resources\SupervisorProjectResource;
 use App\Filament\Supervisor\Widgets\ReviewQueueWidget;
@@ -47,7 +47,7 @@ class SupervisorPanelProvider extends PanelProvider
             ->default()
             ->id('supervisor')
             ->path('supervisor')
-            ->brandName('AgriHub Lecturer Portal')
+            ->brandName('RRIS Lecturer Portal')
             ->brandLogo(fn () => view('filament.brand.logo'))
             ->brandLogoHeight('2.5rem')
             ->favicon(asset('favicon.ico'))
@@ -94,7 +94,7 @@ class SupervisorPanelProvider extends PanelProvider
                     ->url(fn (): string => route('home'))
                     ->icon('heroicon-o-arrow-uturn-left'),
             ])
-            // Layer the AgriHub skin over Filament's own stylesheet (a viteTheme() would replace it).
+            // Layer the RRIS skin over Filament's own stylesheet (a viteTheme() would replace it).
             ->renderHook(
                 PanelsRenderHook::HEAD_END,
                 fn (): string => file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot'))
@@ -103,7 +103,7 @@ class SupervisorPanelProvider extends PanelProvider
             )
             ->renderHook(
                 PanelsRenderHook::USER_MENU_BEFORE,
-                fn (): string => Blade::render('<span class="agrihub-role-pill">{{ auth()->user()?->role?->label() }}</span>'),
+                fn (): string => Blade::render('<span class="rris-role-pill">{{ auth()->user()?->role?->label() }}</span>'),
             )
             ->resources([
                 SupervisorProjectResource::class,
@@ -111,7 +111,7 @@ class SupervisorPanelProvider extends PanelProvider
                 InnovationChallengeResource::class,
                 ChallengeEntryResource::class,
                 AssociationEventResource::class,
-                CropPlotResource::class,
+                ResearchSiteResource::class,
             ])
             ->pages([
                 Dashboard::class,

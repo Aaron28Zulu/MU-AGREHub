@@ -9,13 +9,13 @@
 
         <div class="container-page relative py-16 sm:py-20 lg:py-24">
             <div class="max-w-3xl">
-                <p class="eyebrow text-forest-700">School of Agriculture &amp; Natural Resources</p>
+                <p class="eyebrow text-forest-700">Mulungushi University &middot; Research Repository Interface System</p>
                 <h1 class="mt-4 text-4xl font-bold tracking-tight text-ink sm:text-5xl">
-                    Advancing Agricultural Innovation
-                    <span class="block font-serif font-semibold text-forest-800">through research you can build on.</span>
+                    Every school's research, in one place
+                    <span class="block font-serif font-semibold text-forest-800">for you to build on.</span>
                 </h1>
                 <p class="mt-5 max-w-2xl text-lg leading-relaxed text-ink-soft">
-                    Search the school's catalogue of completed student research, see where the open questions are, and register your own study without repeating work that's already been done.
+                    Search the university's catalogue of completed student research across every department, see where the open questions are, and register your own study without repeating work that's already been done.
                 </p>
             </div>
 
@@ -31,7 +31,7 @@
                     </select>
                     <div class="relative flex-1">
                         <x-glyph name="search" class="pointer-events-none absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 text-subtle" />
-                        <input id="hero-search" type="search" name="search" placeholder="Try “biochar”, “fall armyworm” or a supervisor’s name" class="w-full rounded-lg border-0 py-3 pr-3 pl-10 text-base text-ink placeholder:text-subtle focus:ring-0 focus:outline-none" />
+                        <input id="hero-search" type="search" name="search" placeholder="Try “mobile money”, “antenatal care” or a supervisor’s name" class="w-full rounded-lg border-0 py-3 pr-3 pl-10 text-base text-ink placeholder:text-subtle focus:ring-0 focus:outline-none" />
                     </div>
                     <button type="submit" class="btn-primary rounded-lg px-6 py-3">Search</button>
                 </div>
@@ -74,7 +74,7 @@
         <div class="flex items-end justify-between gap-4">
             <div>
                 <h2 class="text-2xl font-bold tracking-tight">Browse by subject</h2>
-                <p class="mt-2 text-ink-soft">Start from a discipline and narrow down from there.</p>
+                <p class="mt-2 text-ink-soft">Start from a discipline in any of the university's schools and narrow down from there.</p>
             </div>
             <a href="{{ route('repository') }}" class="hidden text-sm font-semibold text-forest-800 hover:underline sm:inline">All subjects</a>
         </div>
@@ -82,7 +82,8 @@
         <div class="mt-8 grid gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
             @foreach ($categories as $category)
                 <a href="{{ route('repository', ['category' => $category->value]) }}" class="group flex flex-col bg-white p-6 transition hover:bg-forest-50">
-                    <span class="text-sm font-medium text-muted">{{ number_format($categoryCounts[$category->value] ?? 0) }} {{ str('study')->plural($categoryCounts[$category->value] ?? 0) }}</span>
+                    <span class="text-xs font-semibold tracking-wide text-forest-700 uppercase">{{ $category->school() }}</span>
+                    <span class="mt-1 text-sm font-medium text-muted">{{ number_format($categoryCounts[$category->value] ?? 0) }} {{ str('study')->plural($categoryCounts[$category->value] ?? 0) }}</span>
                     <span class="mt-2 text-lg font-semibold leading-snug text-ink group-hover:text-forest-800">{{ $category->label() }}</span>
                     <span class="mt-2 text-sm leading-relaxed text-ink-soft">{{ $category->description() }}</span>
                     <span class="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-forest-700">
@@ -149,7 +150,7 @@
                 <ul class="mt-6 space-y-3">
                     @forelse ($emergingGaps as $gap)
                         <li class="panel p-4">
-                            <p class="eyebrow text-ochre-700">{{ $gap->domain?->name ?? 'General agricultural sciences' }}</p>
+                            <p class="eyebrow text-ochre-700">{{ $gap->domain?->name ?? 'General research' }}</p>
                             <p class="mt-2 text-sm leading-relaxed text-ink">{{ $gap->extracted_gap_text }}</p>
                             @if ($gap->project)
                                 <a href="{{ route('repository.show', $gap->project_id) }}" class="mt-2 block truncate text-xs text-muted hover:text-forest-800">From: {{ $gap->project->title }}</a>
@@ -167,9 +168,9 @@
     <section class="border-b border-line bg-forest-950 text-forest-100">
         <div class="container-page flex flex-col gap-6 py-12 lg:flex-row lg:items-center lg:justify-between">
             <div class="max-w-2xl">
-                <p class="eyebrow text-forest-300">MUSAGRICA Office of Research and Innovation</p>
+                <p class="eyebrow text-forest-300">Office of Research and Innovation</p>
                 <h2 class="mt-3 text-2xl font-bold tracking-tight text-white">Take your idea further than the archive.</h2>
-                <p class="mt-2 leading-relaxed">Enter the Vision 2030 Research and Innovation Challenge, join the Agricultural Debate, and log field data from the school's continuous crop production plots.</p>
+                <p class="mt-2 leading-relaxed">Enter the Vision 2030 Research and Innovation Challenge, join debates and workshops, and log data at research sites run across the university's schools.</p>
             </div>
             <a href="{{ route('innovation') }}" class="btn shrink-0 bg-white text-forest-900 hover:bg-forest-50">Research &amp; Innovation <x-glyph name="arrow-right" class="h-4 w-4" /></a>
         </div>

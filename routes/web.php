@@ -5,13 +5,13 @@ declare(strict_types=1);
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DocumentPreviewController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\PlotObservationExportController;
 use App\Http\Controllers\ProjectDocumentController;
+use App\Http\Controllers\SiteObservationExportController;
 use App\Http\Middleware\EnsureUserIsStudent;
 use App\Livewire\Innovation\ChallengePage;
 use App\Livewire\Innovation\EventPage;
-use App\Livewire\Innovation\FieldPlotPage;
 use App\Livewire\Innovation\InnovationHub;
+use App\Livewire\Innovation\ResearchSitePage;
 use App\Livewire\PublicRepository;
 use App\Livewire\ResearchFolder;
 use App\Livewire\ResearchGapExplorer;
@@ -28,13 +28,13 @@ Route::get('/repository', PublicRepository::class)->name('repository');
 Route::get('/repository/{project}', ResearchRecord::class)->name('repository.show');
 Route::get('/research-gaps', ResearchGapExplorer::class)->name('gaps');
 
-// Office of Research and Innovation: Vision 2030 challenge, debates and workshops, crop production plots
+// Office of Research and Innovation: Vision 2030 challenge, debates and workshops, research sites
 Route::get('/innovation', InnovationHub::class)->name('innovation');
 Route::get('/innovation/challenges/{challenge}', ChallengePage::class)->name('innovation.challenge');
 Route::get('/innovation/events/{event}', EventPage::class)->name('innovation.event');
-Route::get('/innovation/field-plots/{plot}', FieldPlotPage::class)->name('innovation.plot');
-Route::get('/innovation/field-plots/{plot}/export', PlotObservationExportController::class)
-    ->name('innovation.plot.export')
+Route::get('/innovation/sites/{site}', ResearchSitePage::class)->name('innovation.site');
+Route::get('/innovation/sites/{site}/export', SiteObservationExportController::class)
+    ->name('innovation.site.export')
     ->middleware('auth');
 
 // Saved records folder for any signed-in user

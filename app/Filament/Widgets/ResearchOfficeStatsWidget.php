@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\Filament\Widgets;
 
 use App\Enums\EntryStatus;
-use App\Enums\PlotStatus;
+use App\Enums\SiteStatus;
 use App\Filament\Resources\AssociationEventResource;
 use App\Filament\Resources\ChallengeEntryResource;
-use App\Filament\Resources\CropPlotResource;
+use App\Filament\Resources\ResearchSiteResource;
 use App\Models\AssociationEvent;
 use App\Models\ChallengeEntry;
-use App\Models\CropPlot;
-use App\Models\PlotObservation;
+use App\Models\ResearchSite;
+use App\Models\SiteObservation;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 
@@ -46,10 +46,10 @@ class ResearchOfficeStatsWidget extends BaseWidget
                 ->description($nextEvent ? 'Next: '.$nextEvent->title.', '.$nextEvent->starts_at->format('j M') : 'Nothing scheduled')
                 ->icon('heroicon-o-megaphone')
                 ->url(AssociationEventResource::getUrl('index')),
-            Stat::make('Plots in the field', CropPlot::query()->where('status', PlotStatus::GROWING->value)->count())
-                ->description(PlotObservation::query()->where('observed_on', '>=', now()->subDays(30))->count().' field records in the last 30 days')
-                ->icon('heroicon-o-sun')
-                ->url(CropPlotResource::getUrl('index')),
+            Stat::make('Sites collecting data', ResearchSite::query()->where('status', SiteStatus::ACTIVE->value)->count())
+                ->description(SiteObservation::query()->where('observed_on', '>=', now()->subDays(30))->count().' records in the last 30 days')
+                ->icon('heroicon-o-map-pin')
+                ->url(ResearchSiteResource::getUrl('index')),
         ];
     }
 }

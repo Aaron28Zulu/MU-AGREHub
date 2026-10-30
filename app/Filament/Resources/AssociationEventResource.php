@@ -30,7 +30,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Debates, workshops, seminars and field days run by the Office of Research and Innovation.
+ * Debates, workshops, seminars and field visits run by the Office of Research and Innovation.
  */
 class AssociationEventResource extends Resource
 {
@@ -64,7 +64,7 @@ class AssociationEventResource extends Resource
                 DateTimePicker::make('starts_at')->label('Starts')->required()->seconds(false)->native(false),
                 TextInput::make('motion')
                     ->label(fn ($get): string => $get('event_type') === EventType::DEBATE->value ? 'Motion' : 'Theme')
-                    ->placeholder('Are climate change and agricultural finance the only barriers to agricultural transformation in Zambia?')
+                    ->placeholder('Should artificial intelligence tools be allowed in university assessments?')
                     ->maxLength(255)
                     ->columnSpanFull(),
                 Textarea::make('description')->required()->rows(4)->columnSpanFull(),

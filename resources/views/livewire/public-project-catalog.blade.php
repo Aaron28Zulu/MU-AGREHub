@@ -6,13 +6,13 @@
             <div class="max-w-3xl space-y-3">
                 <div class="inline-flex items-center gap-2 text-xs font-semibold tracking-wider uppercase text-[#1a3529] dark:text-emerald-400">
                     <span class="w-2 h-2 rounded-full bg-[#1a3529] dark:bg-emerald-400"></span>
-                    <span>School of Agriculture and Natural Resources (MUSAGRICA)</span>
+                    <span>Mulungushi University</span>
                 </div>
                 <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-[#181a18] dark:text-[#faf8f5]">
-                    MUSA AgriResearch Repository
+                    Research Repository Interface System
                 </h1>
                 <p class="text-sm sm:text-base text-[#575c56] dark:text-stone-400 leading-relaxed">
-                    A centralized institutional repository documenting student dissertations, research gaps, and emerging field discoveries across Crop Science, Animal Nutrition, Agribusiness, and Natural Resource Management.
+                    A centralized institutional repository documenting student dissertations, research gaps, and emerging findings from every school, from agriculture and education to health, business, engineering and the social sciences.
                 </p>
             </div>
 

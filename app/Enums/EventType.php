@@ -17,10 +17,10 @@ enum EventType: string
     public function label(): string
     {
         return match ($this) {
-            self::DEBATE => 'Agricultural debate',
+            self::DEBATE => 'Debate',
             self::WORKSHOP => 'Workshop',
             self::SEMINAR => 'Seminar',
-            self::FIELD_DAY => 'Field day',
+            self::FIELD_DAY => 'Field visit',
         };
     }
 

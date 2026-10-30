@@ -25,55 +25,121 @@ class RoleAndUserSeeder extends Seeder
             ]);
         }
 
-        // 2. Define initial seed accounts for development and testing
+        // 2. Define initial seed accounts for development and testing, spread across the schools
         $seedUsers = [
             [
                 'name' => 'Admin User',
-                'email' => 'admin@agrihub.edu',
+                'email' => 'admin@rris.mu.ac.zm',
                 'role' => UserRole::ADMIN,
-                'department' => 'IT & Systems',
+                'department' => 'ICT Directorate',
             ],
             [
                 'name' => 'Dr. M. Phiri',
-                'email' => 'dean@agrihub.edu',
+                'email' => 'dean@rris.mu.ac.zm',
                 'role' => UserRole::DEAN,
-                'department' => 'MUSAGRICA Deanery',
+                'department' => 'School of Business Studies',
             ],
             [
                 'name' => 'Prof. E. Banda',
-                'email' => 'director@agrihub.edu',
+                'email' => 'director@rris.mu.ac.zm',
                 'role' => UserRole::RESEARCH_DIRECTOR,
-                'department' => 'Directorate of Research',
+                'department' => 'Directorate of Research and Graduate Studies',
             ],
             [
                 'name' => 'Dr. C. Mulenga',
-                'email' => 'cmulenga@agrihub.edu',
+                'email' => 'cmulenga@rris.mu.ac.zm',
                 'role' => UserRole::SUPERVISOR,
-                'department' => 'Crop Science',
+                'department' => 'Agricultural Sciences',
             ],
             [
                 'name' => 'Dr. J. Tembo',
-                'email' => 'jtembo@agrihub.edu',
+                'email' => 'jtembo@rris.mu.ac.zm',
                 'role' => UserRole::SUPERVISOR,
-                'department' => 'Agribusiness',
+                'department' => 'Economics',
+            ],
+            [
+                'name' => 'Dr. N. Kabwe',
+                'email' => 'nkabwe@rris.mu.ac.zm',
+                'role' => UserRole::SUPERVISOR,
+                'department' => 'Education',
+            ],
+            [
+                'name' => 'Dr. S. Mwansa',
+                'email' => 'smwansa@rris.mu.ac.zm',
+                'role' => UserRole::SUPERVISOR,
+                'department' => 'Public Health',
+            ],
+            [
+                'name' => 'Mr. B. Chanda',
+                'email' => 'bchanda@rris.mu.ac.zm',
+                'role' => UserRole::SUPERVISOR,
+                'department' => 'Computer Science',
+            ],
+            [
+                'name' => 'Dr. R. Musonda',
+                'email' => 'rmusonda@rris.mu.ac.zm',
+                'role' => UserRole::SUPERVISOR,
+                'department' => 'Physics and Engineering',
+            ],
+            [
+                'name' => 'Dr. L. Sakala',
+                'email' => 'lsakala@rris.mu.ac.zm',
+                'role' => UserRole::SUPERVISOR,
+                'department' => 'Development Studies',
             ],
             [
                 'name' => 'Peter Mwaba',
-                'email' => 'peter@agrihub.edu',
+                'email' => 'peter@rris.mu.ac.zm',
                 'role' => UserRole::RESEARCHER,
-                'department' => 'Agribusiness',
+                'department' => 'Economics',
             ],
             [
                 'name' => 'Lukundo Bwalya',
-                'email' => 'lukundo@agrihub.edu',
+                'email' => 'lukundo@rris.mu.ac.zm',
                 'role' => UserRole::RESEARCHER,
-                'department' => 'Crop Science',
+                'department' => 'Agricultural Sciences',
             ],
             [
                 'name' => 'Kelvin Mwape',
-                'email' => 'kelvin@agrihub.edu',
+                'email' => 'kelvin@rris.mu.ac.zm',
                 'role' => UserRole::STUDENT,
-                'department' => 'Animal Science',
+                'department' => 'Computer Science',
+            ],
+            [
+                'name' => 'Mutinta Hamoonga',
+                'email' => 'mutinta@rris.mu.ac.zm',
+                'role' => UserRole::RESEARCHER,
+                'department' => 'Nursing',
+            ],
+            [
+                'name' => 'Chipo Lungu',
+                'email' => 'chipo@rris.mu.ac.zm',
+                'role' => UserRole::RESEARCHER,
+                'department' => 'Education',
+            ],
+            [
+                'name' => 'Natasha Mbewe',
+                'email' => 'natasha@rris.mu.ac.zm',
+                'role' => UserRole::RESEARCHER,
+                'department' => 'Development Studies',
+            ],
+            [
+                'name' => 'Joseph Banda',
+                'email' => 'joseph@rris.mu.ac.zm',
+                'role' => UserRole::RESEARCHER,
+                'department' => 'Accounting and Finance',
+            ],
+            [
+                'name' => 'Mwila Kasonde',
+                'email' => 'mwila@rris.mu.ac.zm',
+                'role' => UserRole::RESEARCHER,
+                'department' => 'Engineering',
+            ],
+            [
+                'name' => 'Thandiwe Mumba',
+                'email' => 'thandiwe@rris.mu.ac.zm',
+                'role' => UserRole::STUDENT,
+                'department' => 'Computer Science',
             ],
         ];
 

@@ -238,10 +238,11 @@ class Project extends Model
         $year = $this->completion_year ?? 'n.d.';
 
         return sprintf(
-            '%s (%s). %s [Research project]. School of Agriculture and Natural Resources, AgriHub Research Archive.',
+            '%s (%s). %s [Research project]. School of %s, Mulungushi University. Research Repository Interface System.',
             $author,
             $year,
-            $this->title
+            $this->title,
+            $this->category->school()
         );
     }
 }

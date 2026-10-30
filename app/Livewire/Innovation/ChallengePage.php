@@ -142,7 +142,7 @@ class ChallengePage extends Component
                 : collect(),
             'canEnter' => $user?->isStudent() && $this->challenge->isAcceptingEntries(),
             'entryTypes' => EntryType::cases(),
-            'categories' => ResearchCategory::cases(),
+            'schools' => ResearchCategory::bySchool(),
             'similarRecords' => Project::catalogMatchesFor($this->title, 4),
         ])->title($this->challenge->title);
     }

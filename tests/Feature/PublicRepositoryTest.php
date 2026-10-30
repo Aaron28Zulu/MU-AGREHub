@@ -36,7 +36,7 @@ class PublicRepositoryTest extends TestCase
         Project::create([
             'title' => 'Soil Microbiome Dynamics in Biochar Amended Plots',
             'abstract' => 'Comprehensive soil microbiome evaluation.',
-            'category' => ResearchCategory::CROP_SCIENCE,
+            'category' => ResearchCategory::AGRICULTURE,
             'status' => ProjectStatus::COMPLETED,
             'student_id' => $student->id,
             'completion_year' => 2025,
@@ -57,7 +57,7 @@ class PublicRepositoryTest extends TestCase
         Project::create([
             'title' => 'Entomopathogenic Fungi for Fall Armyworm',
             'abstract' => 'Evaluating bioassays in maize trials.',
-            'category' => ResearchCategory::PLANT_PROTECTION,
+            'category' => ResearchCategory::ENVIRONMENTAL_SCIENCE,
             'status' => ProjectStatus::COMPLETED,
             'student_id' => $student->id,
             'completion_year' => 2025,
@@ -66,7 +66,7 @@ class PublicRepositoryTest extends TestCase
         Project::create([
             'title' => 'Poultry Nutrition Formulation',
             'abstract' => 'Insect meal trial for broilers.',
-            'category' => ResearchCategory::ANIMAL_SCIENCE,
+            'category' => ResearchCategory::NATURAL_SCIENCES,
             'status' => ProjectStatus::COMPLETED,
             'student_id' => $student->id,
             'completion_year' => 2024,
@@ -85,7 +85,7 @@ class PublicRepositoryTest extends TestCase
         $projectWithGap = Project::create([
             'title' => 'Broiler Performance Under Black Soldier Fly Meal',
             'abstract' => 'Feeding trials assessing daily weight gain.',
-            'category' => ResearchCategory::ANIMAL_SCIENCE,
+            'category' => ResearchCategory::NATURAL_SCIENCES,
             'status' => ProjectStatus::COMPLETED,
             'student_id' => $student->id,
             'completion_year' => 2024,
@@ -106,14 +106,14 @@ class PublicRepositoryTest extends TestCase
         $projectWithoutGap = Project::create([
             'title' => 'Tomato Supply Chain Efficiency',
             'abstract' => 'Evaluating digital cooperative platforms.',
-            'category' => ResearchCategory::AGRIBUSINESS,
+            'category' => ResearchCategory::ECONOMICS,
             'status' => ProjectStatus::COMPLETED,
             'student_id' => $student->id,
             'completion_year' => 2024,
         ]);
 
         Livewire::test(PublicRepository::class)
-            ->set('selectedCategories', ['animal_science'])
+            ->set('selectedCategories', ['natural_sciences'])
             ->assertSee('Broiler Performance Under Black Soldier Fly Meal')
             ->assertDontSee('Tomato Supply Chain Efficiency')
             ->set('onlyWithGaps', true)

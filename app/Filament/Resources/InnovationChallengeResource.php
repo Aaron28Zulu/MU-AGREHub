@@ -24,7 +24,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 /**
- * Semester calls of the MUSAGRICA Vision 2030 Research and Innovation Challenge.
+ * Semester calls of the university-wide Vision 2030 Research and Innovation Challenge.
  */
 class InnovationChallengeResource extends Resource
 {
@@ -55,7 +55,7 @@ class InnovationChallengeResource extends Resource
                 TextInput::make('title')
                     ->required()
                     ->maxLength(255)
-                    ->default('MUSAGRICA Vision 2030 Research and Innovation Challenge')
+                    ->default('Mulungushi University Vision 2030 Research and Innovation Challenge')
                     ->columnSpanFull(),
                 TextInput::make('edition')
                     ->required()
@@ -63,7 +63,7 @@ class InnovationChallengeResource extends Resource
                     ->placeholder('Semester 1, 2027'),
                 TextInput::make('theme')
                     ->maxLength(255)
-                    ->placeholder('Advancing Agriculture Through Research, Innovation, and Knowledge Sharing'),
+                    ->placeholder('Research, Innovation and Knowledge Sharing for National Development'),
                 Textarea::make('description')
                     ->label('Call for proposals')
                     ->required()

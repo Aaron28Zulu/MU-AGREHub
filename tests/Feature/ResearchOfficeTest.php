@@ -8,21 +8,21 @@ use App\Enums\ChallengeStatus;
 use App\Enums\EntryStatus;
 use App\Enums\EntryType;
 use App\Enums\EventType;
-use App\Enums\FieldActivity;
-use App\Enums\PlotStatus;
 use App\Enums\ResearchCategory;
+use App\Enums\SiteActivity;
+use App\Enums\SiteStatus;
 use App\Enums\UserRole;
 use App\Filament\Resources\AssociationEventResource\Pages\ManageAssociationEvents;
 use App\Filament\Resources\ChallengeEntryResource\Pages\ManageChallengeEntries;
-use App\Filament\Resources\CropPlotResource\Pages\ManageCropPlots;
 use App\Filament\Resources\InnovationChallengeResource\Pages\ManageInnovationChallenges;
+use App\Filament\Resources\ResearchSiteResource\Pages\ManageResearchSites;
 use App\Livewire\Innovation\ChallengePage;
 use App\Livewire\Innovation\EventPage;
-use App\Livewire\Innovation\FieldPlotPage;
+use App\Livewire\Innovation\ResearchSitePage;
 use App\Models\AssociationEvent;
 use App\Models\ChallengeEntry;
-use App\Models\CropPlot;
 use App\Models\InnovationChallenge;
+use App\Models\ResearchSite;
 use App\Models\User;
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -67,7 +67,7 @@ class ResearchOfficeTest extends TestCase
     protected function makeChallenge(ChallengeStatus $status = ChallengeStatus::OPEN): InnovationChallenge
     {
         return InnovationChallenge::create([
-            'title' => 'MUSAGRICA Vision 2030 Research and Innovation Challenge',
+            'title' => 'Mulungushi University Vision 2030 Research and Innovation Challenge',
             'edition' => 'Semester 1, 2026/27',
             'description' => 'Call for research proposals and innovative project ideas.',
             'status' => $status,
@@ -82,7 +82,7 @@ class ResearchOfficeTest extends TestCase
             'student_id' => $this->student->id,
             'title' => $title,
             'entry_type' => EntryType::INNOVATION,
-            'category' => ResearchCategory::CROP_SCIENCE,
+            'category' => ResearchCategory::AGRICULTURE,
             'problem_statement' => str_repeat('Smallholders lack affordable irrigation. ', 3),
             'proposed_solution' => str_repeat('Build and test a low-cost solar drip kit. ', 3),
             'expected_impact' => 'Higher dry-season vegetable yields.',
@@ -95,20 +95,20 @@ class ResearchOfficeTest extends TestCase
         $this->makeChallenge();
         $this->makeChallenge(ChallengeStatus::DRAFT)->update(['edition' => 'Unannounced draft call']);
         AssociationEvent::create([
-            'title' => 'MUSAGRICA Agricultural Debate',
+            'title' => 'Inter-School Research Debate',
             'event_type' => EventType::DEBATE,
-            'description' => 'Debate on agricultural transformation.',
+            'description' => 'Debate on research uptake.',
             'starts_at' => now()->addDays(5),
         ]);
-        CropPlot::create(['name' => 'Block A · Plot 1', 'crop' => 'Maize', 'season' => '2026/27', 'status' => PlotStatus::GROWING]);
+        ResearchSite::create(['name' => 'Kabwe Borehole Monitoring Network', 'focus' => 'Borehole water quality', 'category' => ResearchCategory::NATURAL_SCIENCES, 'period' => 'Semester 1, 2026/27', 'status' => SiteStatus::ACTIVE]);
 
         $this->get(route('innovation'))
             ->assertOk()
             ->assertSee('Vision 2030 Research &amp; Innovation Challenge', false)
             ->assertSee('Semester 1, 2026/27')
             ->assertDontSee('Unannounced draft call')
-            ->assertSee('MUSAGRICA Agricultural Debate')
-            ->assertSee('Block A · Plot 1');
+            ->assertSee('Inter-School Research Debate')
+            ->assertSee('Kabwe Borehole Monitoring Network');
     }
 
     public function test_draft_challenge_pages_are_not_reachable(): void
@@ -126,7 +126,7 @@ class ResearchOfficeTest extends TestCase
             ->test(ChallengePage::class, ['challenge' => $challenge])
             ->set('title', 'Solar drip kits for vegetable growers')
             ->set('entry_type', EntryType::INNOVATION->value)
-            ->set('category', ResearchCategory::CROP_SCIENCE->value)
+            ->set('category', ResearchCategory::AGRICULTURE->value)
             ->set('problem_statement', str_repeat('Smallholders lack affordable irrigation. ', 3))
             ->set('proposed_solution', str_repeat('Build and test a low-cost solar drip kit. ', 3))
             ->set('expected_impact', 'Higher dry-season vegetable yields for smallholders.')
@@ -215,7 +215,7 @@ class ResearchOfficeTest extends TestCase
             'student_id' => $this->officer->id,
             'title' => 'Office member entry',
             'entry_type' => EntryType::RESEARCH_PROPOSAL,
-            'category' => ResearchCategory::AGRIBUSINESS,
+            'category' => ResearchCategory::ECONOMICS,
             'problem_statement' => 'Problem',
             'proposed_solution' => 'Solution',
             'expected_impact' => 'Impact',
@@ -274,7 +274,7 @@ class ResearchOfficeTest extends TestCase
         $this->get('/supervisor')->assertOk()->assertSee('Research &amp; Innovation Office', false);
         $this->get('/supervisor/innovation-challenges')->assertOk();
         $this->get('/supervisor/association-events')->assertOk();
-        $this->get('/supervisor/crop-plots')->assertOk();
+        $this->get('/supervisor/research-sites')->assertOk();
         $this->get('/supervisor/supervisor-projects')->assertForbidden();
     }
 
@@ -290,7 +290,7 @@ class ResearchOfficeTest extends TestCase
 
         Livewire::test(ManageInnovationChallenges::class)
             ->callAction('create', [
-                'title' => 'MUSAGRICA Vision 2030 Research and Innovation Challenge',
+                'title' => 'Mulungushi University Vision 2030 Research and Innovation Challenge',
                 'edition' => 'Semester 2, 2026/27',
                 'description' => 'Second call of the year.',
                 'status' => ChallengeStatus::OPEN->value,
@@ -303,9 +303,9 @@ class ResearchOfficeTest extends TestCase
     public function test_debate_registration_records_side_and_respects_speaker_slots(): void
     {
         $debate = AssociationEvent::create([
-            'title' => 'MUSAGRICA Agricultural Debate',
+            'title' => 'Inter-School Research Debate',
             'event_type' => EventType::DEBATE,
-            'motion' => 'Are climate change and agricultural finance the only barriers?',
+            'motion' => 'Is limited funding the main barrier to research uptake?',
             'description' => 'Debate.',
             'starts_at' => now()->addDays(3),
             'speaker_slots' => 1,
@@ -362,7 +362,7 @@ class ResearchOfficeTest extends TestCase
     public function test_office_records_event_outcomes(): void
     {
         $debate = AssociationEvent::create([
-            'title' => 'MUSAGRICA Agricultural Debate',
+            'title' => 'Inter-School Research Debate',
             'event_type' => EventType::DEBATE,
             'description' => 'Debate.',
             'starts_at' => now()->subDay(),
@@ -380,91 +380,94 @@ class ResearchOfficeTest extends TestCase
             ->assertSee('Extension services and market access matter as much as finance.');
     }
 
-    public function test_students_log_field_records_and_export_them_as_csv(): void
+    public function test_students_log_site_records_and_export_them_as_csv(): void
     {
-        $plot = CropPlot::create([
-            'name' => 'Block A · Plot 1',
-            'crop' => 'Maize',
-            'season' => '2026/27',
-            'status' => PlotStatus::GROWING,
-            'planted_on' => now()->subDays(20),
+        $site = ResearchSite::create([
+            'name' => 'Kabwe Borehole Monitoring Network',
+            'focus' => 'Borehole water quality',
+            'category' => ResearchCategory::NATURAL_SCIENCES,
+            'period' => 'Semester 1, 2026/27',
+            'status' => SiteStatus::ACTIVE,
+            'started_on' => now()->subDays(20),
         ]);
 
         Livewire::actingAs($this->student)
-            ->test(FieldPlotPage::class, ['plot' => $plot])
-            ->set('activity', FieldActivity::MEASUREMENT->value)
-            ->set('metric', 'Plant height')
+            ->test(ResearchSitePage::class, ['site' => $site])
+            ->set('activity', SiteActivity::MEASUREMENT->value)
+            ->set('metric', 'Nitrate')
             ->set('value', '42.5')
-            ->set('unit', 'cm')
+            ->set('unit', 'mg/L')
             ->call('record')
             ->assertHasNoErrors();
 
-        $this->assertDatabaseHas('plot_observations', [
-            'crop_plot_id' => $plot->id,
+        $this->assertDatabaseHas('site_observations', [
+            'research_site_id' => $site->id,
             'recorded_by' => $this->student->id,
-            'metric' => 'Plant height',
-            'unit' => 'cm',
+            'metric' => 'Nitrate',
+            'unit' => 'mg/L',
         ]);
 
         $csv = $this->actingAs($this->student)
-            ->get(route('innovation.plot.export', $plot))
+            ->get(route('innovation.site.export', $site))
             ->assertOk()
             ->streamedContent();
 
-        $this->assertStringContainsString('days_after_planting', $csv);
-        $this->assertStringContainsString('"Plant height",42.50,cm', $csv);
+        $this->assertStringContainsString('study_day', $csv);
+        $this->assertStringContainsString('"Mathematics & Natural Sciences"', $csv);
+        $this->assertStringContainsString('Nitrate,42.50,mg/L', $csv);
         $this->assertStringContainsString('Kelvin Mwape', $csv);
     }
 
-    public function test_field_records_need_a_note_or_measurement_and_harvested_plots_are_closed(): void
+    public function test_site_records_need_a_note_or_measurement_and_closed_sites_reject_records(): void
     {
-        $plot = CropPlot::create(['name' => 'Garden Plot 4', 'crop' => 'Tomato', 'season' => '2026', 'status' => PlotStatus::GROWING]);
+        $site = ResearchSite::create(['name' => 'Partner Schools Reading Study', 'focus' => 'Reading fluency', 'category' => ResearchCategory::EDUCATION, 'period' => 'Term 1, 2027', 'status' => SiteStatus::ACTIVE]);
 
         Livewire::actingAs($this->student)
-            ->test(FieldPlotPage::class, ['plot' => $plot])
-            ->set('activity', FieldActivity::WEEDING->value)
+            ->test(ResearchSitePage::class, ['site' => $site])
+            ->set('activity', SiteActivity::SURVEY->value)
             ->call('record')
             ->assertHasErrors('notes');
 
-        $plot->update(['status' => PlotStatus::HARVESTED]);
+        $site->update(['status' => SiteStatus::CLOSED]);
 
         Livewire::actingAs($this->student)
-            ->test(FieldPlotPage::class, ['plot' => $plot->fresh()])
-            ->set('activity', FieldActivity::HARVEST->value)
+            ->test(ResearchSitePage::class, ['site' => $site->fresh()])
+            ->set('activity', SiteActivity::ANALYSIS->value)
             ->set('notes', 'Late record')
             ->call('record')
             ->assertHasErrors('activity');
 
-        $this->assertDatabaseCount('plot_observations', 0);
+        $this->assertDatabaseCount('site_observations', 0);
     }
 
-    public function test_guests_cannot_log_or_export_field_data(): void
+    public function test_guests_cannot_log_or_export_site_data(): void
     {
-        $plot = CropPlot::create(['name' => 'Garden Plot 4', 'crop' => 'Tomato', 'season' => '2026', 'status' => PlotStatus::GROWING]);
+        $site = ResearchSite::create(['name' => 'Partner Schools Reading Study', 'focus' => 'Reading fluency', 'category' => ResearchCategory::EDUCATION, 'period' => 'Term 1, 2027', 'status' => SiteStatus::ACTIVE]);
 
-        $this->get(route('innovation.plot.export', $plot))->assertRedirect(route('login'));
+        $this->get(route('innovation.site.export', $site))->assertRedirect(route('login'));
 
-        Livewire::test(FieldPlotPage::class, ['plot' => $plot])
-            ->set('activity', FieldActivity::WEEDING->value)
-            ->set('notes', 'Weeded')
+        Livewire::test(ResearchSitePage::class, ['site' => $site])
+            ->set('activity', SiteActivity::SURVEY->value)
+            ->set('notes', 'Interviewed head teacher')
             ->call('record')
             ->assertForbidden();
     }
 
-    public function test_office_can_add_a_plot_from_the_panel(): void
+    public function test_office_can_add_a_research_site_from_the_panel(): void
     {
         $this->actingAs($this->officer);
         Filament::setCurrentPanel(Filament::getPanel('supervisor'));
 
-        Livewire::test(ManageCropPlots::class)
+        Livewire::test(ManageResearchSites::class)
             ->callAction('create', [
-                'name' => 'Block B · Plot 2',
-                'season' => '2026/27 rain-fed',
-                'crop' => 'Soybean',
-                'status' => PlotStatus::PREPARING->value,
+                'name' => 'Rural Health Post Solar Monitoring',
+                'category' => ResearchCategory::ENGINEERING->value,
+                'focus' => 'Solar energy output',
+                'period' => '2026/27',
+                'status' => SiteStatus::SETUP->value,
             ])
             ->assertHasNoActionErrors();
 
-        $this->assertDatabaseHas('crop_plots', ['name' => 'Block B · Plot 2', 'crop' => 'Soybean']);
+        $this->assertDatabaseHas('research_sites', ['name' => 'Rural Health Post Solar Monitoring', 'category' => 'engineering']);
     }
 }

@@ -1,12 +1,12 @@
-# AgriHub (MUSA AgriResearch)
+# RRIS (Research Repository Interface System)
 
-AgriHub is a centralized Research Management and Project Database System designed for the School of Agriculture and Natural Resources (MUSAGRICA). The system tracks research projects, provides access-controlled catalogs, automates similarity and plagiarism detection, identifies institutional research gaps, and digitizes student–supervisor workflows.
+RRIS is a centralized Research Management and Project Database System for every school and department of Mulungushi University. The system tracks research projects, provides access-controlled catalogs, automates similarity and plagiarism detection, identifies institutional research gaps, and digitizes student–supervisor workflows.
 
 ---
 
 ## 1. System Architecture & Module Breakdown
 
-AgriHub is designed as a modular monolith using **Laravel 11**, **Filament v3**, and **Livewire v3**.
+RRIS is designed as a modular monolith using **Laravel 11**, **Filament v3**, and **Livewire v3**.
 
 ### Module 1: Access-Controlled Research Repository & Discovery
 * **Purpose:** Serves as the central digital archive for completed and ongoing research projects while strictly protecting intellectual property and academic integrity.
@@ -46,9 +46,9 @@ AgriHub is designed as a modular monolith using **Laravel 11**, **Filament v3**,
 ---
 
 ### Module 4: Research Gap & Trend Analytics
-* **Purpose:** Analyzes institutional research history to spotlight over-saturated topics, emerging agricultural challenges, and unaddressed research opportunities.
+* **Purpose:** Analyzes institutional research history to spotlight over-saturated topics, emerging challenges in each discipline, and unaddressed research opportunities.
 * **Functional Scope:**
-  * Evaluates completed projects by theme (e.g., Soil Fertility, Crop Protection, Agribusiness, Post-Harvest Management).
+  * Evaluates completed projects by theme (e.g., Soil Fertility, Maternal & Child Health, Digital Learning & Pedagogy, Governance & Public Policy).
   * Automatically flags saturated research areas and highlights suggested future study topics to guide prospective researchers.
 * **Implementation Mechanism:**
   * **Analytics Pipeline:** Scheduled console jobs (`ProcessResearchGapsCommand`) aggregate categorized project abstracts and conclusion/recommendation sections.
@@ -89,7 +89,7 @@ Make sure the following local development tools are installed on your macOS mach
    * **Port:** `5432`
    * **User:** `postgres`
    * **Password:** *(blank or whatever configured in DBngin)*
-5. Click **Connect**, then create a new database named `agrihub_db`.
+5. Click **Connect**, then create a new database named `rris_db`.
 
 ---
 
@@ -98,8 +98,8 @@ Clone the repository into your Herd-managed directory (typically `~/Herd`):
 
 ```bash
 cd ~/Herd
-git clone <repository-url> agrihub
-cd agrihub
+git clone <repository-url> rris
+cd rris
 ```
 
 Copy the environment configuration file:
@@ -111,13 +111,13 @@ cp .env.example .env
 Open `.env` in your code editor and update the database settings to connect to DBngin:
 
 ```env
-APP_NAME=AgriHub
-APP_URL=http://agrihub.test
+APP_NAME=RRIS
+APP_URL=http://rris.test
 
 DB_CONNECTION=pgsql
 DB_HOST=127.0.0.1
 DB_PORT=5432
-DB_DATABASE=agrihub_db
+DB_DATABASE=rris_db
 DB_USERNAME=postgres
 DB_PASSWORD=
 ```
@@ -182,5 +182,45 @@ php artisan queue:work
 
 ### Step 7: Access the System
 Open your browser and navigate to:
-* **Student Catalog & Portal:** `http://agrihub.test`
-* **Admin & Supervisor Panel:** `http://agrihub.test/admin`
+* **Student Catalog & Portal:** `http://rris.test`
+* **Lecturer & Research Office Panel:** `http://rris.test/supervisor`
+
+---
+
+## 4. Deploying to Railway (MySQL)
+
+Railway builds the app with Railpack, which detects Laravel from `artisan`, installs Composer and npm dependencies, runs `npm run build`, serves `public/` and runs `php artisan migrate --force` on every start. PHP 8.4 is read from `composer.json`.
+
+1. Create a project with a **MySQL** service and a service for this repository.
+2. On the app service, add the variables below (Variables → Raw Editor). `${{MySQL.…}}` are Railway reference variables, so keep the MySQL service named `MySQL` or change the prefix.
+
+   ```env
+   APP_NAME=RRIS
+   APP_ENV=production
+   APP_KEY=base64:...            # output of: php artisan key:generate --show
+   APP_DEBUG=false
+   APP_URL=https://${{RAILWAY_PUBLIC_DOMAIN}}
+
+   DB_CONNECTION=mysql
+   DB_HOST=${{MySQL.MYSQLHOST}}
+   DB_PORT=${{MySQL.MYSQLPORT}}
+   DB_DATABASE=${{MySQL.MYSQLDATABASE}}
+   DB_USERNAME=${{MySQL.MYSQLUSER}}
+   DB_PASSWORD=${{MySQL.MYSQLPASSWORD}}
+
+   SESSION_DRIVER=database
+   CACHE_STORE=database
+   QUEUE_CONNECTION=database
+   FILESYSTEM_DISK=local
+   LOG_CHANNEL=stderr
+   LOG_LEVEL=info
+
+   RAILPACK_PHP_EXTENSIONS=intl,pdo_mysql,zip
+   ```
+
+3. Generate a public domain (Settings → Networking), then deploy.
+4. Seed the demo archive once from the app service's shell (or with `railway ssh`): `php artisan db:seed --force`.
+5. Add a volume mounted at `/app/storage/app` so uploaded manuscripts survive redeploys.
+6. Optional: a second service from the same repo with the start command `php artisan queue:work --tries=3` runs similarity checks and gap analysis in the background, with the same variables.
+
+Seeded accounts use the password `password`. Change them, or remove the ones you do not need, before sharing the site.

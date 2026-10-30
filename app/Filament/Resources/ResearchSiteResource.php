@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
-use App\Enums\PlotStatus;
 use App\Enums\ProjectStatus;
+use App\Enums\ResearchCategory;
+use App\Enums\SiteStatus;
 use App\Enums\UserRole;
-use App\Filament\Resources\CropPlotResource\Pages;
-use App\Models\CropPlot;
+use App\Filament\Resources\ResearchSiteResource\Pages;
 use App\Models\Project;
+use App\Models\ResearchSite;
 use App\Models\User;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Grid;
@@ -27,19 +28,19 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 /**
- * Plots of the Continuous Crop Production Initiative.
+ * Sites where students collect data for research: field trials, labs, schools, clinics and communities.
  */
-class CropPlotResource extends Resource
+class ResearchSiteResource extends Resource
 {
-    protected static ?string $model = CropPlot::class;
+    protected static ?string $model = ResearchSite::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-sun';
+    protected static ?string $navigationIcon = 'heroicon-o-map-pin';
 
     protected static ?string $navigationGroup = 'Research & Innovation Office';
 
-    protected static ?string $navigationLabel = 'Crop production plots';
+    protected static ?string $navigationLabel = 'Research sites';
 
-    protected static ?string $modelLabel = 'crop plot';
+    protected static ?string $modelLabel = 'research site';
 
     protected static ?int $navigationSort = 4;
 
@@ -52,22 +53,26 @@ class CropPlotResource extends Resource
     {
         return $form->schema([
             Grid::make(2)->schema([
-                TextInput::make('name')->required()->maxLength(255)->placeholder('Block A · Plot 3'),
-                TextInput::make('season')->required()->maxLength(255)->placeholder('2026/27 rain-fed'),
-                TextInput::make('crop')->required()->maxLength(255),
-                TextInput::make('variety')->maxLength(255),
+                TextInput::make('name')->required()->maxLength(255)->placeholder('Kabwe Water Quality Stations'),
+                Select::make('category')->label('Subject')->options(ResearchCategory::options())->searchable()->required(),
+                TextInput::make('focus')
+                    ->label('What is studied')
+                    ->required()
+                    ->maxLength(255)
+                    ->placeholder('Borehole and stream water quality'),
+                TextInput::make('method')->label('Method')->maxLength(255)->placeholder('Monthly sampling, 6 stations'),
                 TextInput::make('location')->maxLength(255),
-                TextInput::make('area_m2')->label('Area (m²)')->numeric()->minValue(0),
-                Select::make('status')->options(PlotStatus::options())->default(PlotStatus::PREPARING->value)->required(),
+                TextInput::make('period')->required()->maxLength(255)->placeholder('Semester 1, 2026'),
+                Select::make('status')->options(SiteStatus::options())->default(SiteStatus::SETUP->value)->required(),
                 Select::make('coordinator_id')
                     ->label('Coordinator')
                     ->options(fn (): array => User::role([UserRole::RESEARCH_OFFICER->value, UserRole::SUPERVISOR->value])->pluck('name', 'id')->all())
                     ->searchable(),
-                DatePicker::make('planted_on')->native(false),
-                DatePicker::make('expected_harvest_on')->native(false)->afterOrEqual('planted_on'),
+                DatePicker::make('started_on')->label('Data collection starts')->native(false),
+                DatePicker::make('ends_on')->label('Data collection ends')->native(false)->afterOrEqual('started_on'),
                 Select::make('project_id')
                     ->label('Linked research project')
-                    ->helperText('Optional: a student study that uses this plot\'s data.')
+                    ->helperText('Optional: a student study that uses this site\'s data.')
                     ->options(fn (): array => Project::query()
                         ->where('status', '!=', ProjectStatus::REJECTED->value)
                         ->orderBy('title')
@@ -90,14 +95,20 @@ class CropPlotResource extends Resource
                 TextColumn::make('name')
                     ->searchable()
                     ->weight('medium')
-                    ->description(fn (CropPlot $record): string => $record->crop.($record->variety ? " · {$record->variety}" : '')),
-                TextColumn::make('season')->toggleable(),
+                    ->description(fn (ResearchSite $record): string => $record->focus.($record->method ? " · {$record->method}" : '')),
+                TextColumn::make('category')
+                    ->label('Subject')
+                    ->badge()
+                    ->formatStateUsing(fn (ResearchCategory $state): string => $state->label())
+                    ->color(fn (ResearchCategory $state): string => $state->color())
+                    ->toggleable(),
+                TextColumn::make('period')->toggleable(),
                 TextColumn::make('status')
                     ->badge()
-                    ->formatStateUsing(fn (PlotStatus $state): string => $state->label())
-                    ->color(fn (PlotStatus $state): string => $state->color()),
-                TextColumn::make('planted_on')->date('j M Y')->sortable(),
-                TextColumn::make('observations_count')->counts('observations')->label('Field records')->alignCenter(),
+                    ->formatStateUsing(fn (SiteStatus $state): string => $state->label())
+                    ->color(fn (SiteStatus $state): string => $state->color()),
+                TextColumn::make('started_on')->label('Started')->date('j M Y')->sortable(),
+                TextColumn::make('observations_count')->counts('observations')->label('Records')->alignCenter(),
                 TextColumn::make('observations_max_observed_on')
                     ->max('observations', 'observed_on')
                     ->label('Last record')
@@ -106,21 +117,22 @@ class CropPlotResource extends Resource
                 TextColumn::make('coordinator.name')->label('Coordinator')->placeholder('Unassigned')->toggleable(),
             ])
             ->filters([
-                SelectFilter::make('status')->options(PlotStatus::options()),
+                SelectFilter::make('status')->options(SiteStatus::options()),
+                SelectFilter::make('category')->label('Subject')->options(ResearchCategory::options()),
             ])
-            ->defaultSort('planted_on', 'desc')
+            ->defaultSort('started_on', 'desc')
             ->actions([
                 Action::make('log')
-                    ->label('Field log')
+                    ->label('Data log')
                     ->icon('heroicon-o-table-cells')
                     ->color('gray')
-                    ->url(fn (CropPlot $record): string => route('innovation.plot', $record))
+                    ->url(fn (ResearchSite $record): string => route('innovation.site', $record))
                     ->openUrlInNewTab(),
                 ActionGroup::make([
                     Action::make('export')
                         ->label('Download CSV')
                         ->icon('heroicon-o-arrow-down-tray')
-                        ->url(fn (CropPlot $record): string => route('innovation.plot.export', $record)),
+                        ->url(fn (ResearchSite $record): string => route('innovation.site.export', $record)),
                     EditAction::make(),
                     DeleteAction::make(),
                 ]),
@@ -130,7 +142,7 @@ class CropPlotResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageCropPlots::route('/'),
+            'index' => Pages\ManageResearchSites::route('/'),
         ];
     }
 }

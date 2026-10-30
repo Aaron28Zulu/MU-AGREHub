@@ -41,7 +41,7 @@ class AcademicIntegrityTest extends TestCase
         $project = Project::create([
             'title' => 'Soil Fertility Evaluation',
             'abstract' => 'Evaluating biochar and microbial respiration across smallholder plots.',
-            'category' => ResearchCategory::CROP_SCIENCE,
+            'category' => ResearchCategory::AGRICULTURE,
             'status' => ProjectStatus::COMPLETED,
             'student_id' => $student->id,
             'full_document_path' => 'manuscripts/test.pdf',
@@ -64,7 +64,7 @@ class AcademicIntegrityTest extends TestCase
         $project = Project::create([
             'title' => 'Soil Fertility Evaluation',
             'abstract' => 'Evaluating biochar and microbial respiration across smallholder plots.',
-            'category' => ResearchCategory::CROP_SCIENCE,
+            'category' => ResearchCategory::AGRICULTURE,
             'status' => ProjectStatus::COMPLETED,
             'student_id' => $authorStudent->id,
             'full_document_path' => 'manuscripts/test.pdf',
@@ -84,7 +84,7 @@ class AcademicIntegrityTest extends TestCase
         $project = Project::create([
             'title' => 'Soil Fertility Evaluation',
             'abstract' => 'Evaluating biochar and microbial respiration across smallholder plots.',
-            'category' => ResearchCategory::CROP_SCIENCE,
+            'category' => ResearchCategory::AGRICULTURE,
             'status' => ProjectStatus::UNDER_SUPERVISION,
             'student_id' => $authorStudent->id,
             'full_document_path' => 'manuscripts/my_draft.pdf',
@@ -107,7 +107,7 @@ class AcademicIntegrityTest extends TestCase
         $project = Project::create([
             'title' => 'Soil Fertility Evaluation',
             'abstract' => 'Evaluating biochar and microbial respiration across smallholder plots.',
-            'category' => ResearchCategory::CROP_SCIENCE,
+            'category' => ResearchCategory::AGRICULTURE,
             'status' => ProjectStatus::UNDER_REVIEW,
             'student_id' => $student->id,
             'supervisor_id' => $supervisor->id,
@@ -134,7 +134,7 @@ class AcademicIntegrityTest extends TestCase
         $project = Project::create([
             'title' => 'Soil Fertility Evaluation',
             'abstract' => 'Evaluating biochar and microbial respiration.',
-            'category' => ResearchCategory::CROP_SCIENCE,
+            'category' => ResearchCategory::AGRICULTURE,
             'status' => ProjectStatus::UNDER_SUPERVISION,
             'student_id' => $author->id,
             'supervisor_id' => $supervisor->id,

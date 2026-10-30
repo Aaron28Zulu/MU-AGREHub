@@ -2,9 +2,9 @@
     <div class="bg-canvas">
         <div class="container-page grid min-h-[calc(100vh-14rem)] items-center gap-12 py-14 lg:grid-cols-2">
             <div class="hidden lg:block">
-                <p class="eyebrow text-forest-700">AgriHub Research Archive</p>
+                <p class="eyebrow text-forest-700">Research Repository Interface System</p>
                 <h1 class="mt-4 text-4xl font-bold tracking-tight">Sign in to your research workspace</h1>
-                <p class="mt-4 max-w-md text-lg leading-relaxed text-ink-soft">Students track proposals and drafts. Lecturers review advisees in the lecturer portal. Faculty oversee the school's research.</p>
+                <p class="mt-4 max-w-md text-lg leading-relaxed text-ink-soft">Students track proposals and drafts. Lecturers review advisees in the lecturer portal. Deans and the research office oversee research across every school.</p>
                 <ul class="mt-8 space-y-3 text-sm text-ink-soft">
                     <li class="flex gap-3"><x-glyph name="check-circle" class="h-5 w-5 shrink-0 text-forest-700" /> Save records to your folder while you search</li>
                     <li class="flex gap-3"><x-glyph name="check-circle" class="h-5 w-5 shrink-0 text-forest-700" /> Get notified when your supervisor reviews a submission</li>
@@ -15,7 +15,7 @@
             <div class="mx-auto w-full max-w-md">
                 <div class="panel p-8 shadow-sm">
                     <h2 class="text-xl font-bold tracking-tight">Institutional sign in</h2>
-                    <p class="mt-1 text-sm text-muted">Use your school email address.</p>
+                    <p class="mt-1 text-sm text-muted">Use your university email address.</p>
 
                     @if ($errors->any())
                         <div class="mt-5 rounded-md bg-red-50 p-3 text-sm text-red-800" role="alert">{{ $errors->first() }}</div>
@@ -25,7 +25,7 @@
                         @csrf
                         <div>
                             <label for="email" class="field-label">Email address</label>
-                            <input id="email" name="email" type="email" autocomplete="email" required autofocus value="{{ old('email') }}" class="field" placeholder="name@agrihub.edu" />
+                            <input id="email" name="email" type="email" autocomplete="email" required autofocus value="{{ old('email') }}" class="field" placeholder="name@rris.mu.ac.zm" />
                         </div>
                         <div>
                             <label for="password" class="field-label">Password</label>
@@ -43,11 +43,11 @@
                             <p class="eyebrow">Demo accounts (local only)</p>
                             <div class="mt-3 grid grid-cols-2 gap-2">
                                 @foreach ([
-                                    ['kelvin@agrihub.edu', 'Student', 'Kelvin Mwape'],
-                                    ['lukundo@agrihub.edu', 'Researcher', 'Lukundo Bwalya'],
-                                    ['cmulenga@agrihub.edu', 'Lecturer', 'Dr. C. Mulenga'],
-                                    ['dean@agrihub.edu', 'Dean', 'Dr. M. Phiri'],
-                                    ['ethel@agrihub.edu', 'Research Office', 'Ethel Kunda'],
+                                    ['kelvin@rris.mu.ac.zm', 'Student', 'Kelvin Mwape'],
+                                    ['lukundo@rris.mu.ac.zm', 'Researcher', 'Lukundo Bwalya'],
+                                    ['cmulenga@rris.mu.ac.zm', 'Lecturer', 'Dr. C. Mulenga'],
+                                    ['dean@rris.mu.ac.zm', 'Dean', 'Dr. M. Phiri'],
+                                    ['ethel@rris.mu.ac.zm', 'Research Office', 'Ethel Kunda'],
                                 ] as [$demoEmail, $demoRole, $demoName])
                                     <a href="{{ route('login.quick', ['email' => $demoEmail]) }}" class="rounded-md border border-line px-3 py-2.5 transition hover:border-forest-400 hover:bg-forest-50">
                                         <span class="block text-sm font-semibold text-ink">{{ $demoRole }}</span>

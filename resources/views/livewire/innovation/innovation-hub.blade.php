@@ -7,18 +7,18 @@
                 <span class="mx-1.5" aria-hidden="true">/</span>
                 <span class="text-ink">Research &amp; Innovation</span>
             </nav>
-            <p class="eyebrow mt-6 text-forest-700">MUSAGRICA Office of Research and Innovation</p>
+            <p class="eyebrow mt-6 text-forest-700">Mulungushi University Office of Research and Innovation</p>
             <h1 class="mt-3 max-w-3xl text-3xl font-bold tracking-tight sm:text-4xl">
-                Advancing agriculture through research, innovation
+                Advancing every discipline through research, innovation
                 <span class="font-serif font-semibold text-forest-800">and knowledge sharing.</span>
             </h1>
             <p class="mt-4 max-w-2xl text-ink-soft">
-                Enter the Vision 2030 Research and Innovation Challenge, sign up for debates and workshops, and record field data from the school's continuous crop production plots.
+                Enter the Vision 2030 Research and Innovation Challenge, sign up for debates and workshops, and log data at research sites across the university's schools.
             </p>
             <div class="mt-6 flex flex-wrap gap-3">
                 <a href="#challenge" class="btn-primary">Vision 2030 Challenge</a>
                 <a href="#events" class="btn-secondary">Debates &amp; workshops</a>
-                <a href="#field" class="btn-secondary">Crop production plots</a>
+                <a href="#sites" class="btn-secondary">Research sites</a>
             </div>
         </div>
     </section>
@@ -29,7 +29,7 @@
             <div class="flex flex-wrap items-end justify-between gap-4">
                 <div>
                     <h2 class="text-2xl font-bold tracking-tight">Vision 2030 Research &amp; Innovation Challenge</h2>
-                    <p class="mt-2 max-w-2xl text-ink-soft">A once-a-semester call for research proposals and innovative project ideas. A review panel scores every entry, shortlisted teams present, and selected projects get guidance from the office and are published with MUSAGRICA.</p>
+                    <p class="mt-2 max-w-2xl text-ink-soft">A once-a-semester call for research proposals and innovative project ideas. A review panel scores every entry, shortlisted teams present, and selected projects get guidance from the office and are published with the university.</p>
                 </div>
             </div>
 
@@ -99,7 +99,7 @@
         {{-- Debates and workshops --}}
         <section id="events" class="scroll-mt-24">
             <h2 class="text-2xl font-bold tracking-tight">Debates, workshops &amp; seminars</h2>
-            <p class="mt-2 max-w-2xl text-ink-soft">Evidence-based discussion of Zambia's agricultural sector, platform launches and skills sessions. Register to attend, or put your name forward to speak.</p>
+            <p class="mt-2 max-w-2xl text-ink-soft">Evidence-based discussion of Zambia's development questions, platform launches and skills sessions. Register to attend, or put your name forward to speak.</p>
 
             <div class="mt-6 grid gap-4 md:grid-cols-2">
                 @forelse ($upcomingEvents as $event)
@@ -133,27 +133,26 @@
             @endif
         </section>
 
-        {{-- Continuous crop production initiative --}}
-        <section id="field" class="scroll-mt-24">
-            <h2 class="text-2xl font-bold tracking-tight">Continuous Crop Production Initiative</h2>
-            <p class="mt-2 max-w-2xl text-ink-soft">Year-round plots where students apply classroom knowledge, log field activities and measurements, and build datasets for future research.</p>
+        {{-- Research sites --}}
+        <section id="sites" class="scroll-mt-24">
+            <h2 class="text-2xl font-bold tracking-tight">Research sites</h2>
+            <p class="mt-2 max-w-2xl text-ink-soft">Field trials, labs, schools, clinics and community studies where students from every school log activities and measurements, building shared datasets for future research.</p>
 
             <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                @forelse ($plots as $plot)
-                    <a href="{{ route('innovation.plot', $plot) }}" class="panel group block p-5 transition hover:border-forest-300">
+                @forelse ($sites as $site)
+                    <a href="{{ route('innovation.site', $site) }}" class="panel group block p-5 transition hover:border-forest-300">
                         <div class="flex items-center justify-between gap-3">
-                            <x-pill :color="$plot->status->color()">{{ $plot->status->label() }}</x-pill>
-                            <span class="text-xs text-muted">{{ $plot->season }}</span>
+                            <x-pill :color="$site->status->color()">{{ $site->status->label() }}</x-pill>
+                            <span class="text-xs text-muted">{{ $site->period }}</span>
                         </div>
-                        <p class="mt-3 font-semibold group-hover:text-forest-800">{{ $plot->name }}</p>
-                        <p class="mt-1 text-sm text-ink-soft">{{ $plot->crop }}@if ($plot->variety) <span class="text-muted">({{ $plot->variety }})</span>@endif</p>
+                        <p class="mt-3 font-semibold group-hover:text-forest-800">{{ $site->name }}</p>
+                        <p class="mt-1 text-sm text-ink-soft">{{ $site->focus }}</p>
                         <p class="mt-3 text-xs text-muted">
-                            {{ $plot->observations_count }} field {{ str('record')->plural($plot->observations_count) }}
-                            @if ($plot->daysAfterPlanting() !== null) &middot; {{ $plot->daysAfterPlanting() }} days after planting @endif
+                            {{ $site->category->label() }} &middot; {{ $site->observations_count }} {{ str('record')->plural($site->observations_count) }}
                         </p>
                     </a>
                 @empty
-                    <div class="panel p-8 text-center text-sm text-muted sm:col-span-2 lg:col-span-3">No plots have been set up yet.</div>
+                    <div class="panel p-8 text-center text-sm text-muted sm:col-span-2 lg:col-span-3">No research sites have been set up yet.</div>
                 @endforelse
             </div>
         </section>

@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Enums\FieldActivity;
+use App\Enums\SiteActivity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * A dated field record (activity, optional measurement and notes) logged by a student on a crop plot.
+ * A dated record (activity, optional measurement and notes) logged by a student at a research site.
  */
-class PlotObservation extends Model
+class SiteObservation extends Model
 {
     /**
      * @var list<string>
      */
     protected $fillable = [
-        'crop_plot_id',
+        'research_site_id',
         'recorded_by',
         'observed_on',
         'activity',
@@ -33,18 +33,18 @@ class PlotObservation extends Model
     protected function casts(): array
     {
         return [
-            'activity' => FieldActivity::class,
+            'activity' => SiteActivity::class,
             'observed_on' => 'date',
             'value' => 'decimal:2',
         ];
     }
 
     /**
-     * @return BelongsTo<CropPlot, $this>
+     * @return BelongsTo<ResearchSite, $this>
      */
-    public function plot(): BelongsTo
+    public function site(): BelongsTo
     {
-        return $this->belongsTo(CropPlot::class, 'crop_plot_id');
+        return $this->belongsTo(ResearchSite::class, 'research_site_id');
     }
 
     /**

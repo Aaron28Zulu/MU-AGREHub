@@ -11,8 +11,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
- * An activity run by the Office of Research and Innovation, such as the Agricultural Debate
- * or the Project ARIS launch workshop.
+ * An activity run by the Office of Research and Innovation, such as an inter-school debate
+ * or a research methods workshop.
  */
 class AssociationEvent extends Model
 {

@@ -14,7 +14,7 @@ use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 /**
- * An office event (debate, workshop, seminar or field day) with sign-up and recorded outcomes.
+ * An office event (debate, workshop, seminar or field visit) with sign-up and recorded outcomes.
  */
 #[Layout('layouts.app')]
 class EventPage extends Component
