@@ -9,7 +9,9 @@ use App\Filament\Resources\AssociationEventResource;
 use App\Filament\Resources\ChallengeEntryResource;
 use App\Filament\Resources\InnovationChallengeResource;
 use App\Filament\Resources\ProjectResource;
+use App\Filament\Resources\ResearchDomainResource;
 use App\Filament\Resources\ResearchSiteResource;
+use App\Filament\Resources\UserResource;
 use App\Filament\Supervisor\Pages\Dashboard;
 use App\Filament\Supervisor\Resources\SupervisorProjectResource;
 use App\Filament\Supervisor\Widgets\ReviewQueueWidget;
@@ -17,6 +19,7 @@ use App\Filament\Supervisor\Widgets\SupervisorStatsOverviewWidget;
 use App\Filament\Widgets\EmergingGapsTable;
 use App\Filament\Widgets\ResearchOfficeStatsWidget;
 use App\Filament\Widgets\SaturatedDomainsChart;
+use App\Http\Middleware\EnsureAccountIsActive;
 use App\Http\Middleware\EnsureUserIsSupervisor;
 use Filament\FontProviders\GoogleFontProvider;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -101,6 +104,7 @@ class SupervisorPanelProvider extends PanelProvider
                 NavigationGroup::make('Research intelligence'),
                 NavigationGroup::make('School oversight'),
                 NavigationGroup::make('Archive'),
+                NavigationGroup::make('Administration'),
             ])
             ->navigationItems([
                 NavigationItem::make('Search the archive')
@@ -132,6 +136,7 @@ class SupervisorPanelProvider extends PanelProvider
                     ? Blade::render("@vite('resources/css/filament/lecturer.css')")
                     : '',
             )
+            ->renderHook(PanelsRenderHook::BODY_START, fn (): string => Blade::render('<x-impersonation-banner />'))
             ->renderHook(PanelsRenderHook::TOPBAR_START, fn (): View => view('filament.topbar.context'))
             ->renderHook(PanelsRenderHook::GLOBAL_SEARCH_BEFORE, fn (): View => view('filament.topbar.archive-link'))
             ->renderHook(PanelsRenderHook::USER_MENU_BEFORE, fn (): View => view('filament.topbar.identity'))
@@ -142,6 +147,8 @@ class SupervisorPanelProvider extends PanelProvider
                 ChallengeEntryResource::class,
                 AssociationEventResource::class,
                 ResearchSiteResource::class,
+                ResearchDomainResource::class,
+                UserResource::class,
             ])
             ->pages([
                 Dashboard::class,
@@ -158,6 +165,7 @@ class SupervisorPanelProvider extends PanelProvider
                 AddQueuedCookiesToResponse::class,
                 StartSession::class,
                 AuthenticateSession::class,
+                EnsureAccountIsActive::class,
                 ShareErrorsFromSession::class,
                 VerifyCsrfToken::class,
                 SubstituteBindings::class,

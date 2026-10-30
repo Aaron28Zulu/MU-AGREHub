@@ -35,6 +35,8 @@
 <body class="flex min-h-full flex-col bg-white font-sans text-ink">
     <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:rounded focus:bg-white focus:px-3 focus:py-2 focus:text-sm focus:shadow">Skip to content</a>
 
+    <x-impersonation-banner />
+
     {{-- Institutional utility bar --}}
     <div class="bg-forest-950 text-[13px] text-forest-100">
         <div class="container-page flex h-9 items-center justify-between gap-4">
@@ -102,6 +104,8 @@
                             @endif
                             @if ($isFaculty)
                                 <a href="{{ url('/supervisor') }}" class="block px-4 py-2 text-sm text-ink-soft hover:bg-canvas">Lecturer portal</a>
+                            @elseif ($user->isResearchOfficer())
+                                <a href="{{ url('/supervisor') }}" class="block px-4 py-2 text-sm text-ink-soft hover:bg-canvas">Office workspace</a>
                             @endif
                             <a href="{{ route('folder') }}" class="block px-4 py-2 text-sm text-ink-soft hover:bg-canvas">Saved records</a>
                             <form action="{{ route('logout') }}" method="POST" class="border-t border-line">

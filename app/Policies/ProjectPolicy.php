@@ -79,7 +79,6 @@ class ProjectPolicy
         return $user->hasAnyRole([
             UserRole::STUDENT->value,
             UserRole::RESEARCHER->value,
-            UserRole::ADMIN->value,
         ]);
     }
 
@@ -96,8 +95,8 @@ class ProjectPolicy
             return true;
         }
 
-        // Student author can only edit before final submission/completion
-        return $project->student_id === $user->id;
+        // Student author can only edit while the study is still moving through supervision
+        return $project->student_id === $user->id && $project->status->isActive();
     }
 
     /**

@@ -37,7 +37,8 @@ class AuthController extends Controller
 
         $remember = $request->boolean('remember');
 
-        if (Auth::attempt($credentials, $remember)) {
+        // Deactivated accounts keep their records but cannot sign in.
+        if (Auth::attemptWhen($credentials, fn (User $user): bool => ! $user->isDeactivated(), $remember)) {
             $request->session()->regenerate();
 
             /** @var User $user */
@@ -91,11 +92,19 @@ class AuthController extends Controller
      */
     protected function getRoleRedirectPath(User $user): string
     {
+        return self::homeFor($user);
+    }
+
+    /**
+     * The landing page for the user's role: the student portal, the lecturer and office workspace, or the archive.
+     */
+    public static function homeFor(User $user): string
+    {
         if ($user->isStudent()) {
             return route('student.dashboard');
         }
 
-        if ($user->isFaculty()) {
+        if ($user->isFaculty() || $user->isResearchOfficer()) {
             return '/supervisor';
         }
 
