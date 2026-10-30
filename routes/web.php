@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\ImpersonationController;
 use App\Http\Controllers\DocumentPreviewController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProjectDocumentController;
@@ -48,6 +49,9 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+
+// Return from signing in as another user (the administrator starts it from the Users screen)
+Route::post('/impersonate/leave', [ImpersonationController::class, 'leave'])->name('impersonate.leave')->middleware('auth');
 
 // Authenticated Student Researcher Portal
 Route::middleware(['auth', EnsureUserIsStudent::class])

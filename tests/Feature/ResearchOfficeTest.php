@@ -51,9 +51,8 @@ class ResearchOfficeTest extends TestCase
         $this->student = $this->makeUser('Kelvin Mwape', UserRole::STUDENT);
         $this->supervisor = $this->makeUser('Dr. C. Mulenga', UserRole::SUPERVISOR);
 
-        // Office members are students who also hold the office role.
-        $this->officer = $this->makeUser('Ethel Kunda', UserRole::RESEARCHER);
-        $this->officer->assignRole(UserRole::RESEARCH_OFFICER->value);
+        // Office staff hold the office role only; students who serve on the office are set up where a test needs one.
+        $this->officer = $this->makeUser('Ethel Kunda', UserRole::RESEARCH_OFFICER);
     }
 
     protected function makeUser(string $name, UserRole $role): User
@@ -210,9 +209,13 @@ class ResearchOfficeTest extends TestCase
 
     public function test_students_cannot_score_their_own_entry_even_as_office_members(): void
     {
+        // A student researcher who also serves on the office.
+        $member = $this->makeUser('Peter Mwaba', UserRole::RESEARCHER);
+        $member->assignRole(UserRole::RESEARCH_OFFICER->value);
+
         $challenge = $this->makeChallenge(ChallengeStatus::REVIEWING);
         $entry = $challenge->entries()->create([
-            'student_id' => $this->officer->id,
+            'student_id' => $member->id,
             'title' => 'Office member entry',
             'entry_type' => EntryType::RESEARCH_PROPOSAL,
             'category' => ResearchCategory::ECONOMICS,
@@ -221,7 +224,7 @@ class ResearchOfficeTest extends TestCase
             'expected_impact' => 'Impact',
         ]);
 
-        $this->actingAs($this->officer);
+        $this->actingAs($member);
         Filament::setCurrentPanel(Filament::getPanel('supervisor'));
 
         Livewire::test(ManageChallengeEntries::class)

@@ -37,11 +37,11 @@ class ResearchOfficeSeeder extends Seeder
         $ethel = User::updateOrCreate(['email' => 'ethel@rris.mu.ac.zm'], [
             'name' => 'Ethel Kunda',
             'password' => Hash::make('password'),
-            'role' => UserRole::RESEARCHER,
             'department' => 'Office of Research and Innovation',
             'email_verified_at' => now(),
         ]);
-        $ethel->syncRoles([UserRole::RESEARCHER->value, UserRole::RESEARCH_OFFICER->value]);
+        // Ethel is office staff, not a student: she gets the office role only.
+        $ethel->assignAccountRoles(UserRole::RESEARCH_OFFICER);
 
         // The assistant secretary keeps their student account and gains office duties.
         $peter = User::where('email', 'peter@rris.mu.ac.zm')->first();

@@ -54,6 +54,7 @@ class User extends Authenticatable implements FilamentUser
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'role' => UserRole::class,
+            'deactivated_at' => 'datetime',
         ];
     }
 
@@ -156,11 +157,72 @@ class User extends Authenticatable implements FilamentUser
     }
 
     /**
-     * Whether the user coordinates the office's programmes: office members plus school oversight.
+     * Whether the user runs the office's programmes: office members, the research director who leads the
+     * office, and the administrator. Deans oversee their school's projects, not the office.
      */
     public function managesResearchOffice(): bool
     {
-        return $this->isResearchOfficer() || $this->hasOversight();
+        return $this->isResearchOfficer() || $this->hasAnyRole([
+            UserRole::RESEARCH_DIRECTOR->value,
+            UserRole::ADMIN->value,
+        ]);
+    }
+
+    /**
+     * Whether the user is the system administrator.
+     */
+    public function isAdmin(): bool
+    {
+        return $this->hasRole(UserRole::ADMIN->value);
+    }
+
+    /**
+     * Whether the user may manage accounts and roles and sign in as other users.
+     */
+    public function canManageUsers(): bool
+    {
+        return $this->isAdmin();
+    }
+
+    /**
+     * Administrators may sign in as anyone except themselves and other administrators.
+     */
+    public function canImpersonate(self $target): bool
+    {
+        return $this->canManageUsers() && ! $this->is($target) && ! $target->isAdmin() && ! $target->isDeactivated();
+    }
+
+    /**
+     * Whether the administrator switched the account off.
+     */
+    public function isDeactivated(): bool
+    {
+        return $this->deactivated_at !== null;
+    }
+
+    /**
+     * Whether removing the account would also delete research it authored, graded or recorded.
+     * Such accounts are deactivated instead, so the archive stays intact.
+     */
+    public function hasResearchRecord(): bool
+    {
+        return $this->projectsAsStudent()->exists()
+            || $this->supervisorEvaluations()->exists()
+            || $this->challengeEntries()->exists()
+            || EntryReview::where('reviewer_id', $this->id)->exists()
+            || SiteObservation::where('recorded_by', $this->id)->exists();
+    }
+
+    /**
+     * Sets the primary role shown on the account and grants it with any additional duties.
+     *
+     * @param  list<string>  $additionalRoles
+     */
+    public function assignAccountRoles(UserRole $primary, array $additionalRoles = []): void
+    {
+        $this->forceFill(['role' => $primary])->save();
+
+        $this->syncRoles(collect([$primary->value, ...$additionalRoles])->unique()->values()->all());
     }
 
     /**
@@ -191,7 +253,7 @@ class User extends Authenticatable implements FilamentUser
     public function canAccessPanel(Panel $panel): bool
     {
         if ($panel->getId() === 'supervisor') {
-            return $this->isFaculty() || $this->isResearchOfficer();
+            return ! $this->isDeactivated() && ($this->isFaculty() || $this->isResearchOfficer());
         }
 
         return false;

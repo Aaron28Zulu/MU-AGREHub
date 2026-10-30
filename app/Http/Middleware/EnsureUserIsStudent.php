@@ -25,7 +25,8 @@ class EnsureUserIsStudent
             return redirect()->guest(route('login'));
         }
 
-        if (! $user->hasAnyRole([UserRole::STUDENT->value, UserRole::RESEARCHER->value, UserRole::ADMIN->value])) {
+        // Administrators see a student's workspace by signing in as that student, not with their own account.
+        if (! $user->hasAnyRole([UserRole::STUDENT->value, UserRole::RESEARCHER->value])) {
             abort(Response::HTTP_FORBIDDEN, 'Access restricted to registered student researchers.');
         }
 
