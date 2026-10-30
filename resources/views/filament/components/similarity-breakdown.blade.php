@@ -222,8 +222,8 @@
 
                     <div class="bg-zinc-50 border border-zinc-200 dark:bg-zinc-900/50 dark:border-zinc-800 rounded-lg p-4 mb-4 shadow-xs">
                         {{-- Card Header with Linked Source Title --}}
-                        <div class="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-3 mb-3">
-                            <div class="flex items-center gap-2">
+                        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-zinc-200 dark:border-zinc-800 pb-3 mb-3">
+                            <div class="flex min-w-0 items-center gap-2">
                                 <svg class="h-4 w-4 text-zinc-500 dark:text-zinc-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                                 </svg>

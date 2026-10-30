@@ -1,7 +1,7 @@
 <div>
     {{-- Office masthead --}}
     <section class="border-b border-line bg-canvas">
-        <div class="container-page py-12 sm:py-14">
+        <div class="container-page py-8 sm:py-14">
             <nav class="text-sm text-muted" aria-label="Breadcrumb">
                 <a href="{{ route('home') }}" class="hover:text-forest-800">Home</a>
                 <span class="mx-1.5" aria-hidden="true">/</span>
@@ -15,7 +15,7 @@
             <p class="mt-4 max-w-2xl text-ink-soft">
                 Enter the Vision 2030 Research and Innovation Challenge, sign up for debates and workshops, and log data at research sites across the university's schools.
             </p>
-            <div class="mt-6 flex flex-wrap gap-3">
+            <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <a href="#challenge" class="btn-primary">Vision 2030 Challenge</a>
                 <a href="#events" class="btn-secondary">Debates &amp; workshops</a>
                 <a href="#sites" class="btn-secondary">Research sites</a>
@@ -23,24 +23,24 @@
         </div>
     </section>
 
-    <div class="container-page space-y-16 py-12">
+    <div class="container-page space-y-12 py-8 sm:space-y-16 sm:py-12">
         {{-- Vision 2030 Research and Innovation Challenge --}}
         <section id="challenge" class="scroll-mt-24">
             <div class="flex flex-wrap items-end justify-between gap-4">
                 <div>
-                    <h2 class="text-2xl font-bold tracking-tight">Vision 2030 Research &amp; Innovation Challenge</h2>
+                    <h2 class="text-xl font-bold tracking-tight sm:text-2xl">Vision 2030 Research &amp; Innovation Challenge</h2>
                     <p class="mt-2 max-w-2xl text-ink-soft">A once-a-semester call for research proposals and innovative project ideas. A review panel scores every entry, shortlisted teams present, and selected projects get guidance from the office and are published with the university.</p>
                 </div>
             </div>
 
             @if ($featuredChallenge)
-                <article class="panel mt-6 grid gap-8 p-6 sm:p-8 lg:grid-cols-[1fr_16rem]">
-                    <div>
+                <article class="panel mt-6 grid grid-cols-1 gap-6 p-5 sm:gap-8 sm:p-8 lg:grid-cols-[1fr_16rem]">
+                    <div class="min-w-0">
                         <div class="flex flex-wrap items-center gap-3">
                             <x-pill :color="$featuredChallenge->status->color()">{{ $featuredChallenge->status->label() }}</x-pill>
                             <span class="text-sm text-muted">{{ $featuredChallenge->edition }}</span>
                         </div>
-                        <h3 class="record-title mt-3 text-2xl">
+                        <h3 class="record-title mt-3 text-xl sm:text-2xl">
                             <a href="{{ route('innovation.challenge', $featuredChallenge) }}" class="hover:text-forest-800 hover:underline">{{ $featuredChallenge->title }}</a>
                         </h3>
                         @if ($featuredChallenge->theme)
@@ -51,7 +51,7 @@
                             {{ $featuredChallenge->isAcceptingEntries() ? 'Read the call and enter' : 'View the call' }} <x-glyph name="arrow-right" class="h-4 w-4" />
                         </a>
                     </div>
-                    <dl class="space-y-4 border-t border-line pt-6 text-sm lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
+                    <dl class="grid grid-cols-1 gap-4 border-t border-line pt-5 text-sm min-[480px]:grid-cols-3 lg:grid-cols-1 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
                         <div>
                             <dt class="text-muted">Entries close</dt>
                             <dd class="mt-0.5 font-semibold">{{ $featuredChallenge->closes_on?->format('j M Y') ?? 'To be announced' }}</dd>
@@ -72,7 +72,7 @@
 
             @if ($recognised->isNotEmpty())
                 <h3 class="mt-10 text-lg font-semibold">Recognised projects</h3>
-                <ul class="mt-4 grid gap-4 md:grid-cols-2">
+                <ul class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
                     @foreach ($recognised as $entry)
                         <li class="panel p-5">
                             <p class="eyebrow text-ochre-700">{{ $entry->award ?? 'Recognised' }} &middot; {{ $entry->challenge->edition }}</p>
@@ -88,7 +88,7 @@
                 <ul class="mt-3 divide-y divide-line border-y border-line">
                     @foreach ($pastChallenges as $challenge)
                         <li class="flex flex-wrap items-center justify-between gap-3 py-3">
-                            <a href="{{ route('innovation.challenge', $challenge) }}" class="font-medium hover:text-forest-800 hover:underline">{{ $challenge->title }}</a>
+                            <a href="{{ route('innovation.challenge', $challenge) }}" class="min-w-0 font-medium hover:text-forest-800 hover:underline">{{ $challenge->title }}</a>
                             <span class="flex items-center gap-3 text-sm text-muted">{{ $challenge->edition }} <x-pill :color="$challenge->status->color()">{{ $challenge->status->label() }}</x-pill></span>
                         </li>
                     @endforeach
@@ -98,13 +98,13 @@
 
         {{-- Debates and workshops --}}
         <section id="events" class="scroll-mt-24">
-            <h2 class="text-2xl font-bold tracking-tight">Debates, workshops &amp; seminars</h2>
+            <h2 class="text-xl font-bold tracking-tight sm:text-2xl">Debates, workshops &amp; seminars</h2>
             <p class="mt-2 max-w-2xl text-ink-soft">Evidence-based discussion of Zambia's development questions, platform launches and skills sessions. Register to attend, or put your name forward to speak.</p>
 
-            <div class="mt-6 grid gap-4 md:grid-cols-2">
+            <div class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
                 @forelse ($upcomingEvents as $event)
-                    <a href="{{ route('innovation.event', $event) }}" class="panel group flex gap-5 p-5 transition hover:border-forest-300">
-                        <div class="flex w-16 shrink-0 flex-col items-center justify-center rounded-md bg-forest-50 py-2 text-forest-800">
+                    <a href="{{ route('innovation.event', $event) }}" class="panel group flex gap-4 p-4 transition hover:border-forest-300 sm:gap-5 sm:p-5">
+                        <div class="flex w-14 shrink-0 flex-col sm:w-16 items-center justify-center rounded-md bg-forest-50 py-2 text-forest-800">
                             <span class="text-xs font-semibold uppercase">{{ $event->starts_at->format('M') }}</span>
                             <span class="text-2xl font-bold leading-none">{{ $event->starts_at->format('j') }}</span>
                         </div>
@@ -125,7 +125,7 @@
                 <ul class="mt-3 divide-y divide-line border-y border-line">
                     @foreach ($pastEvents as $event)
                         <li class="flex flex-wrap items-center justify-between gap-3 py-3">
-                            <a href="{{ route('innovation.event', $event) }}" class="font-medium hover:text-forest-800 hover:underline">{{ $event->title }}</a>
+                            <a href="{{ route('innovation.event', $event) }}" class="min-w-0 font-medium hover:text-forest-800 hover:underline">{{ $event->title }}</a>
                             <span class="text-sm text-muted">{{ $event->starts_at->format('j M Y') }}{{ $event->outcomes ? ' · Outcomes recorded' : '' }}</span>
                         </li>
                     @endforeach
@@ -135,10 +135,10 @@
 
         {{-- Research sites --}}
         <section id="sites" class="scroll-mt-24">
-            <h2 class="text-2xl font-bold tracking-tight">Research sites</h2>
+            <h2 class="text-xl font-bold tracking-tight sm:text-2xl">Research sites</h2>
             <p class="mt-2 max-w-2xl text-ink-soft">Field trials, labs, schools, clinics and community studies where students from every school log activities and measurements, building shared datasets for future research.</p>
 
-            <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 @forelse ($sites as $site)
                     <a href="{{ route('innovation.site', $site) }}" class="panel group block p-5 transition hover:border-forest-300">
                         <div class="flex items-center justify-between gap-3">

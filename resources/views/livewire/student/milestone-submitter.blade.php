@@ -1,5 +1,5 @@
 <section class="panel" aria-labelledby="submit-heading">
-    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-line px-6 py-4">
+    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-line px-5 py-4 sm:px-6">
         <div>
             <h2 id="submit-heading" class="font-semibold">Submit a milestone</h2>
             <p class="text-sm text-muted">Proposals, progress reports, chapters and final manuscripts.</p>
@@ -7,7 +7,7 @@
         <span class="inline-flex items-center gap-1.5 text-xs text-muted"><x-glyph name="lock-closed" class="h-4 w-4" /> Stored privately</span>
     </div>
 
-    <div class="p-6">
+    <div class="p-5 sm:p-6">
         @if (session()->has('submission_success'))
             <div class="mb-5 flex gap-3 rounded-md bg-forest-50 p-4 text-sm text-forest-900" role="status">
                 <x-glyph name="check-circle" class="h-5 w-5 shrink-0 text-forest-700" />
@@ -28,7 +28,7 @@
                 </div>
             </div>
         @elseif ($isUnderReview)
-            <div class="flex gap-4 rounded-md border border-ochre-100 bg-ochre-50 p-5">
+            <div class="flex gap-3 rounded-md border border-ochre-100 bg-ochre-50 p-4 sm:gap-4 sm:p-5">
                 <x-glyph name="clock" class="h-6 w-6 shrink-0 text-ochre-700" />
                 <div>
                     <h3 class="font-semibold text-ink">Manuscript Currently Under Supervisor Review</h3>
@@ -68,12 +68,12 @@
                         x-on:dragleave.prevent="dropping = false"
                         x-on:drop="dropping = false"
                         :class="dropping ? 'border-forest-600 bg-forest-50' : 'border-line-strong hover:border-forest-400'"
-                        class="relative flex cursor-pointer flex-col items-center justify-center rounded-lg border border-dashed bg-paper px-6 py-8 text-center transition"
+                        class="relative flex cursor-pointer flex-col items-center justify-center rounded-lg border border-dashed bg-paper px-4 py-8 sm:px-6 text-center transition"
                     >
                         <input type="file" wire:model="document" id="document-upload" class="absolute inset-0 h-full w-full cursor-pointer opacity-0" accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
                         <x-glyph name="arrow-up-tray" class="h-7 w-7 text-subtle" />
                         @if ($document)
-                            <p class="mt-3 text-sm font-semibold text-forest-800">{{ $document->getClientOriginalName() }}</p>
+                            <p class="mt-3 max-w-full truncate text-sm font-semibold text-forest-800">{{ $document->getClientOriginalName() }}</p>
                             <p class="mt-0.5 text-xs text-muted">Choose another file to replace it</p>
                         @else
                             <p class="mt-3 text-sm"><span class="font-semibold text-forest-700">Choose a file</span> or drag it here</p>
@@ -93,7 +93,7 @@
                 </div>
 
                 <div class="flex justify-end">
-                    <button type="submit" wire:loading.attr="disabled" wire:target="submit, document" class="btn-primary">
+                    <button type="submit" wire:loading.attr="disabled" wire:target="submit, document" class="btn-primary w-full sm:w-auto">
                         <x-glyph name="paper-airplane" class="h-4 w-4" wire:loading.remove wire:target="submit, document" />
                         <x-glyph name="arrow-path" class="h-4 w-4 animate-spin" wire:loading wire:target="submit, document" />
                         <span wire:loading.remove wire:target="submit, document">{{ $hasRevisionsRequested ? 'Submit Revised Draft for Review' : 'Submit Manuscript for Supervisor Review' }}</span>

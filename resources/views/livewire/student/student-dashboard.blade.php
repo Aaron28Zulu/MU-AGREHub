@@ -1,10 +1,10 @@
 <div>
     {{-- Workspace header --}}
     <section class="border-b border-line bg-canvas">
-        <div class="container-page flex flex-col gap-5 py-8 sm:flex-row sm:items-end sm:justify-between">
+        <div class="container-page flex flex-col gap-5 py-6 sm:flex-row sm:py-8 sm:items-end sm:justify-between">
             <div>
                 <p class="eyebrow">My research &middot; {{ auth()->user()->department ?? 'Mulungushi University' }}</p>
-                <h1 class="mt-2 text-3xl font-bold tracking-tight">Welcome back, {{ str(auth()->user()->name)->before(' ') }}</h1>
+                <h1 class="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">Welcome back, {{ str(auth()->user()->name)->before(' ') }}</h1>
                 <p class="mt-2 text-ink-soft">Track your study, submit milestone drafts and read your supervisor's feedback.</p>
             </div>
             <div class="flex flex-wrap gap-2">
@@ -21,11 +21,11 @@
         </div>
     </section>
 
-    <div class="container-page py-8">
+    <div class="container-page py-6 sm:py-8">
         @if (! $project)
             {{-- No registered study yet --}}
-            <div class="grid gap-8 lg:grid-cols-3">
-                <div class="panel p-8 lg:col-span-2 sm:p-10">
+            <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+                <div class="panel p-6 sm:p-10 lg:col-span-2">
                     <x-glyph name="academic-cap" class="h-8 w-8 text-forest-700" />
                     <h2 class="mt-5 text-2xl font-bold tracking-tight">Initiate Your Postgraduate Research Journey</h2>
                     <p class="mt-3 max-w-xl leading-relaxed text-ink-soft">
@@ -44,7 +44,7 @@
 
             <section class="mt-10" aria-labelledby="lifecycle-heading">
                 <h2 id="lifecycle-heading" class="text-lg font-semibold">Dissertation Lifecycle Overview</h2>
-                <ol class="mt-5 grid gap-px overflow-hidden rounded-lg border border-line bg-line md:grid-cols-4">
+                <ol class="mt-5 grid grid-cols-1 gap-px overflow-hidden rounded-lg border border-line bg-line md:grid-cols-4">
                     @foreach ([
                         ['Register a proposal', 'Background, problem statement and planned methodology, checked against the archive.'],
                         ['Supervisor approval', 'Your supervisor reviews the topic and approves it for supervision.'],
@@ -73,8 +73,8 @@
                 </div>
             @endif
 
-            <div class="grid gap-8 lg:grid-cols-3">
-                <div class="space-y-8 lg:col-span-2">
+            <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+                <div class="min-w-0 space-y-8 lg:col-span-2">
                     {{-- Study summary --}}
                     <section class="panel p-6 sm:p-8">
                         <div class="flex flex-wrap items-center gap-3 text-sm">
@@ -82,7 +82,7 @@
                             <x-status-badge :status="$project->status" />
                             <span class="text-muted">&middot; {{ $project->category->label() }}</span>
                         </div>
-                        <h2 class="record-title mt-4 text-2xl">{{ $project->title }}</h2>
+                        <h2 class="record-title mt-4 text-xl sm:text-2xl">{{ $project->title }}</h2>
                         <p class="mt-4 line-clamp-4 leading-relaxed whitespace-pre-line text-ink-soft">{{ $project->plainAbstract() }}</p>
 
                         @if ($project->researchGaps->isNotEmpty())
@@ -100,16 +100,16 @@
                         @php
                             $stages = ['Draft', 'Proposal submitted', 'Under supervision', 'Under review', 'Completed'];
                         @endphp
-                        <ol class="mt-8 grid grid-cols-5 gap-2" aria-label="Project pipeline">
+                        <ol class="mt-8 grid grid-cols-1 gap-2.5 sm:grid-cols-5 sm:gap-2" aria-label="Project pipeline">
                             @foreach ($stages as $offset => $label)
                                 @php
                                     $position = $offset + 1;
                                     $done = $stepIndex > $position || $isCompleted;
                                     $current = $stepIndex === $position && ! $isCompleted;
                                 @endphp
-                                <li>
-                                    <span @class(['block h-1.5 rounded-full', 'bg-forest-700' => $done, 'bg-forest-400' => $current, 'bg-line' => ! $done && ! $current])></span>
-                                    <span @class(['mt-2 block text-xs leading-tight', 'font-semibold text-forest-800' => $current, 'text-ink-soft' => $done, 'text-subtle' => ! $done && ! $current])>{{ $label }}</span>
+                                <li class="flex items-center gap-3 sm:block">
+                                    <span @class(['block h-1.5 w-10 shrink-0 rounded-full sm:w-auto', 'bg-forest-700' => $done, 'bg-forest-400' => $current, 'bg-line' => ! $done && ! $current])></span>
+                                    <span @class(['block text-xs leading-tight sm:mt-2', 'font-semibold text-forest-800' => $current, 'text-ink-soft' => $done, 'text-subtle' => ! $done && ! $current])>{{ $label }}</span>
                                 </li>
                             @endforeach
                         </ol>
@@ -162,7 +162,7 @@
                                 <div class="min-w-0">
                                     <p class="font-semibold">{{ $project->supervisor->name }}</p>
                                     <p class="text-sm text-muted">{{ $project->supervisor->department ?? 'Mulungushi University' }}</p>
-                                    <a href="mailto:{{ $project->supervisor->email }}" class="mt-2 inline-flex items-center gap-1.5 truncate text-sm font-medium text-forest-700 hover:underline"><x-glyph name="envelope" class="h-4 w-4" /> {{ $project->supervisor->email }}</a>
+                                    <a href="mailto:{{ $project->supervisor->email }}" class="mt-2 flex items-center gap-1.5 text-sm font-medium text-forest-700 hover:underline"><x-glyph name="envelope" class="h-4 w-4 shrink-0" /> <span class="truncate">{{ $project->supervisor->email }}</span></a>
                                 </div>
                             </div>
                         @else

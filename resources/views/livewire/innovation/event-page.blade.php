@@ -1,6 +1,6 @@
 <div>
     <section class="border-b border-line bg-canvas">
-        <div class="container-page py-8">
+        <div class="container-page py-6 sm:py-8">
             <nav class="text-sm text-muted" aria-label="Breadcrumb">
                 <a href="{{ route('innovation') }}" class="hover:text-forest-800">Research &amp; Innovation</a>
                 <span class="mx-1.5" aria-hidden="true">/</span>
@@ -10,9 +10,9 @@
                 <x-pill :color="$record->event_type->color()">{{ $record->event_type->label() }}</x-pill>
                 <span class="text-sm text-muted">{{ $record->starts_at->format('l j F Y, H:i') }}@if ($record->venue) &middot; {{ $record->venue }}@endif</span>
             </div>
-            <h1 class="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">{{ $record->title }}</h1>
+            <h1 class="mt-3 text-2xl font-bold tracking-tight sm:text-4xl">{{ $record->title }}</h1>
             @if ($record->motion)
-                <blockquote class="mt-4 max-w-3xl border-l-4 border-ochre-500 pl-4 font-serif text-lg leading-relaxed text-ink">
+                <blockquote class="mt-4 max-w-3xl border-l-4 border-ochre-500 pl-4 font-serif text-base sm:text-lg leading-relaxed text-ink">
                     <span class="eyebrow block font-sans text-ochre-700">{{ $isDebate ? 'Motion' : 'Theme' }}</span>
                     {{ $record->motion }}
                 </blockquote>
@@ -20,7 +20,7 @@
         </div>
     </section>
 
-    <div class="container-page grid gap-10 py-10 lg:grid-cols-[1fr_20rem]">
+    <div class="container-page grid grid-cols-1 gap-8 py-6 sm:py-10 lg:grid-cols-[1fr_20rem] lg:gap-10">
         <div class="min-w-0 space-y-10">
             <section>
                 <h2 class="text-lg font-semibold">About</h2>

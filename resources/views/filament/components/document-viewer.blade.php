@@ -6,7 +6,7 @@
 <div class="w-full">
     @if ($documentUrl)
         <div class="overflow-hidden rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm">
-            <div class="flex items-center justify-between border-b border-gray-200 dark:border-gray-800 bg-gray-50/80 dark:bg-gray-900/80 px-4 py-2.5">
+            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-gray-200 dark:border-gray-800 bg-gray-50/80 dark:bg-gray-900/80 px-4 py-2.5">
                 <div class="flex items-center gap-2">
                     <span class="relative flex h-2 w-2">
                         <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
@@ -34,7 +34,7 @@
             <div class="p-2 bg-gray-100 dark:bg-gray-950">
                 <iframe
                     src="{{ $getRecord()->getDocumentUrl() }}"
-                    class="h-[600px] w-full rounded-lg border border-gray-700"
+                    class="rris-doc-frame h-[600px] w-full rounded-lg border border-gray-700"
                     title="Manuscript Document Preview"
                 ></iframe>
             </div>
