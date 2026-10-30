@@ -1,6 +1,6 @@
 <div>
     <section class="border-b border-line bg-canvas">
-        <div class="container-page py-8">
+        <div class="container-page py-6 sm:py-8">
             <nav class="text-sm text-muted" aria-label="Breadcrumb">
                 <a href="{{ route('student.dashboard') }}" class="hover:text-forest-800">My research</a>
                 <span class="mx-1.5" aria-hidden="true">/</span>
@@ -8,7 +8,7 @@
             </nav>
             <div class="mt-4 flex flex-wrap items-end justify-between gap-4">
                 <div>
-                    <h1 class="text-3xl font-bold tracking-tight">Submission history</h1>
+                    <h1 class="text-2xl font-bold tracking-tight sm:text-3xl">Submission history</h1>
                     <p class="mt-2 text-ink-soft">Every version you've uploaded, and every assessment you've received.</p>
                 </div>
                 @if ($project)
@@ -18,7 +18,7 @@
         </div>
     </section>
 
-    <div class="container-page space-y-8 py-8">
+    <div class="container-page space-y-6 py-6 sm:space-y-8 sm:py-8">
         @if (! $project)
             <div class="py-16 text-center">
                 <x-glyph name="document-duplicate" class="mx-auto h-10 w-10 text-subtle" />
@@ -42,7 +42,7 @@
                 </div>
 
                 @if ($manuscripts->isNotEmpty())
-                    <div class="overflow-x-auto">
+                    <div class="relative overflow-x-auto">
                         <table class="w-full text-left text-sm">
                             <thead class="border-b border-line bg-canvas text-xs font-semibold text-muted">
                                 <tr>
@@ -76,7 +76,7 @@
                         </table>
                     </div>
                 @elseif ($project->full_document_path)
-                    <div class="flex items-center justify-between px-6 py-5 text-sm">
+                    <div class="flex flex-wrap items-center justify-between gap-3 px-6 py-5 text-sm">
                         <p><span class="tag bg-forest-50 font-mono text-forest-800">v1.0</span> <span class="ml-2 font-medium">Current manuscript</span></p>
                         <a href="{{ route('projects.download', $project) }}" class="inline-flex items-center gap-1.5 font-medium text-forest-700 hover:underline"><x-glyph name="arrow-down-tray" class="h-4 w-4" /> Download</a>
                     </div>
@@ -92,11 +92,11 @@
                 </div>
                 @forelse ($evaluations as $eval)
                     <article class="flex flex-col gap-3 border-b border-line px-6 py-5 last:border-b-0 sm:flex-row sm:justify-between">
-                        <div class="flex-1">
+                        <div class="min-w-0 flex-1">
                             <p class="text-sm"><span class="font-semibold">{{ $eval->supervisor?->name ?? 'Supervisor' }}</span> <span class="text-muted">&middot; {{ $eval->created_at->format('j M Y, H:i') }}</span></p>
                             <p class="mt-2 text-sm leading-relaxed whitespace-pre-line text-ink-soft">{{ $eval->feedback ?: 'No written feedback provided.' }}</p>
                         </div>
-                        <div class="flex shrink-0 flex-col gap-2 sm:items-end">
+                        <div class="flex shrink-0 flex-wrap items-center gap-3 sm:flex-col sm:items-end sm:gap-2">
                             <span @class(['tag text-xs', 'bg-forest-50 text-forest-800' => (float) $eval->rubric_score >= 50, 'bg-red-50 text-red-800' => (float) $eval->rubric_score < 50])>Rubric {{ number_format((float) $eval->rubric_score, 1) }} / 100</span>
                             @if ($eval->document_markup_path)
                                 <a href="{{ route('projects.download.marked-up', $project) }}" class="inline-flex items-center gap-1 text-sm font-medium text-forest-700 hover:underline"><x-glyph name="arrow-down-tray" class="h-4 w-4" /> Annotated draft</a>

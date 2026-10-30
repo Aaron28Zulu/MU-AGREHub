@@ -193,3 +193,27 @@
     background: rgba(152, 189, 164, 0.15);
     color: #c3d9ca;
 }
+
+/* Small screens: keep custom review components inside the viewport */
+.rris-table-scroll {
+    overflow-x: auto;
+}
+
+.rris-table-scroll table {
+    min-width: 28rem;
+}
+
+@media (max-width: 640px) {
+    .rris-doc-frame {
+        height: 70vh;
+    }
+
+    .fi-main {
+        padding-inline: 0.75rem;
+    }
+
+    .fi-header-heading {
+        font-size: 1.375rem;
+        line-height: 1.3;
+    }
+}

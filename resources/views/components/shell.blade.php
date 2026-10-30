@@ -57,9 +57,9 @@
 
     {{-- Primary masthead --}}
     <header x-data="{ open: false }" class="sticky top-0 z-40 border-b border-line bg-white/95 backdrop-blur">
-        <div class="container-page flex h-16 items-center justify-between gap-6">
-            <div class="flex h-full items-center gap-10">
-                <a href="{{ route('home') }}" class="flex items-center gap-3" aria-label="RRIS home">
+        <div class="container-page flex h-14 items-center justify-between gap-4 sm:h-16 sm:gap-6">
+            <div class="flex h-full min-w-0 items-center gap-10">
+                <a href="{{ route('home') }}" class="flex shrink-0 items-center gap-3" aria-label="RRIS home">
                     <x-brand-mark class="h-8 w-8" />
                     <span class="leading-none">
                         <span class="block text-lg font-bold tracking-tight text-ink">RRIS</span>
@@ -76,7 +76,7 @@
                 </nav>
             </div>
 
-            <div class="flex items-center gap-2">
+            <div class="flex shrink-0 items-center gap-1 sm:gap-2">
                 @auth
                     @if ($isStudent)
                         <a href="{{ route('student.dashboard') }}#updates" class="relative rounded-md p-2 text-ink-soft hover:bg-canvas hover:text-ink" aria-label="Supervisor updates{{ $unreadCount ? ', '.$unreadCount.' unread' : '' }}">
@@ -122,22 +122,32 @@
         </div>
 
         {{-- Mobile navigation --}}
-        <nav x-cloak x-show="open" x-transition class="border-t border-line bg-white lg:hidden" aria-label="Mobile">
+        <nav x-cloak x-show="open" x-transition @keydown.escape.window="open = false" class="max-h-[calc(100vh-3.5rem)] overflow-y-auto border-t border-line bg-white lg:hidden" aria-label="Mobile">
             <div class="container-page space-y-1 py-3">
+                @auth
+                    <div class="mb-2 flex items-center gap-3 border-b border-line px-3 pb-3 sm:hidden">
+                        <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-forest-100 text-xs font-bold text-forest-800">{{ str($user->name)->explode(' ')->map(fn ($part) => mb_substr($part, 0, 1))->take(2)->implode('') }}</span>
+                        <span class="min-w-0 leading-tight">
+                            <span class="block truncate text-sm font-medium text-ink">{{ $user->name }}</span>
+                            <span class="block truncate text-xs text-muted">{{ $user->role?->label() }} &middot; {{ $user->department ?? 'Mulungushi University' }}</span>
+                        </span>
+                    </div>
+                @endauth
                 @foreach ($navigation as $item)
                     <a href="{{ route($item['route']) }}" @class([
-                        'block rounded-md px-3 py-2 text-sm font-medium',
+                        'block rounded-md px-3 py-2.5 text-sm font-medium',
                         'bg-forest-50 text-forest-800' => request()->routeIs(...$item['active']),
                         'text-ink-soft hover:bg-canvas' => ! request()->routeIs(...$item['active']),
                     ])>{{ $item['label'] }}</a>
                 @endforeach
                 @auth
-                    <form action="{{ route('logout') }}" method="POST">
+                    <form action="{{ route('logout') }}" method="POST" class="border-t border-line pt-1">
                         @csrf
-                        <button type="submit" class="block w-full rounded-md px-3 py-2 text-left text-sm font-medium text-ink-soft hover:bg-canvas">Sign out</button>
+                        <button type="submit" class="block w-full rounded-md px-3 py-2.5 text-left text-sm font-medium text-ink-soft hover:bg-canvas hover:text-red-700">Sign out</button>
                     </form>
                 @else
-                    <a href="{{ route('login') }}" class="block rounded-md px-3 py-2 text-sm font-semibold text-forest-700">Sign in</a>
+                    <a href="{{ route('login') }}" class="btn-primary mt-2 w-full sm:hidden">Institutional Sign In</a>
+                    <a href="{{ route('login') }}" class="hidden rounded-md px-3 py-2.5 text-sm font-semibold text-forest-700 sm:block">Sign in</a>
                 @endauth
             </div>
         </nav>
@@ -146,8 +156,8 @@
     @if (session('status') || session('success') || session('error'))
         <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 6000)" class="border-b border-line {{ session('error') ? 'bg-red-50 text-red-800' : 'bg-forest-50 text-forest-900' }}">
             <div class="container-page flex items-center justify-between gap-4 py-2.5 text-sm">
-                <p>{{ session('error') ?? session('success') ?? session('status') }}</p>
-                <button type="button" @click="show = false" class="text-current opacity-60 hover:opacity-100" aria-label="Dismiss"><x-glyph name="x" class="h-4 w-4" /></button>
+                <p class="min-w-0">{{ session('error') ?? session('success') ?? session('status') }}</p>
+                <button type="button" @click="show = false" class="shrink-0 text-current opacity-60 hover:opacity-100" aria-label="Dismiss"><x-glyph name="x" class="h-4 w-4" /></button>
             </div>
         </div>
     @endif
@@ -157,8 +167,8 @@
     </main>
 
     <footer class="mt-auto border-t border-line bg-canvas">
-        <div class="container-page grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-4">
-            <div class="lg:col-span-2">
+        <div class="container-page grid grid-cols-2 gap-8 py-10 sm:gap-10 sm:py-12 lg:grid-cols-4">
+            <div class="col-span-2">
                 <div class="flex items-center gap-3">
                     <x-brand-mark class="h-7 w-7" />
                     <span class="text-base font-bold tracking-tight">Research Repository Interface System</span>

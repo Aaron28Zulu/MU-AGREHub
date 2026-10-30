@@ -1,6 +1,6 @@
 <div>
     <section class="border-b border-line bg-canvas">
-        <div class="container-page py-8">
+        <div class="container-page py-6 sm:py-8">
             <nav class="text-sm text-muted" aria-label="Breadcrumb">
                 <a href="{{ route('innovation') }}" class="hover:text-forest-800">Research &amp; Innovation</a>
                 <span class="mx-1.5" aria-hidden="true">/</span>
@@ -10,14 +10,14 @@
                 <x-pill :color="$challenge->status->color()">{{ $challenge->status->label() }}</x-pill>
                 <span class="text-sm text-muted">Vision 2030 Research &amp; Innovation Challenge &middot; {{ $challenge->edition }}</span>
             </div>
-            <h1 class="record-title mt-3 text-3xl sm:text-4xl">{{ $challenge->title }}</h1>
+            <h1 class="record-title mt-3 text-2xl sm:text-4xl">{{ $challenge->title }}</h1>
             @if ($challenge->theme)
                 <p class="mt-2 font-medium text-forest-800">Theme: {{ $challenge->theme }}</p>
             @endif
         </div>
     </section>
 
-    <div class="container-page grid gap-10 py-10 lg:grid-cols-[1fr_18rem]">
+    <div class="container-page grid grid-cols-1 gap-8 py-6 sm:py-10 lg:grid-cols-[1fr_18rem] lg:gap-10">
         <div class="min-w-0 space-y-10">
             <section>
                 <h2 class="text-lg font-semibold">About this call</h2>
@@ -29,7 +29,7 @@
                 @if ($challenge->criteria)
                     <div class="mt-3 leading-relaxed whitespace-pre-line text-ink-soft">{{ $challenge->criteria }}</div>
                 @endif
-                <ul class="mt-4 grid gap-3 sm:grid-cols-2">
+                <ul class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
                     @foreach (\App\Models\EntryReview::CRITERIA as $criterion)
                         <li class="panel flex gap-3 p-4 text-sm"><x-glyph name="check-circle" class="h-5 w-5 shrink-0 text-forest-600" /> {{ $criterion }}</li>
                     @endforeach
@@ -44,7 +44,7 @@
                         @foreach ($myEntries as $entry)
                             <li wire:key="my-entry-{{ $entry->id }}" class="panel p-5">
                                 <div class="flex flex-wrap items-center justify-between gap-3">
-                                    <p class="font-semibold">{{ $entry->title }}</p>
+                                    <p class="min-w-0 font-semibold">{{ $entry->title }}</p>
                                     <x-pill :color="$entry->status->color()">{{ $entry->status->label() }}{{ $entry->award ? ' · '.$entry->award : '' }}</x-pill>
                                 </div>
                                 <p class="mt-1 text-sm text-muted">{{ $entry->entry_type->label() }} &middot; {{ $entry->category->label() }} &middot; Submitted {{ $entry->created_at->format('j M Y') }}</p>
@@ -68,7 +68,7 @@
                     <h2 class="text-lg font-semibold">Submit an entry</h2>
                     <p class="mt-1 text-sm text-ink-soft">Entries close {{ $challenge->closes_on?->format('j F Y') ?? 'when the office closes the call' }}. Teams submit once, under the lead student's name.</p>
 
-                    <form wire:submit="submit" class="panel mt-5 space-y-5 p-6 sm:p-8">
+                    <form wire:submit="submit" class="panel mt-5 space-y-5 p-5 sm:p-8">
                         <div>
                             <label for="title" class="field-label">Project title <span class="text-red-700">*</span></label>
                             <input id="title" type="text" wire:model.live.debounce.600ms="title" class="field" placeholder="e.g. Solar-powered drip kits for smallholder vegetable growers" />
@@ -87,7 +87,7 @@
                             @endif
                         </div>
 
-                        <div class="grid gap-5 md:grid-cols-2">
+                        <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
                             <div>
                                 <label for="entry_type" class="field-label">Entry type <span class="text-red-700">*</span></label>
                                 <select id="entry_type" wire:model="entry_type" class="field">
@@ -130,7 +130,7 @@
                             @error('expected_impact') <p class="field-error">{{ $message }}</p> @enderror
                         </div>
 
-                        <div class="grid gap-5 md:grid-cols-2">
+                        <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
                             <div>
                                 <label for="team_members" class="field-label">Team members <span class="font-normal text-muted">(optional)</span></label>
                                 <input id="team_members" type="text" wire:model="team_members" class="field" placeholder="Names of other students on the team" />
@@ -138,13 +138,13 @@
                             </div>
                             <div>
                                 <label for="attachment" class="field-label">Concept note <span class="font-normal text-muted">(optional PDF, 10 MB)</span></label>
-                                <input id="attachment" type="file" wire:model="attachment" accept="application/pdf" class="field py-2 text-sm file:mr-3 file:rounded file:border-0 file:bg-forest-50 file:px-3 file:py-1 file:text-forest-800" />
+                                <input id="attachment" type="file" wire:model="attachment" accept="application/pdf" class="field min-w-0 py-2 text-sm file:mr-3 file:rounded file:border-0 file:bg-forest-50 file:px-3 file:py-1 file:text-forest-800" />
                                 @error('attachment') <p class="field-error">{{ $message }}</p> @enderror
                             </div>
                         </div>
 
                         <div class="flex justify-end border-t border-line pt-5">
-                            <button type="submit" class="btn-primary" wire:loading.attr="disabled" wire:target="submit,attachment">Submit entry</button>
+                            <button type="submit" class="btn-primary w-full sm:w-auto" wire:loading.attr="disabled" wire:target="submit,attachment">Submit entry</button>
                         </div>
                     </form>
                 </section>

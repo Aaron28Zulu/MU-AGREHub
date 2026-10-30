@@ -1,6 +1,6 @@
 <x-shell title="Sign in">
     <div class="bg-canvas">
-        <div class="container-page grid min-h-[calc(100vh-14rem)] items-center gap-12 py-14 lg:grid-cols-2">
+        <div class="container-page grid min-h-[calc(100svh-14rem)] grid-cols-1 items-center gap-12 py-8 sm:py-14 lg:grid-cols-2">
             <div class="hidden lg:block">
                 <p class="eyebrow text-forest-700">Research Repository Interface System</p>
                 <h1 class="mt-4 text-4xl font-bold tracking-tight">Sign in to your research workspace</h1>
@@ -13,9 +13,10 @@
             </div>
 
             <div class="mx-auto w-full max-w-md">
-                <div class="panel p-8 shadow-sm">
+                <div class="panel p-6 shadow-sm sm:p-8">
                     <h2 class="text-xl font-bold tracking-tight">Institutional sign in</h2>
                     <p class="mt-1 text-sm text-muted">Use your university email address.</p>
+                    <p class="mt-3 text-sm text-ink-soft lg:hidden">Students track proposals and drafts, lecturers review advisees, and the research office oversees every school.</p>
 
                     @if ($errors->any())
                         <div class="mt-5 rounded-md bg-red-50 p-3 text-sm text-red-800" role="alert">{{ $errors->first() }}</div>
@@ -41,7 +42,7 @@
                     @if (app()->environment('local'))
                         <div class="mt-8 border-t border-line pt-6">
                             <p class="eyebrow">Demo accounts (local only)</p>
-                            <div class="mt-3 grid grid-cols-2 gap-2">
+                            <div class="mt-3 grid grid-cols-1 gap-2 min-[400px]:grid-cols-2">
                                 @foreach ([
                                     ['kelvin@rris.mu.ac.zm', 'Student', 'Kelvin Mwape'],
                                     ['lukundo@rris.mu.ac.zm', 'Researcher', 'Lukundo Bwalya'],

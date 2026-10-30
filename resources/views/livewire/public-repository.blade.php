@@ -1,7 +1,7 @@
 <div x-data="{ filtersOpen: false }">
     {{-- Search band --}}
     <section class="border-b border-line bg-canvas">
-        <div class="container-page py-8">
+        <div class="container-page py-6 sm:py-8">
             <nav class="text-sm text-muted" aria-label="Breadcrumb">
                 <a href="{{ route('home') }}" class="hover:text-forest-800">Home</a>
                 <span class="mx-1.5" aria-hidden="true">/</span>
@@ -9,7 +9,7 @@
             </nav>
 
             <p class="eyebrow mt-5">Institutional Research Archive</p>
-            <h1 class="mt-1 text-3xl font-bold tracking-tight">Search the archive</h1>
+            <h1 class="mt-1 text-2xl font-bold tracking-tight sm:text-3xl">Search the archive</h1>
 
             <form wire:submit.prevent class="mt-5" role="search">
                 <div class="flex flex-col gap-2 rounded-xl border border-line-strong bg-white p-2 shadow-sm sm:flex-row sm:items-center">
@@ -18,7 +18,7 @@
                             <option value="{{ $value }}">{{ $label }}</option>
                         @endforeach
                     </select>
-                    <div class="relative flex-1">
+                    <div class="relative min-w-0 flex-1">
                         <x-glyph name="search" class="pointer-events-none absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 text-subtle" />
                         <label for="archive-search" class="sr-only">Search terms</label>
                         <input
@@ -36,7 +36,7 @@
         </div>
     </section>
 
-    <div class="container-page grid gap-8 py-8 lg:grid-cols-[17rem_1fr]">
+    <div class="container-page grid grid-cols-1 gap-6 py-6 sm:py-8 lg:gap-8 lg:grid-cols-[17rem_1fr]">
         {{-- Refine results --}}
         <aside :class="filtersOpen ? 'block' : 'hidden lg:block'" aria-label="Refine results">
             <div class="flex items-center justify-between border-b border-line pb-3">
@@ -103,7 +103,7 @@
         </aside>
 
         {{-- Results --}}
-        <section aria-labelledby="results-heading">
+        <section class="min-w-0" aria-labelledby="results-heading">
             <div class="flex flex-col gap-4 border-b border-line pb-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                     <h2 id="results-heading" class="text-sm text-ink-soft">
@@ -119,7 +119,7 @@
                     </h2>
                 </div>
 
-                <div class="flex items-center gap-2">
+                <div class="flex flex-wrap items-center gap-2">
                     <button type="button" @click="filtersOpen = !filtersOpen" class="btn-secondary btn-sm lg:hidden">
                         <x-glyph name="funnel" class="h-4 w-4" /> Filters
                     </button>
@@ -189,8 +189,8 @@
                 @else
                     <ol class="divide-y divide-line" start="{{ $projects->firstItem() }}">
                         @foreach ($projects as $project)
-                            <li wire:key="record-{{ $project->id }}" class="flex gap-4 py-6">
-                                <span class="w-6 shrink-0 pt-0.5 text-right text-sm text-subtle tabular-nums">{{ $projects->firstItem() + $loop->index }}.</span>
+                            <li wire:key="record-{{ $project->id }}" class="flex gap-3 py-5 sm:gap-4 sm:py-6">
+                                <span class="hidden w-6 shrink-0 pt-0.5 text-right text-sm text-subtle tabular-nums sm:block">{{ $projects->firstItem() + $loop->index }}.</span>
 
                                 <div class="min-w-0 flex-1">
                                     <div class="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs text-muted">

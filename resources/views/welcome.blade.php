@@ -7,19 +7,19 @@
             @endforeach
         </svg>
 
-        <div class="container-page relative py-16 sm:py-20 lg:py-24">
+        <div class="container-page relative py-10 sm:py-20 lg:py-24">
             <div class="max-w-3xl">
                 <p class="eyebrow text-forest-700">Mulungushi University &middot; Research Repository Interface System</p>
-                <h1 class="mt-4 text-4xl font-bold tracking-tight text-ink sm:text-5xl">
+                <h1 class="mt-4 text-3xl font-bold tracking-tight text-ink sm:text-5xl">
                     Every school's research, in one place
                     <span class="block font-serif font-semibold text-forest-800">for you to build on.</span>
                 </h1>
-                <p class="mt-5 max-w-2xl text-lg leading-relaxed text-ink-soft">
+                <p class="mt-5 max-w-2xl text-base leading-relaxed text-ink-soft sm:text-lg">
                     Search the university's catalogue of completed student research across every department, see where the open questions are, and register your own study without repeating work that's already been done.
                 </p>
             </div>
 
-            <form action="{{ route('repository') }}" method="GET" role="search" class="mt-10 max-w-3xl">
+            <form action="{{ route('repository') }}" method="GET" role="search" class="mt-8 max-w-3xl sm:mt-10">
                 <label for="hero-search" class="sr-only">Search the archive</label>
                 <div class="flex flex-col gap-2 rounded-xl border border-line-strong bg-white p-2 shadow-sm sm:flex-row sm:items-center">
                     <select name="field" aria-label="Search field" class="rounded-lg border-0 bg-canvas py-3 pr-9 pl-3 text-sm font-medium text-ink-soft focus:ring-2 focus:ring-forest-600/20">
@@ -29,7 +29,7 @@
                         <option value="author">Author</option>
                         <option value="supervisor">Supervisor</option>
                     </select>
-                    <div class="relative flex-1">
+                    <div class="relative min-w-0 flex-1">
                         <x-glyph name="search" class="pointer-events-none absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 text-subtle" />
                         <input id="hero-search" type="search" name="search" placeholder="Try “mobile money”, “antenatal care” or a supervisor’s name" class="w-full rounded-lg border-0 py-3 pr-3 pl-10 text-base text-ink placeholder:text-subtle focus:ring-0 focus:outline-none" />
                     </div>
@@ -49,39 +49,39 @@
 
     {{-- Archive at a glance --}}
     <section class="border-b border-line bg-white">
-        <dl class="container-page grid grid-cols-2 divide-line py-6 sm:grid-cols-4 sm:divide-x">
+        <dl class="container-page grid grid-cols-2 gap-x-4 divide-line py-5 sm:grid-cols-4 sm:gap-x-0 sm:divide-x sm:py-6">
             <div class="py-2 sm:px-6 sm:first:pl-0">
-                <dt class="text-sm text-muted">Catalogued studies</dt>
-                <dd class="mt-1 text-2xl font-semibold tracking-tight">{{ number_format($totalProjects) }}</dd>
+                <dt class="text-xs text-muted sm:text-sm">Catalogued studies</dt>
+                <dd class="mt-1 text-xl font-semibold tracking-tight sm:text-2xl">{{ number_format($totalProjects) }}</dd>
             </div>
             <div class="py-2 sm:px-6">
-                <dt class="text-sm text-muted">Research gaps indexed</dt>
-                <dd class="mt-1 text-2xl font-semibold tracking-tight">{{ number_format($totalGaps) }}</dd>
+                <dt class="text-xs text-muted sm:text-sm">Research gaps indexed</dt>
+                <dd class="mt-1 text-xl font-semibold tracking-tight sm:text-2xl">{{ number_format($totalGaps) }}</dd>
             </div>
             <div class="py-2 sm:px-6">
-                <dt class="text-sm text-muted">Thematic domains</dt>
-                <dd class="mt-1 text-2xl font-semibold tracking-tight">{{ number_format($totalDomains) }}</dd>
+                <dt class="text-xs text-muted sm:text-sm">Thematic domains</dt>
+                <dd class="mt-1 text-xl font-semibold tracking-tight sm:text-2xl">{{ number_format($totalDomains) }}</dd>
             </div>
             <div class="py-2 sm:px-6">
-                <dt class="text-sm text-muted">Studies in progress</dt>
-                <dd class="mt-1 text-2xl font-semibold tracking-tight">{{ number_format($activeStudies) }}</dd>
+                <dt class="text-xs text-muted sm:text-sm">Studies in progress</dt>
+                <dd class="mt-1 text-xl font-semibold tracking-tight sm:text-2xl">{{ number_format($activeStudies) }}</dd>
             </div>
         </dl>
     </section>
 
     {{-- Browse by subject --}}
-    <section id="subjects" class="container-page scroll-mt-24 py-16">
+    <section id="subjects" class="container-page scroll-mt-24 py-10 sm:py-16">
         <div class="flex items-end justify-between gap-4">
             <div>
-                <h2 class="text-2xl font-bold tracking-tight">Browse by subject</h2>
+                <h2 class="text-xl font-bold tracking-tight sm:text-2xl">Browse by subject</h2>
                 <p class="mt-2 text-ink-soft">Start from a discipline in any of the university's schools and narrow down from there.</p>
             </div>
             <a href="{{ route('repository') }}" class="hidden text-sm font-semibold text-forest-800 hover:underline sm:inline">All subjects</a>
         </div>
 
-        <div class="mt-8 grid gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
+        <div class="mt-6 grid grid-cols-1 gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
             @foreach ($categories as $category)
-                <a href="{{ route('repository', ['category' => $category->value]) }}" class="group flex flex-col bg-white p-6 transition hover:bg-forest-50">
+                <a href="{{ route('repository', ['category' => $category->value]) }}" class="group flex flex-col bg-white p-5 transition hover:bg-forest-50 sm:p-6">
                     <span class="text-xs font-semibold tracking-wide text-forest-700 uppercase">{{ $category->school() }}</span>
                     <span class="mt-1 text-sm font-medium text-muted">{{ number_format($categoryCounts[$category->value] ?? 0) }} {{ str('study')->plural($categoryCounts[$category->value] ?? 0) }}</span>
                     <span class="mt-2 text-lg font-semibold leading-snug text-ink group-hover:text-forest-800">{{ $category->label() }}</span>
@@ -96,16 +96,16 @@
 
     {{-- Recent studies and emerging gaps --}}
     <section class="border-t border-line bg-canvas">
-        <div class="container-page grid gap-12 py-16 lg:grid-cols-3">
+        <div class="container-page grid grid-cols-1 gap-10 py-10 sm:py-16 lg:grid-cols-3 lg:gap-12">
             <div class="lg:col-span-2">
-                <div class="flex items-end justify-between">
-                    <h2 class="text-2xl font-bold tracking-tight">Recently catalogued</h2>
-                    <a href="{{ route('repository', ['sort' => 'latest']) }}" class="text-sm font-semibold text-forest-800 hover:underline">View all</a>
+                <div class="flex items-end justify-between gap-4">
+                    <h2 class="text-xl font-bold tracking-tight sm:text-2xl">Recently catalogued</h2>
+                    <a href="{{ route('repository', ['sort' => 'latest']) }}" class="shrink-0 text-sm font-semibold text-forest-800 hover:underline">View all</a>
                 </div>
 
                 <ol class="mt-6 divide-y divide-line rounded-lg border border-line bg-white">
                     @forelse ($recentProjects as $project)
-                        <li class="p-6">
+                        <li class="p-5 sm:p-6">
                             <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted">
                                 <span class="tag bg-forest-50 text-forest-800">Research project</span>
                                 <span>{{ $project->category->label() }}</span>
@@ -141,9 +141,9 @@
             </div>
 
             <aside>
-                <div class="flex items-end justify-between">
-                    <h2 class="text-2xl font-bold tracking-tight">Emerging gaps</h2>
-                    <a href="{{ route('gaps', ['signal' => 'emerging']) }}" class="text-sm font-semibold text-forest-800 hover:underline">Explore</a>
+                <div class="flex items-end justify-between gap-4">
+                    <h2 class="text-xl font-bold tracking-tight sm:text-2xl">Emerging gaps</h2>
+                    <a href="{{ route('gaps', ['signal' => 'emerging']) }}" class="shrink-0 text-sm font-semibold text-forest-800 hover:underline">Explore</a>
                 </div>
                 <p class="mt-2 text-sm text-ink-soft">Future directions flagged by recent studies, a good place to look for a topic.</p>
 
@@ -166,10 +166,10 @@
 
     {{-- Office of Research and Innovation --}}
     <section class="border-b border-line bg-forest-950 text-forest-100">
-        <div class="container-page flex flex-col gap-6 py-12 lg:flex-row lg:items-center lg:justify-between">
+        <div class="container-page flex flex-col items-start gap-6 py-10 sm:py-12 lg:flex-row lg:items-center lg:justify-between">
             <div class="max-w-2xl">
                 <p class="eyebrow text-forest-300">Office of Research and Innovation</p>
-                <h2 class="mt-3 text-2xl font-bold tracking-tight text-white">Take your idea further than the archive.</h2>
+                <h2 class="mt-3 text-xl font-bold tracking-tight text-white sm:text-2xl">Take your idea further than the archive.</h2>
                 <p class="mt-2 leading-relaxed">Enter the Vision 2030 Research and Innovation Challenge, join debates and workshops, and log data at research sites run across the university's schools.</p>
             </div>
             <a href="{{ route('innovation') }}" class="btn shrink-0 bg-white text-forest-900 hover:bg-forest-50">Research &amp; Innovation <x-glyph name="arrow-right" class="h-4 w-4" /></a>
@@ -177,9 +177,9 @@
     </section>
 
     {{-- How the archive works --}}
-    <section class="container-page py-16">
-        <h2 class="text-2xl font-bold tracking-tight">One archive, three ways in</h2>
-        <div class="mt-8 grid gap-10 md:grid-cols-3">
+    <section class="container-page py-10 sm:py-16">
+        <h2 class="text-xl font-bold tracking-tight sm:text-2xl">One archive, three ways in</h2>
+        <div class="mt-6 grid grid-cols-1 gap-8 sm:mt-8 md:grid-cols-3 md:gap-10">
             <div>
                 <x-glyph name="magnifying-glass" class="h-6 w-6 text-forest-700" />
                 <h3 class="mt-4 font-semibold">Anyone can discover</h3>

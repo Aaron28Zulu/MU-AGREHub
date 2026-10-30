@@ -1,20 +1,20 @@
 <div>
     <section class="border-b border-line bg-canvas">
-        <div class="container-page py-8">
+        <div class="container-page py-6 sm:py-8">
             <nav class="text-sm text-muted" aria-label="Breadcrumb">
                 <a href="{{ route('student.dashboard') }}" class="hover:text-forest-800">My research</a>
                 <span class="mx-1.5" aria-hidden="true">/</span>
                 <span class="text-ink">Register a proposal</span>
             </nav>
-            <h1 class="mt-4 text-3xl font-bold tracking-tight">Register a research proposal</h1>
+            <h1 class="mt-4 text-2xl font-bold tracking-tight sm:text-3xl">Register a research proposal</h1>
             <p class="mt-2 max-w-2xl text-ink-soft">Describe your topic and plan. Your supervisor is notified as soon as you submit; drafts stay private until you're ready.</p>
         </div>
     </section>
 
-    <div class="container-page grid gap-10 py-10 lg:grid-cols-[1fr_20rem]">
-        <form wire:submit="submit" class="space-y-8">
+    <div class="container-page grid grid-cols-1 gap-8 py-6 sm:py-10 lg:grid-cols-[1fr_20rem] lg:gap-10">
+        <form wire:submit="submit" class="min-w-0 space-y-6 sm:space-y-8">
             {{-- 1. Focus --}}
-            <fieldset class="panel p-6 sm:p-8">
+            <fieldset class="panel p-5 sm:p-8">
                 <legend class="sr-only">Study focus</legend>
                 <p class="text-sm font-semibold text-forest-700">1 of 4</p>
                 <h2 class="mt-1 text-lg font-semibold">Study focus</h2>
@@ -26,7 +26,7 @@
                         @error('title') <p class="field-error">{{ $message }}</p> @enderror
                     </div>
 
-                    <div class="grid gap-5 md:grid-cols-2">
+                    <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
                         <div>
                             <label for="category" class="field-label">Subject <span class="text-red-700">*</span></label>
                             <select id="category" wire:model="category" class="field">
@@ -56,7 +56,7 @@
             </fieldset>
 
             {{-- 2. Scope --}}
-            <fieldset class="panel p-6 sm:p-8">
+            <fieldset class="panel p-5 sm:p-8">
                 <legend class="sr-only">Problem statement and methodology</legend>
                 <p class="text-sm font-semibold text-forest-700">2 of 4</p>
                 <h2 class="mt-1 text-lg font-semibold">Problem statement &amp; methodology</h2>
@@ -77,9 +77,9 @@
             </fieldset>
 
             {{-- 3. Gaps --}}
-            <fieldset class="panel p-6 sm:p-8">
+            <fieldset class="panel p-5 sm:p-8">
                 <legend class="sr-only">Research gaps addressed</legend>
-                <div class="flex items-start justify-between gap-4">
+                <div class="flex flex-wrap items-start justify-between gap-4">
                     <div>
                         <p class="text-sm font-semibold text-forest-700">3 of 4</p>
                         <h2 class="mt-1 text-lg font-semibold">Research gaps addressed</h2>
@@ -92,9 +92,9 @@
                     @foreach ($research_gaps as $index => $gap)
                         <div wire:key="gap-input-{{ $index }}" class="flex items-center gap-2">
                             <label for="gap-{{ $index }}" class="sr-only">Research gap {{ $index + 1 }}</label>
-                            <input id="gap-{{ $index }}" type="text" wire:model="research_gaps.{{ $index }}" class="field" placeholder="e.g. No baseline data on informal traders outside the central business district" />
+                            <input id="gap-{{ $index }}" type="text" wire:model="research_gaps.{{ $index }}" class="field min-w-0" placeholder="e.g. No baseline data on informal traders outside the central business district" />
                             @if (count($research_gaps) > 1)
-                                <button type="button" wire:click="removeGap({{ $index }})" class="rounded-md p-2 text-subtle hover:bg-canvas hover:text-red-700" aria-label="Remove gap {{ $index + 1 }}">
+                                <button type="button" wire:click="removeGap({{ $index }})" class="shrink-0 rounded-md p-2.5 text-subtle hover:bg-canvas hover:text-red-700" aria-label="Remove gap {{ $index + 1 }}">
                                     <x-glyph name="trash" class="h-4 w-4" />
                                 </button>
                             @endif
@@ -104,7 +104,7 @@
             </fieldset>
 
             {{-- 4. Attachment --}}
-            <fieldset class="panel p-6 sm:p-8">
+            <fieldset class="panel p-5 sm:p-8">
                 <legend class="sr-only">Proposal document</legend>
                 <p class="text-sm font-semibold text-forest-700">4 of 4</p>
                 <h2 class="mt-1 text-lg font-semibold">Proposal document <span class="text-base font-normal text-muted">(optional)</span></h2>
