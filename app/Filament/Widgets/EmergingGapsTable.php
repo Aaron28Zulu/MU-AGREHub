@@ -32,20 +32,22 @@ class EmergingGapsTable extends BaseWidget
             )
             ->columns([
                 TextColumn::make('domain.name')
-                    ->label('Thematic Domain')
+                    ->label('Domain')
                     ->badge()
                     ->color('primary')
                     ->searchable()
                     ->sortable(),
 
                 TextColumn::make('extracted_gap_text')
-                    ->label('Identified Research Gap / Direction')
+                    ->label('Research gap')
                     ->wrap()
+                    ->lineClamp(2)
+                    ->tooltip(fn (ResearchGap $record): string => $record->extracted_gap_text)
                     ->searchable(),
 
                 TextColumn::make('project.title')
-                    ->label('Derived From Project')
-                    ->limit(50)
+                    ->label('Source study')
+                    ->limit(40)
                     ->tooltip(fn (ResearchGap $record): ?string => $record->project?->title)
                     ->searchable(),
 
@@ -54,7 +56,7 @@ class EmergingGapsTable extends BaseWidget
                     ->sortable(),
 
                 IconColumn::make('is_saturated')
-                    ->label('Domain Status')
+                    ->label('Status')
                     ->boolean()
                     ->trueIcon('heroicon-s-fire')
                     ->falseIcon('heroicon-s-sparkles')

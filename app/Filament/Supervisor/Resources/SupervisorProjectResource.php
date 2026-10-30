@@ -9,6 +9,7 @@ use App\Enums\ResearchCategory;
 use App\Enums\SimilarityCheckStatus;
 use App\Filament\Supervisor\Actions\EvaluateAction;
 use App\Filament\Supervisor\Resources\SupervisorProjectResource\Pages;
+use App\Filament\Tables\Columns\TitleColumn;
 use App\Jobs\RunSimilarityAnalysisJob;
 use App\Models\Project;
 use Filament\Forms\Form;
@@ -203,25 +204,23 @@ class SupervisorProjectResource extends Resource
                     ->sortable()
                     ->description(fn (Project $record): string => $record->student?->email ?? ($record->student?->department ?? 'Advisee')),
 
-                // 2. Research Title (Truncated with tooltip)
-                TextColumn::make('title')
-                    ->label('Research Title')
-                    ->searchable()
-                    ->wrap()
-                    ->limit(48)
-                    ->tooltip(fn (Project $record): string => $record->title),
+                // 2. Research title (clamped to two lines, full title on hover)
+                TitleColumn::make('title')
+                    ->label('Research title')
+                    ->searchable(),
 
-                // 3. Thematic Category Minimalist Badge
+                // 3. Subject badge (short name, full name on hover)
                 TextColumn::make('category')
-                    ->label('Category')
+                    ->label('Subject')
                     ->badge()
-                    ->formatStateUsing(fn ($state) => $state instanceof ResearchCategory ? $state->label() : ($state ? ResearchCategory::tryFrom((string) $state)?->label() : '—'))
+                    ->formatStateUsing(fn ($state) => $state instanceof ResearchCategory ? $state->shortLabel() : ($state ? ResearchCategory::tryFrom((string) $state)?->shortLabel() : '—'))
+                    ->tooltip(fn (Project $record): ?string => $record->category?->label())
                     ->color(fn ($state): string => ($state instanceof ResearchCategory ? $state : ResearchCategory::tryFrom((string) $state))?->color() ?? 'gray')
                     ->sortable(),
 
                 // 4. Milestone Stage (ProjectStatus)
                 TextColumn::make('status')
-                    ->label('Milestone Stage')
+                    ->label('Stage')
                     ->badge()
                     ->color(fn ($state): string => match ($state instanceof ProjectStatus ? $state->value : (string) $state) {
                         ProjectStatus::DRAFT->value => 'gray',
@@ -239,6 +238,7 @@ class SupervisorProjectResource extends Resource
                 TextColumn::make('latestSimilarityReport.similarity_score')
                     ->label('Similarity')
                     ->badge()
+                    ->placeholder('Untested')
                     ->formatStateUsing(function ($state, Project $record): string {
                         if ($state === null) {
                             return match ($record->similarity_check_status) {
@@ -273,7 +273,7 @@ class SupervisorProjectResource extends Resource
 
                 // 6. Last Updated Relative Time
                 TextColumn::make('updated_at')
-                    ->label('Last Updated')
+                    ->label('Updated')
                     ->since()
                     ->sortable(),
             ])

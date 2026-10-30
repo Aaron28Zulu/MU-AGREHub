@@ -9,6 +9,7 @@ use App\Enums\EntryType;
 use App\Enums\ResearchCategory;
 use App\Enums\UserRole;
 use App\Filament\Resources\ChallengeEntryResource\Pages;
+use App\Filament\Tables\Columns\TitleColumn;
 use App\Models\ChallengeEntry;
 use App\Models\EntryReview;
 use App\Models\InnovationChallenge;
@@ -155,17 +156,18 @@ class ChallengeEntryResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('title')
+                TitleColumn::make('title')
                     ->searchable()
-                    ->wrap()
-                    ->weight('medium')
-                    ->description(fn (ChallengeEntry $record): string => $record->entry_type->label().' · '.$record->category->label()),
+                    ->description(fn (ChallengeEntry $record): string => $record->entry_type->shortLabel().' · '.$record->category->shortLabel()),
                 TextColumn::make('student.name')
                     ->label('Lead student')
                     ->description(fn (ChallengeEntry $record): ?string => $record->team_members)
                     ->searchable(),
                 TextColumn::make('challenge.edition')
                     ->label('Call')
+                    ->formatStateUsing(fn (ChallengeEntry $record): string => $record->challenge->shortEdition())
+                    ->tooltip(fn (ChallengeEntry $record): string => $record->challenge->edition)
+                    ->color('gray')
                     ->toggleable(),
                 TextColumn::make('panel_score')
                     ->label('Panel score')

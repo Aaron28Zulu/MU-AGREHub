@@ -7,6 +7,7 @@ namespace App\Filament\Resources;
 use App\Enums\ChallengeStatus;
 use App\Enums\UserRole;
 use App\Filament\Resources\InnovationChallengeResource\Pages;
+use App\Filament\Tables\Columns\TitleColumn;
 use App\Models\InnovationChallenge;
 use App\Models\User;
 use Filament\Forms\Components\DatePicker;
@@ -94,9 +95,10 @@ class InnovationChallengeResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('edition')
-                    ->weight('medium')
+                TitleColumn::make('edition')
+                    ->formatStateUsing(fn (InnovationChallenge $record): string => $record->shortEdition())
                     ->description(fn (InnovationChallenge $record): ?string => $record->theme)
+                    ->tooltip(fn (InnovationChallenge $record): string => trim($record->edition.' — '.$record->theme, ' —'))
                     ->searchable(),
                 TextColumn::make('status')
                     ->badge()

@@ -89,7 +89,7 @@
 
                     <div x-data="{ menu: false }" class="relative hidden sm:block">
                         <button type="button" @click="menu = !menu" @click.outside="menu = false" class="flex items-center gap-2.5 rounded-md py-1.5 pr-2 pl-1.5 text-left hover:bg-canvas" :aria-expanded="menu">
-                            <span class="flex h-8 w-8 items-center justify-center rounded-full bg-forest-100 text-xs font-bold text-forest-800">{{ str($user->name)->explode(' ')->map(fn ($part) => mb_substr($part, 0, 1))->take(2)->implode('') }}</span>
+                            <span class="flex h-8 w-8 items-center justify-center rounded-full bg-forest-100 text-xs font-bold text-forest-800">{{ $user->initials() }}</span>
                             <span class="hidden leading-tight md:block">
                                 <span class="block text-sm font-medium text-ink">{{ $user->name }}</span>
                                 <span class="block text-xs text-muted">{{ $user->department ?? 'Mulungushi University' }}</span>
@@ -126,7 +126,7 @@
             <div class="container-page space-y-1 py-3">
                 @auth
                     <div class="mb-2 flex items-center gap-3 border-b border-line px-3 pb-3 sm:hidden">
-                        <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-forest-100 text-xs font-bold text-forest-800">{{ str($user->name)->explode(' ')->map(fn ($part) => mb_substr($part, 0, 1))->take(2)->implode('') }}</span>
+                        <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-forest-100 text-xs font-bold text-forest-800">{{ $user->initials() }}</span>
                         <span class="min-w-0 leading-tight">
                             <span class="block truncate text-sm font-medium text-ink">{{ $user->name }}</span>
                             <span class="block truncate text-xs text-muted">{{ $user->role?->label() }} &middot; {{ $user->department ?? 'Mulungushi University' }}</span>

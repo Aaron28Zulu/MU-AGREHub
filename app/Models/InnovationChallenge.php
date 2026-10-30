@@ -54,6 +54,14 @@ class InnovationChallenge extends Model
     }
 
     /**
+     * Compact edition for tables: "Semester 1, 2026/27" becomes "Sem 1 · 2026/27".
+     */
+    public function shortEdition(): string
+    {
+        return (string) preg_replace('/^Semester\s+(\d+),?\s*/i', 'Sem $1 · ', $this->edition);
+    }
+
+    /**
      * Office member coordinating the call.
      *
      * @return BelongsTo<User, $this>

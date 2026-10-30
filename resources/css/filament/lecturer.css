@@ -2,199 +2,499 @@
  * RRIS lecturer portal skin.
  * Plain CSS layered over Filament's compiled styles so it builds with the app's Vite pipeline
  * (no separate Tailwind 3 theme build needed). Targets Filament's stable `fi-*` hooks.
+ *
+ * Colours come from the panel palette (SupervisorPanelProvider) through Filament's
+ * `--gray-*` / `--primary-*` variables, so light and dark mode follow one source of truth:
+ * sage-tinted neutrals and forest accents in light mode, graphite with sage accents in dark mode.
+ *
+ * Type scale (Google Sans): 24 page title · 15 section title · 13 body and tables · 12 meta · 11 labels.
  */
 
 :root {
-    --rris-paper: #fbfbf8;
-    --rris-canvas: #f5f6f2;
-    --rris-line: #e2e5de;
-    --rris-ink: #16201a;
-    --rris-forest: #2a523c;
-    --rris-forest-deep: #0e1f17;
-    --rris-ochre: #b07a24;
+    --rris-radius: 0.625rem;
+    --rris-radius-sm: 0.5rem;
+    --rris-line: rgb(var(--gray-200));
+    --rris-text: rgb(var(--gray-950));
+    --rris-text-soft: rgb(var(--gray-600));
+    --rris-text-muted: rgb(var(--gray-500));
+    --rris-surface: #ffffff;
+    --rris-accent: rgb(var(--primary-600));
+    --rris-accent-tint: rgb(var(--primary-50));
 }
 
-/* Page canvas */
-.fi-body,
-.fi-layout {
-    background-color: var(--rris-canvas);
+.dark {
+    --rris-line: rgb(255 255 255 / 0.08);
+    --rris-text: rgb(var(--gray-50));
+    --rris-text-soft: rgb(var(--gray-300));
+    --rris-text-muted: rgb(var(--gray-400));
+    --rris-surface: rgb(var(--gray-900));
+    --rris-accent: rgb(var(--primary-300));
+    --rris-accent-tint: rgb(var(--primary-300) / 0.1);
 }
 
-.fi-main {
-    padding-top: 0.5rem;
+.fi-body {
+    font-size: 0.875rem;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-/* Sidebar: deep botanical rail with quiet labels */
+/* ------------------------------------------------------------------ Brand */
+
+.rris-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    height: 100%;
+}
+
+.rris-brand-mark {
+    width: 2rem;
+    height: 2rem;
+    flex-shrink: 0;
+}
+
+.rris-brand-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 1.15;
+}
+
+.rris-brand-name {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--rris-text);
+}
+
+.rris-brand-sub {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: var(--rris-text-muted);
+}
+
+/* ------------------------------------------------------------------ Sidebar */
+
+.fi-sidebar,
+.fi-sidebar-header {
+    background-color: var(--rris-surface);
+}
+
 .fi-sidebar {
-    background-color: #ffffff;
     border-inline-end: 1px solid var(--rris-line);
 }
 
 .fi-sidebar-header {
-    background-color: #ffffff;
     border-bottom: 1px solid var(--rris-line);
     box-shadow: none !important;
+    --tw-ring-shadow: 0 0 #0000 !important;
+}
+
+.fi-sidebar-nav {
+    padding-block: 1.25rem;
+    row-gap: 1.25rem;
 }
 
 .fi-sidebar-group-label {
-    font-size: 0.6875rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: #8a938c;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--rris-text-muted);
 }
 
 .fi-sidebar-item-button {
-    border-radius: 0.5rem;
+    gap: 0.625rem;
+    padding-block: 0.4375rem;
+    border-radius: var(--rris-radius-sm);
+}
+
+.fi-sidebar-item-label {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--rris-text-soft);
+}
+
+.fi-sidebar-item-icon {
+    width: 1.125rem;
+    height: 1.125rem;
+    color: rgb(var(--gray-400));
+}
+
+.fi-sidebar-item-button:hover {
+    background-color: rgb(var(--gray-50));
+}
+
+.dark .fi-sidebar-item-button:hover {
+    background-color: rgb(255 255 255 / 0.04);
 }
 
 .fi-sidebar-item-active .fi-sidebar-item-button {
-    background-color: #f1f6f2;
-    box-shadow: inset 3px 0 0 var(--rris-forest);
+    background-color: var(--rris-accent-tint);
+    box-shadow: inset 2px 0 0 var(--rris-accent);
 }
 
 .fi-sidebar-item-active .fi-sidebar-item-label,
 .fi-sidebar-item-active .fi-sidebar-item-icon {
-    color: var(--rris-forest) !important;
+    color: var(--rris-accent) !important;
 }
 
-/* Topbar */
+.fi-sidebar-item-active .fi-sidebar-item-label {
+    font-weight: 600;
+}
+
+/* ------------------------------------------------------------------ Topbar */
+
 .fi-topbar nav {
-    background-color: rgba(255, 255, 255, 0.92);
-    backdrop-filter: blur(6px);
+    background-color: var(--rris-surface);
     border-bottom: 1px solid var(--rris-line);
     box-shadow: none;
+    --tw-ring-shadow: 0 0 #0000 !important;
 }
 
-.rris-role-pill {
-    display: inline-flex;
+/* Institutional trail, worded like the archive's utility bar */
+.rris-topbar-context {
+    display: none;
     align-items: center;
-    margin-inline-end: 0.75rem;
-    padding: 0.2rem 0.6rem;
-    border-radius: 9999px;
-    background: #f1f6f2;
-    color: var(--rris-forest);
+    gap: 0.5rem;
+    min-width: 0;
     font-size: 0.75rem;
-    font-weight: 600;
+    color: var(--rris-text-muted);
     white-space: nowrap;
 }
 
-@media (max-width: 640px) {
-    .rris-role-pill {
-        display: none;
+.rris-topbar-context-sep {
+    color: rgb(var(--gray-300));
+}
+
+.dark .rris-topbar-context-sep {
+    color: rgb(var(--gray-600));
+}
+
+.rris-topbar-context-here {
+    font-weight: 500;
+    color: var(--rris-text-soft);
+}
+
+@media (min-width: 1024px) {
+    .rris-topbar-context {
+        display: inline-flex;
     }
 }
 
-/* Headings read like the archive: editorial and calm */
+/* "Public archive" switch, the mirror of the archive's "Lecturer portal" link */
+.rris-switch-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    height: 2rem;
+    padding-inline: 0.625rem;
+    border: 1px solid var(--rris-line);
+    border-radius: var(--rris-radius-sm);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--rris-text-soft);
+    white-space: nowrap;
+    transition: background-color 120ms, color 120ms, border-color 120ms;
+}
+
+.rris-switch-link:hover {
+    border-color: rgb(var(--primary-300));
+    color: var(--rris-accent);
+    background-color: var(--rris-accent-tint);
+}
+
+.rris-switch-link:focus-visible {
+    outline: 2px solid var(--rris-accent);
+    outline-offset: 2px;
+}
+
+.rris-switch-link-icon {
+    width: 1rem;
+    height: 1rem;
+}
+
+.rris-switch-link-label {
+    display: none;
+}
+
+@media (min-width: 640px) {
+    .rris-switch-link-label {
+        display: inline;
+    }
+}
+
+/* Name and role beside the avatar, as in the archive masthead */
+.rris-identity {
+    display: none;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-inline-end: -0.5rem;
+    line-height: 1.25;
+    text-align: end;
+}
+
+.rris-identity-name {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--rris-text);
+}
+
+.rris-identity-role {
+    font-size: 0.6875rem;
+    color: var(--rris-text-muted);
+}
+
+@media (min-width: 768px) {
+    .rris-identity {
+        display: inline-flex;
+    }
+}
+
+.fi-user-avatar,
+.fi-avatar {
+    box-shadow: 0 0 0 1px var(--rris-line);
+}
+
+/* ------------------------------------------------------------------ Page header */
+
+.fi-main {
+    padding-top: 0.25rem;
+}
+
+.fi-page > section {
+    row-gap: 1.5rem;
+}
+
+.fi-breadcrumbs {
+    font-size: 0.75rem;
+}
+
+.fi-breadcrumbs .fi-breadcrumbs-item-label {
+    font-size: 0.75rem;
+}
+
+.fi-header {
+    row-gap: 0.75rem;
+}
+
 .fi-header-heading {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    font-weight: 600;
     letter-spacing: -0.02em;
-    color: var(--rris-ink);
+    color: var(--rris-text);
 }
 
 .fi-header-subheading {
-    max-width: 48rem;
-    color: #5f6a63;
+    max-width: 44rem;
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+    line-height: 1.375rem;
+    color: var(--rris-text-muted);
 }
 
-/* Cards and sections: hairline borders instead of heavy rings and shadows */
+/* ------------------------------------------------------------------ Buttons, inputs, badges */
+
+.fi-btn {
+    border-radius: var(--rris-radius-sm);
+    font-size: 0.8125rem;
+    font-weight: 600;
+}
+
+.fi-btn.fi-size-md {
+    padding-block: 0.5rem;
+}
+
+.fi-input-wrp {
+    border-radius: var(--rris-radius-sm);
+}
+
+.fi-input,
+.fi-select-input {
+    font-size: 0.8125rem;
+}
+
+.fi-badge {
+    border-radius: 9999px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    min-height: 1.375rem;
+}
+
+.fi-dropdown-list-item-label {
+    font-size: 0.8125rem;
+}
+
+/* ------------------------------------------------------------------ Cards, sections, tabs */
+
 .fi-section,
 .fi-ta-ctn,
 .fi-wi-stats-overview-stat,
-.fi-wi-chart > .fi-section,
-.fi-in-section {
-    border-radius: 0.75rem !important;
+.fi-in-section,
+.fi-tabs {
+    border-radius: var(--rris-radius) !important;
     box-shadow: none !important;
     --tw-ring-color: var(--rris-line) !important;
 }
 
 .fi-section-header-heading,
 .fi-ta-header-heading {
+    font-size: 0.9375rem;
+    font-weight: 600;
     letter-spacing: -0.01em;
 }
 
-/* Stats: quieter labels, confident numbers */
-.fi-wi-stats-overview-stat-label {
+.fi-section-header-description,
+.fi-ta-header-description {
     font-size: 0.8125rem;
-    color: #5f6a63;
+}
+
+.fi-wi-stats-overview-header-heading {
+    font-size: 0.9375rem;
+    font-weight: 600;
+}
+
+.fi-tabs-item {
+    font-size: 0.8125rem;
+}
+
+.fi-tabs-item-active {
+    background-color: var(--rris-accent-tint) !important;
+}
+
+.fi-tabs-item-active .fi-tabs-item-label {
+    color: var(--rris-accent) !important;
+}
+
+/* ------------------------------------------------------------------ Stats */
+
+.fi-wi-stats-overview-stat {
+    padding: 1.125rem 1.25rem !important;
+}
+
+.fi-wi-stats-overview-stat-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--rris-text-muted);
 }
 
 .fi-wi-stats-overview-stat-value {
+    font-size: 1.75rem;
+    line-height: 2.25rem;
+    font-weight: 600;
     letter-spacing: -0.03em;
 }
 
-/* Tables */
+.fi-wi-stats-overview-stat-description {
+    font-size: 0.75rem;
+}
+
+/* ------------------------------------------------------------------ Tables */
+
+.fi-ta-header-toolbar {
+    padding-block: 0.625rem;
+}
+
 .fi-ta-header-cell {
-    background-color: var(--rris-paper);
+    padding-block: 0.625rem !important;
+    background-color: rgb(var(--gray-50));
+}
+
+.dark .fi-ta-header-cell {
+    background-color: rgb(255 255 255 / 0.02);
 }
 
 .fi-ta-header-cell-label {
     font-size: 0.75rem;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: #5f6a63;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: var(--rris-text-muted);
+}
+
+.fi-ta-cell .fi-ta-text {
+    padding-block: 0.75rem;
+}
+
+.fi-ta-cell .fi-ta-text-item-label {
+    font-size: 0.8125rem;
+    line-height: 1.25rem;
+}
+
+/* Descriptions under a cell (author, subject, theme) */
+.fi-ta-text > p {
+    font-size: 0.75rem;
+    line-height: 1.125rem;
+}
+
+/* Title columns: a readable measure, two lines at most, one line of supporting text */
+.rris-col-title {
+    min-width: 15rem;
+    max-width: 26rem;
+}
+
+.rris-col-title .fi-ta-text-item-label {
+    color: var(--rris-text);
+}
+
+.rris-col-title > p {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+}
+
+.fi-ta-row {
+    transition: background-color 120ms;
 }
 
 .fi-ta-row:hover {
-    background-color: #f8faf7;
+    background-color: rgb(var(--gray-50) / 0.7);
 }
 
-/* Tabs on list pages */
-.fi-tabs {
-    box-shadow: none !important;
-    --tw-ring-color: var(--rris-line) !important;
+.dark .fi-ta-row:hover {
+    background-color: rgb(255 255 255 / 0.025);
 }
 
-.fi-tabs-item-active {
-    background-color: #f1f6f2 !important;
+.fi-ta-actions .fi-link > span,
+.fi-ta-placeholder {
+    font-size: 0.8125rem;
 }
 
-/* Buttons: slightly squarer than Filament's default for an institutional feel */
-.fi-btn {
-    border-radius: 0.5rem;
+.fi-ta-empty-state-heading {
+    font-size: 0.9375rem;
 }
 
-/* Badges */
-.fi-badge {
-    border-radius: 9999px;
+.fi-pagination-overview,
+.fi-pagination-records-per-page-select,
+.fi-pagination-records-per-page-select .fi-input-wrp-label,
+.fi-pagination .fi-select-input {
+    font-size: 0.8125rem;
+}
+
+/* ------------------------------------------------------------------ Forms and infolists */
+
+.fi-fo-field-wrp-label span,
+.fi-in-entry-wrp-label span {
+    font-size: 0.8125rem;
+}
+
+.fi-fo-field-wrp-helper-text,
+.fi-fo-field-wrp-hint {
+    font-size: 0.75rem;
 }
 
 /* Slide-over review panel */
 .fi-modal-slide-over-window {
-    background-color: var(--rris-paper);
+    background-color: rgb(var(--gray-50));
 }
 
-/* Dark mode keeps Filament's palette but uses the deep forest canvas */
-.dark .fi-body,
-.dark .fi-layout {
-    background-color: var(--rris-forest-deep);
+.dark .fi-modal-slide-over-window {
+    background-color: rgb(var(--gray-950));
 }
 
-.dark .fi-sidebar,
-.dark .fi-sidebar-header,
-.dark .fi-topbar nav {
-    background-color: #12241b;
-    border-color: rgba(255, 255, 255, 0.08);
-}
+/* ------------------------------------------------------------------ Small screens */
 
-.dark .fi-sidebar-item-active .fi-sidebar-item-button {
-    background-color: rgba(152, 189, 164, 0.12);
-    box-shadow: inset 3px 0 0 #98bda4;
-}
-
-.dark .fi-sidebar-item-active .fi-sidebar-item-label,
-.dark .fi-sidebar-item-active .fi-sidebar-item-icon {
-    color: #c3d9ca !important;
-}
-
-.dark .fi-ta-header-cell {
-    background-color: transparent;
-}
-
-.dark .rris-role-pill {
-    background: rgba(152, 189, 164, 0.15);
-    color: #c3d9ca;
-}
-
-/* Small screens: keep custom review components inside the viewport */
+/* Keep custom review components inside the viewport */
 .rris-table-scroll {
     overflow-x: auto;
 }
@@ -213,7 +513,11 @@
     }
 
     .fi-header-heading {
-        font-size: 1.375rem;
-        line-height: 1.3;
+        font-size: 1.25rem;
+        line-height: 1.75rem;
+    }
+
+    .rris-col-title {
+        min-width: 12rem;
     }
 }

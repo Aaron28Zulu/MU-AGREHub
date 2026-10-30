@@ -7,6 +7,7 @@ namespace App\Filament\Resources;
 use App\Enums\EventType;
 use App\Enums\UserRole;
 use App\Filament\Resources\AssociationEventResource\Pages;
+use App\Filament\Tables\Columns\TitleColumn;
 use App\Models\AssociationEvent;
 use App\Models\User;
 use Filament\Forms\Components\DateTimePicker;
@@ -93,10 +94,8 @@ class AssociationEventResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('title')
+                TitleColumn::make('title')
                     ->searchable()
-                    ->wrap()
-                    ->weight('medium')
                     ->description(fn (AssociationEvent $record): ?string => $record->motion),
                 TextColumn::make('event_type')
                     ->label('Type')

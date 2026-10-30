@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers\Filament;
 
+use App\Filament\AvatarProviders\InitialsAvatarProvider;
 use App\Filament\Resources\AssociationEventResource;
 use App\Filament\Resources\ChallengeEntryResource;
 use App\Filament\Resources\InnovationChallengeResource;
@@ -17,6 +18,7 @@ use App\Filament\Widgets\EmergingGapsTable;
 use App\Filament\Widgets\ResearchOfficeStatsWidget;
 use App\Filament\Widgets\SaturatedDomainsChart;
 use App\Http\Middleware\EnsureUserIsSupervisor;
+use Filament\FontProviders\GoogleFontProvider;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Navigation\MenuItem;
@@ -35,6 +37,7 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Illuminate\View\View;
 
 class SupervisorPanelProvider extends PanelProvider
 {
@@ -49,18 +52,46 @@ class SupervisorPanelProvider extends PanelProvider
             ->path('supervisor')
             ->brandName('RRIS Lecturer Portal')
             ->brandLogo(fn () => view('filament.brand.logo'))
-            ->brandLogoHeight('2.5rem')
+            ->brandLogoHeight('2.25rem')
             ->favicon(asset('favicon.ico'))
             ->colors([
-                'primary' => Color::hex('#2a523c'),
-                'gray' => Color::Stone,
+                // The archive's forest scale, shifted so buttons (shade 600) match its primary buttons.
+                'primary' => [
+                    50 => '#f1f6f2',
+                    100 => '#e1ece4',
+                    200 => '#c3d9ca',
+                    300 => '#98bda4',
+                    400 => '#689c7b',
+                    500 => '#35674a',
+                    600 => '#2a523c',
+                    700 => '#224232',
+                    800 => '#1a3428',
+                    900 => '#12241b',
+                    950 => '#0e1f17',
+                ],
+                // Faintly sage neutrals: the archive's canvas and hairlines in light mode, graphite in dark mode.
+                'gray' => [
+                    50 => '#f6f7f5',
+                    100 => '#eef0ec',
+                    200 => '#e2e5de',
+                    300 => '#cfd4cb',
+                    400 => '#9aa29c',
+                    500 => '#6c756f',
+                    600 => '#535b56',
+                    700 => '#3a413d',
+                    800 => '#262b28',
+                    900 => '#191c1b',
+                    950 => '#101211',
+                ],
                 'info' => Color::Sky,
                 'success' => Color::hex('#35674a'),
                 'warning' => Color::hex('#b07a24'),
                 'danger' => Color::Red,
             ])
-            ->font('Instrument Sans')
+            ->font('Google Sans', provider: GoogleFontProvider::class)
+            ->defaultAvatarProvider(InitialsAvatarProvider::class)
             ->maxContentWidth(MaxWidth::SevenExtraLarge)
+            ->sidebarWidth('16.5rem')
             ->sidebarCollapsibleOnDesktop()
             ->databaseNotifications()
             ->databaseNotificationsPolling('60s')
@@ -72,17 +103,17 @@ class SupervisorPanelProvider extends PanelProvider
                 NavigationGroup::make('Archive'),
             ])
             ->navigationItems([
-                NavigationItem::make('Public research archive')
+                NavigationItem::make('Search the archive')
                     ->url(fn (): string => route('repository'))
                     ->icon('heroicon-o-building-library')
                     ->group('Archive')
                     ->sort(1),
-                NavigationItem::make('Research gaps index')
+                NavigationItem::make('Research gaps')
                     ->url(fn (): string => route('gaps'))
                     ->icon('heroicon-o-light-bulb')
                     ->group('Archive')
                     ->sort(2),
-                NavigationItem::make('Innovation pages')
+                NavigationItem::make('Innovation')
                     ->url(fn (): string => route('innovation'))
                     ->icon('heroicon-o-sparkles')
                     ->group('Archive')
@@ -101,10 +132,9 @@ class SupervisorPanelProvider extends PanelProvider
                     ? Blade::render("@vite('resources/css/filament/lecturer.css')")
                     : '',
             )
-            ->renderHook(
-                PanelsRenderHook::USER_MENU_BEFORE,
-                fn (): string => Blade::render('<span class="rris-role-pill">{{ auth()->user()?->role?->label() }}</span>'),
-            )
+            ->renderHook(PanelsRenderHook::TOPBAR_START, fn (): View => view('filament.topbar.context'))
+            ->renderHook(PanelsRenderHook::GLOBAL_SEARCH_BEFORE, fn (): View => view('filament.topbar.archive-link'))
+            ->renderHook(PanelsRenderHook::USER_MENU_BEFORE, fn (): View => view('filament.topbar.identity'))
             ->resources([
                 SupervisorProjectResource::class,
                 ProjectResource::class,

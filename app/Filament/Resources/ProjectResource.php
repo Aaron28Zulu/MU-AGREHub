@@ -8,6 +8,7 @@ use App\Enums\ProjectStatus;
 use App\Enums\ResearchCategory;
 use App\Enums\UserRole;
 use App\Filament\Resources\ProjectResource\Pages;
+use App\Filament\Tables\Columns\TitleColumn;
 use App\Models\Project;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
@@ -133,14 +134,14 @@ class ProjectResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('title')
+                TitleColumn::make('title')
                     ->searchable()
-                    ->wrap()
-                    ->weight('medium')
                     ->sortable(),
 
                 TextColumn::make('category')
-                    ->formatStateUsing(fn (ResearchCategory $state): string => $state->label())
+                    ->label('Subject')
+                    ->formatStateUsing(fn (ResearchCategory $state): string => $state->shortLabel())
+                    ->tooltip(fn (Project $record): string => $record->category->label())
                     ->color('gray')
                     ->sortable(),
 

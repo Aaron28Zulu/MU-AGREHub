@@ -16,7 +16,6 @@ use App\Models\Project;
 use App\Models\SimilarityReport;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 use Spatie\Permission\Models\Role;
@@ -152,10 +151,10 @@ class SupervisorWorkspaceTest extends TestCase
         $this->actingAs($supervisor);
 
         Livewire::test(SupervisorStatsOverviewWidget::class)
-            ->assertSee('Assigned Supervisees')
-            ->assertSee('Submissions Awaiting Review')
-            ->assertSee('Similarity Alerts')
-            ->assertSee('Completed & Defended');
+            ->assertSee('Advisees')
+            ->assertSee('Awaiting review')
+            ->assertSee('Similarity alerts')
+            ->assertSee('Completed');
     }
 
     public function test_supervisor_review_submission_action_grades_and_transitions_milestone(): void

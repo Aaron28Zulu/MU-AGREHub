@@ -21,6 +21,17 @@ enum EntryType: string
     }
 
     /**
+     * One-word name for dense tables.
+     */
+    public function shortLabel(): string
+    {
+        return match ($this) {
+            self::RESEARCH_PROPOSAL => 'Proposal',
+            self::INNOVATION => 'Innovation',
+        };
+    }
+
+    /**
      * Value => label map for select inputs.
      *
      * @return array<string, string>

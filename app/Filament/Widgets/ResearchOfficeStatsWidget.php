@@ -38,16 +38,16 @@ class ResearchOfficeStatsWidget extends BaseWidget
         $nextEvent = AssociationEvent::query()->upcoming()->first();
 
         return [
-            Stat::make('Entries awaiting a decision', ChallengeEntry::query()->where('status', EntryStatus::SUBMITTED->value)->count())
+            Stat::make('Entries to decide', ChallengeEntry::query()->where('status', EntryStatus::SUBMITTED->value)->count())
                 ->description(ChallengeEntry::query()->where('status', EntryStatus::SHORTLISTED->value)->count().' shortlisted')
                 ->icon('heroicon-o-trophy')
                 ->url(ChallengeEntryResource::getUrl('index')),
             Stat::make('Upcoming events', AssociationEvent::query()->where('starts_at', '>=', now())->count())
-                ->description($nextEvent ? 'Next: '.$nextEvent->title.', '.$nextEvent->starts_at->format('j M') : 'Nothing scheduled')
+                ->description($nextEvent ? 'Next on '.$nextEvent->starts_at->format('j M') : 'Nothing scheduled')
                 ->icon('heroicon-o-megaphone')
                 ->url(AssociationEventResource::getUrl('index')),
             Stat::make('Sites collecting data', ResearchSite::query()->where('status', SiteStatus::ACTIVE->value)->count())
-                ->description(SiteObservation::query()->where('observed_on', '>=', now()->subDays(30))->count().' records in the last 30 days')
+                ->description(SiteObservation::query()->where('observed_on', '>=', now()->subDays(30))->count().' records in 30 days')
                 ->icon('heroicon-o-map-pin')
                 ->url(ResearchSiteResource::getUrl('index')),
         ];
