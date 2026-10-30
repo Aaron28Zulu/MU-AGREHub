@@ -185,6 +185,20 @@ Open your browser and navigate to:
 * **Student Catalog & Portal:** `http://rris.test`
 * **Lecturer & Research Office Panel:** `http://rris.test/supervisor`
 
+### Demo accounts
+The seeders create these key accounts (plus more supervisors and researchers for the demo archive). Every seeded account uses the password `password`.
+
+| Role | Name | Email | What to try |
+| --- | --- | --- | --- |
+| Admin | Admin User | `admin@rris.mu.ac.zm` | Overall administrator with oversight of every school in the lecturer portal |
+| Dean | Dr. M. Phiri | `dean@rris.mu.ac.zm` | School-wide oversight in the lecturer portal |
+| Lecturer (supervisor) | Dr. C. Mulenga | `cmulenga@rris.mu.ac.zm` | Reviews advisees, runs originality checks and records rubric decisions |
+| Research Office | Ethel Kunda | `ethel@rris.mu.ac.zm` | Runs the Vision 2030 challenge, events and research sites |
+| Student | Kelvin Mwape | `kelvin@rris.mu.ac.zm` | Student workspace: proposal, milestone uploads and feedback |
+| Researcher | Lukundo Bwalya | `lukundo@rris.mu.ac.zm` | Searches the archive and saves records to a folder |
+
+In the `local` environment the sign-in page also has one-click buttons for most of these accounts.
+
 ---
 
 ## 4. Deploying to Railway (MySQL)
