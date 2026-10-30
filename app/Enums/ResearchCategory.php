@@ -41,6 +41,27 @@ enum ResearchCategory: string
     }
 
     /**
+     * One- or two-word name for dense tables; pair it with label() in a tooltip.
+     */
+    public function shortLabel(): string
+    {
+        return match ($this) {
+            self::AGRICULTURE => 'Agriculture',
+            self::ENVIRONMENTAL_SCIENCE => 'Environment',
+            self::BUSINESS_MANAGEMENT => 'Business',
+            self::ACCOUNTING_FINANCE => 'Accounting',
+            self::ECONOMICS => 'Economics',
+            self::EDUCATION => 'Education',
+            self::HEALTH_SCIENCES => 'Health',
+            self::COMPUTING => 'Computing',
+            self::ENGINEERING => 'Engineering',
+            self::NATURAL_SCIENCES => 'Sciences',
+            self::SOCIAL_SCIENCES => 'Social Sciences',
+            self::PUBLIC_ADMINISTRATION => 'Public Admin',
+        };
+    }
+
+    /**
      * One-line scope note shown when browsing subjects.
      */
     public function description(): string

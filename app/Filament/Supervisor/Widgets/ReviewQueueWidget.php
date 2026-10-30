@@ -6,6 +6,7 @@ namespace App\Filament\Supervisor\Widgets;
 
 use App\Enums\ProjectStatus;
 use App\Filament\Supervisor\Resources\SupervisorProjectResource;
+use App\Filament\Tables\Columns\TitleColumn;
 use App\Models\Project;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
@@ -40,10 +41,8 @@ class ReviewQueueWidget extends BaseWidget
                     ->oldest('updated_at')
             )
             ->columns([
-                TextColumn::make('title')
+                TitleColumn::make('title')
                     ->label('Study')
-                    ->weight('medium')
-                    ->wrap()
                     ->description(fn (Project $record): string => $record->student?->name ?? 'Student'),
                 TextColumn::make('status')
                     ->label('Stage')

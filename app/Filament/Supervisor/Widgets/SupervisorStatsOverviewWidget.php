@@ -60,25 +60,23 @@ class SupervisorStatsOverviewWidget extends BaseWidget
             ->count();
 
         return [
-            Stat::make('Assigned Supervisees', (string) $assignedCount)
-                ->description('Total active research advisees')
-                ->descriptionIcon('heroicon-m-user-group')
-                ->color('primary'),
+            Stat::make('Advisees', (string) $assignedCount)
+                ->description('Studies you supervise')
+                ->icon('heroicon-o-user-group'),
 
-            Stat::make('Submissions Awaiting Review', (string) $awaitingReviewCount)
-                ->description('Proposals & drafts pending grading')
-                ->descriptionIcon('heroicon-m-clock')
+            Stat::make('Awaiting review', (string) $awaitingReviewCount)
+                ->description('Proposals and drafts')
+                ->icon('heroicon-o-clock')
                 ->color($awaitingReviewCount > 0 ? 'warning' : 'gray'),
 
-            Stat::make('Similarity Alerts', (string) $similarityAlertsCount)
-                ->description('Flagged submissions (≥ 20% index)')
-                ->descriptionIcon('heroicon-m-exclamation-triangle')
-                ->color($similarityAlertsCount > 0 ? 'danger' : 'success'),
+            Stat::make('Similarity alerts', (string) $similarityAlertsCount)
+                ->description('Scored 20% or higher')
+                ->icon('heroicon-o-exclamation-triangle')
+                ->color($similarityAlertsCount > 0 ? 'danger' : 'gray'),
 
-            Stat::make('Completed & Defended', (string) $completedCount)
-                ->description('Successfully passed & published')
-                ->descriptionIcon('heroicon-m-check-badge')
-                ->color('success'),
+            Stat::make('Completed', (string) $completedCount)
+                ->description('Defended and published')
+                ->icon('heroicon-o-check-badge'),
         ];
     }
 }

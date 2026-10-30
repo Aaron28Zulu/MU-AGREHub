@@ -98,6 +98,23 @@ class User extends Authenticatable implements FilamentUser
     }
 
     /**
+     * Two-letter monogram for avatars: first and last name, honorifics dropped ("Dr. L. Sakala" is "LS").
+     */
+    public function initials(): string
+    {
+        $parts = str($this->name)
+            ->replace(['Dr. ', 'Prof. ', 'Mr. ', 'Mrs. ', 'Ms. '], '')
+            ->squish()
+            ->explode(' ')
+            ->filter();
+
+        return collect([$parts->first(), $parts->count() > 1 ? $parts->last() : null])
+            ->filter()
+            ->map(fn (string $part): string => mb_strtoupper(mb_substr($part, 0, 1)))
+            ->implode('');
+    }
+
+    /**
      * Whether the user belongs to the student-facing portal.
      */
     public function isStudent(): bool

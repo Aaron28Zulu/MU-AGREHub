@@ -1,7 +1,8 @@
-<div class="flex h-full items-center gap-2.5">
-    <x-brand-mark class="h-8 w-8 shrink-0" />
-    <span class="flex flex-col justify-center leading-tight">
-        <span class="block text-[15px] font-bold leading-tight tracking-tight text-gray-950 dark:text-white">RRIS</span>
-        <span class="block text-[11px] leading-tight font-medium text-gray-500 dark:text-gray-400">Lecturer Portal</span>
+{{-- Same lockup as the archive masthead; only the second line changes to say which side you are on --}}
+<span class="rris-brand">
+    <x-brand-mark class="rris-brand-mark" />
+    <span class="rris-brand-text">
+        <span class="rris-brand-name">RRIS</span>
+        <span class="rris-brand-sub">{{ auth()->user()?->isFaculty() === false ? 'Office workspace' : 'Lecturer portal' }}</span>
     </span>
-</div>
+</span>
