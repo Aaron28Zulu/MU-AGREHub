@@ -1,6 +1,6 @@
-# AgriHub — Stakeholder Interfaces & Dashboard Specifications
+# RRIS — Stakeholder Interfaces & Dashboard Specifications
 
-This document outlines the detailed UI/UX layouts, wireframe schematics, permission boundaries, and data contracts for each user interface across **AgriHub** (MUSA AgriResearch).
+This document outlines the detailed UI/UX layouts, wireframe schematics, permission boundaries, and data contracts for each user interface across **RRIS** (Research Repository Interface System), Mulungushi University.
 
 ---
 
@@ -14,7 +14,7 @@ This document outlines the detailed UI/UX layouts, wireframe schematics, permiss
 ### 1.2 Layout & Key Components
 ```
 +-----------------------------------------------------------------------------------+
-|  AGRIHUB | School of Agriculture and Natural Resources        [Sign In / Register]|
+|  RRIS | Mulungushi University                                  [Sign In / Register]|
 +-----------------------------------------------------------------------------------+
 |  [ Search Research Topics, Keywords, or Themes...                       ] [Search]|
 |  Filters: [Department v] [Year v] [Research Category v] [Thematic Area v]         |
@@ -55,7 +55,7 @@ When an ordinary student clicks **View Metadata Summary**, display a modal or pa
 ### 2.2 Layout & Key Components
 ```
 +-----------------------------------------------------------------------------------+
-|  AGRIHUB | Student Researcher Workspace                    [Profile] [Sign Out]   |
+|  RRIS | Student Researcher Workspace                       [Profile] [Sign Out]   |
 +-----------------------------------------------------------------------------------+
 |  Active Project: Optimization of Bio-Pesticides for Fall Armyworm Control        |
 |  Supervisor: Dr. M. Phiri | Department: Plant Protection                          |
@@ -133,15 +133,15 @@ When an ordinary student clicks **View Metadata Summary**, display a modal or pa
 +-----------------------------------------------------------------------------------+
 |  FILAMENT | Dean & Research Directorate Console              [Dean Office v]      |
 +-----------------------------------------------------------------------------------+
-|  SCHOOL-WIDE RESEARCH KPI METRICS                                                 |
+|  UNIVERSITY-WIDE RESEARCH KPI METRICS                                             |
 |  [ Total Projects: 420 ] [ Ongoing: 84 ] [ Avg Sim Score: 11% ] [ Faculty: 26 ]   |
 +-----------------------------------------------------------------------------------+
 |  DEPARTMENTAL RESEARCH OUTPUT & CAPACITY                                          |
 |  Department                 | Active Supervisions | Completed (2025/2026) | Avg Days |
 |  ---------------------------|---------------------|----------------------|---------|
-|  Crop Science               | 28                  | 45                   | 112     |
-|  Agribusiness & Extension   | 31                  | 52                   | 98      |
-|  Animal Science             | 25                  | 38                   | 120     |
+|  Agriculture & Food Systems | 28                  | 45                   | 112     |
+|  Business & Management      | 31                  | 52                   | 98      |
+|  Health Sciences            | 25                  | 38                   | 120     |
 +-----------------------------------------------------------------------------------+
 |  RESEARCH GAP & THEMATIC TREND ANALYTICS                                          |
 |  [ Bar Chart: Topic Density by Sub-Sector ] [ Pie Chart: Over-explored Areas ]   |

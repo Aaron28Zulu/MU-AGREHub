@@ -52,13 +52,18 @@
                     Subject
                     <x-glyph name="chevron-down" class="h-4 w-4 text-subtle transition" ::class="open ? '' : '-rotate-90'" />
                 </button>
-                <div x-show="open" class="space-y-2.5 pb-4">
-                    @foreach ($categories as $category)
-                        <label class="flex cursor-pointer items-start gap-2.5 text-sm text-ink-soft hover:text-ink">
-                            <input type="checkbox" value="{{ $category->value }}" wire:model.live="selectedCategories" class="mt-0.5 h-4 w-4 rounded border-line-strong text-forest-700 focus:ring-forest-600" />
-                            <span class="flex-1 leading-snug">{{ $category->label() }}</span>
-                            <span class="text-xs text-subtle tabular-nums">{{ $categoryCounts[$category->value] ?? 0 }}</span>
-                        </label>
+                <div x-show="open" class="space-y-4 pb-4">
+                    @foreach ($schools as $school => $subjects)
+                        <fieldset class="space-y-2.5">
+                            <legend class="mb-2 text-xs font-semibold tracking-wide text-muted uppercase">{{ $school }}</legend>
+                            @foreach ($subjects as $category)
+                                <label class="flex cursor-pointer items-start gap-2.5 text-sm text-ink-soft hover:text-ink">
+                                    <input type="checkbox" value="{{ $category->value }}" wire:model.live="selectedCategories" class="mt-0.5 h-4 w-4 rounded border-line-strong text-forest-700 focus:ring-forest-600" />
+                                    <span class="flex-1 leading-snug">{{ $category->label() }}</span>
+                                    <span class="text-xs text-subtle tabular-nums">{{ $categoryCounts[$category->value] ?? 0 }}</span>
+                                </label>
+                            @endforeach
+                        </fieldset>
                     @endforeach
                 </div>
             </div>

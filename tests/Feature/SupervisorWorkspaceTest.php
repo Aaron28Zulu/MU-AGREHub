@@ -80,7 +80,7 @@ class SupervisorWorkspaceTest extends TestCase
         $assignedProject = Project::create([
             'title' => 'Assigned Project for Dr. A',
             'abstract' => 'Research scope under Dr. A supervision.',
-            'category' => ResearchCategory::CROP_SCIENCE,
+            'category' => ResearchCategory::AGRICULTURE,
             'status' => ProjectStatus::UNDER_REVIEW,
             'student_id' => $studentA->id,
             'supervisor_id' => $supervisorA->id,
@@ -89,7 +89,7 @@ class SupervisorWorkspaceTest extends TestCase
         $unassignedProject = Project::create([
             'title' => 'Unassigned Project for Dr. B',
             'abstract' => 'Research scope under Dr. B supervision.',
-            'category' => ResearchCategory::ANIMAL_SCIENCE,
+            'category' => ResearchCategory::NATURAL_SCIENCES,
             'status' => ProjectStatus::UNDER_REVIEW,
             'student_id' => $studentB->id,
             'supervisor_id' => $supervisorB->id,
@@ -114,7 +114,7 @@ class SupervisorWorkspaceTest extends TestCase
         $p1 = Project::create([
             'title' => 'Project 1 Proposal',
             'abstract' => 'Pending review.',
-            'category' => ResearchCategory::CROP_SCIENCE,
+            'category' => ResearchCategory::AGRICULTURE,
             'status' => ProjectStatus::PROPOSAL_SUBMITTED,
             'student_id' => $student->id,
             'supervisor_id' => $supervisor->id,
@@ -124,7 +124,7 @@ class SupervisorWorkspaceTest extends TestCase
         $p2 = Project::create([
             'title' => 'Project 2 Draft',
             'abstract' => 'Under review draft.',
-            'category' => ResearchCategory::AGRIBUSINESS,
+            'category' => ResearchCategory::ECONOMICS,
             'status' => ProjectStatus::UNDER_REVIEW,
             'student_id' => $student->id,
             'supervisor_id' => $supervisor->id,
@@ -142,7 +142,7 @@ class SupervisorWorkspaceTest extends TestCase
         Project::create([
             'title' => 'Project 3 Completed',
             'abstract' => 'Completed study.',
-            'category' => ResearchCategory::PLANT_PROTECTION,
+            'category' => ResearchCategory::ENVIRONMENTAL_SCIENCE,
             'status' => ProjectStatus::COMPLETED,
             'student_id' => $student->id,
             'supervisor_id' => $supervisor->id,
@@ -169,7 +169,7 @@ class SupervisorWorkspaceTest extends TestCase
         $project = Project::create([
             'title' => 'Soil Nitrogen Fixation Trials',
             'abstract' => 'Evaluating biofertilizer formulations.',
-            'category' => ResearchCategory::CROP_SCIENCE,
+            'category' => ResearchCategory::AGRICULTURE,
             'status' => ProjectStatus::UNDER_REVIEW,
             'student_id' => $student->id,
             'supervisor_id' => $supervisor->id,
@@ -209,7 +209,7 @@ class SupervisorWorkspaceTest extends TestCase
         $project = Project::create([
             'title' => 'Soil Nitrogen Fixation Trials',
             'abstract' => 'Evaluating biofertilizer formulations.',
-            'category' => ResearchCategory::CROP_SCIENCE,
+            'category' => ResearchCategory::AGRICULTURE,
             'status' => ProjectStatus::UNDER_REVIEW,
             'student_id' => $student->id,
             'supervisor_id' => $supervisor->id,
@@ -233,7 +233,7 @@ class SupervisorWorkspaceTest extends TestCase
         $project = Project::create([
             'title' => 'Maize Yield Analysis Under Drought Conditions',
             'abstract' => 'Evaluating drought resilience traits.',
-            'category' => ResearchCategory::CROP_SCIENCE,
+            'category' => ResearchCategory::AGRICULTURE,
             'status' => ProjectStatus::UNDER_REVIEW,
             'student_id' => $student->id,
             'supervisor_id' => $supervisor->id,
@@ -272,7 +272,7 @@ class SupervisorWorkspaceTest extends TestCase
         $project = Project::create([
             'title' => 'Drought Tolerant Cassava Genotypes',
             'abstract' => 'Evaluating physiological markers for drought adaptation.',
-            'category' => ResearchCategory::CROP_SCIENCE,
+            'category' => ResearchCategory::AGRICULTURE,
             'status' => ProjectStatus::UNDER_REVIEW,
             'student_id' => $student->id,
             'supervisor_id' => $supervisor->id,
@@ -305,7 +305,7 @@ class SupervisorWorkspaceTest extends TestCase
         $project = Project::create([
             'title' => 'Soil Microbiome Dynamics Under Agroforestry',
             'abstract' => 'Longitudinal analysis of mycorrhizal colonization.',
-            'category' => ResearchCategory::CROP_SCIENCE,
+            'category' => ResearchCategory::AGRICULTURE,
             'status' => ProjectStatus::UNDER_REVIEW,
             'student_id' => $student->id,
             'supervisor_id' => $supervisor->id,
@@ -346,7 +346,7 @@ class SupervisorWorkspaceTest extends TestCase
         $project = Project::create([
             'title' => 'Poultry Probiotic Feed Formulations',
             'abstract' => 'Formulating synbiotic additives for gut health.',
-            'category' => ResearchCategory::ANIMAL_SCIENCE,
+            'category' => ResearchCategory::NATURAL_SCIENCES,
             'status' => ProjectStatus::UNDER_REVIEW,
             'student_id' => $student->id,
             'supervisor_id' => $supervisor->id,
@@ -375,7 +375,7 @@ class SupervisorWorkspaceTest extends TestCase
         $project = Project::create([
             'title' => 'Aquaponics Tilapia Nutrition',
             'abstract' => 'Evaluating duckweed supplement.',
-            'category' => ResearchCategory::ANIMAL_SCIENCE,
+            'category' => ResearchCategory::NATURAL_SCIENCES,
             'status' => ProjectStatus::UNDER_REVIEW,
             'similarity_check_status' => SimilarityCheckStatus::UNTESTED,
             'student_id' => $student->id,
@@ -430,7 +430,7 @@ class SupervisorWorkspaceTest extends TestCase
         Project::create([
             'title' => 'Prior Biochar Soil Study',
             'abstract' => 'Comprehensive soil microbial biomass and nutrient retention assessment in maize fields.',
-            'category' => ResearchCategory::CROP_SCIENCE,
+            'category' => ResearchCategory::AGRICULTURE,
             'status' => ProjectStatus::COMPLETED,
             'student_id' => $student->id,
             'supervisor_id' => $supervisor->id,
@@ -440,7 +440,7 @@ class SupervisorWorkspaceTest extends TestCase
         $project = Project::create([
             'title' => 'Biochar Organic Amendments',
             'abstract' => 'Comprehensive soil microbial biomass and nutrient retention assessment under tropical irrigation.',
-            'category' => ResearchCategory::CROP_SCIENCE,
+            'category' => ResearchCategory::AGRICULTURE,
             'status' => ProjectStatus::UNDER_REVIEW,
             'similarity_check_status' => SimilarityCheckStatus::UNTESTED,
             'student_id' => $student->id,

@@ -3,7 +3,7 @@
     <section class="border-b border-line bg-canvas">
         <div class="container-page flex flex-col gap-5 py-8 sm:flex-row sm:items-end sm:justify-between">
             <div>
-                <p class="eyebrow">My research &middot; {{ auth()->user()->department ?? 'School of Agriculture' }}</p>
+                <p class="eyebrow">My research &middot; {{ auth()->user()->department ?? 'Mulungushi University' }}</p>
                 <h1 class="mt-2 text-3xl font-bold tracking-tight">Welcome back, {{ str(auth()->user()->name)->before(' ') }}</h1>
                 <p class="mt-2 text-ink-soft">Track your study, submit milestone drafts and read your supervisor's feedback.</p>
             </div>
@@ -161,7 +161,7 @@
                                 <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-forest-100 text-sm font-bold text-forest-800">{{ str($project->supervisor->name)->replace(['Dr. ', 'Prof. '], '')->explode(' ')->map(fn ($part) => mb_substr($part, 0, 1))->take(2)->implode('') }}</span>
                                 <div class="min-w-0">
                                     <p class="font-semibold">{{ $project->supervisor->name }}</p>
-                                    <p class="text-sm text-muted">{{ $project->supervisor->department ?? 'School of Agriculture' }}</p>
+                                    <p class="text-sm text-muted">{{ $project->supervisor->department ?? 'Mulungushi University' }}</p>
                                     <a href="mailto:{{ $project->supervisor->email }}" class="mt-2 inline-flex items-center gap-1.5 truncate text-sm font-medium text-forest-700 hover:underline"><x-glyph name="envelope" class="h-4 w-4" /> {{ $project->supervisor->email }}</a>
                                 </div>
                             </div>

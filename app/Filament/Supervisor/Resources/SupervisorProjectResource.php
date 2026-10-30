@@ -46,6 +46,11 @@ class SupervisorProjectResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
+    public static function canViewAny(): bool
+    {
+        return auth()->user()?->isFaculty() ?? false;
+    }
+
     /**
      * Strict Eloquent Query Scope:
      * Academic supervisors must ONLY see research projects assigned to them.
@@ -87,13 +92,7 @@ class SupervisorProjectResource extends Resource
                             ->label('Category')
                             ->badge()
                             ->formatStateUsing(fn ($state) => $state instanceof ResearchCategory ? $state->label() : ($state ? ResearchCategory::tryFrom((string) $state)?->label() : '—'))
-                            ->color(fn ($state): string => match ($state instanceof ResearchCategory ? $state->value : (string) $state) {
-                                'crop_science' => 'success',
-                                'animal_science' => 'info',
-                                'agribusiness' => 'warning',
-                                'plant_protection' => 'primary',
-                                default => 'gray',
-                            }),
+                            ->color(fn ($state): string => ($state instanceof ResearchCategory ? $state : ResearchCategory::tryFrom((string) $state))?->color() ?? 'gray'),
 
                         TextEntry::make('status')
                             ->label('Status')
@@ -217,13 +216,7 @@ class SupervisorProjectResource extends Resource
                     ->label('Category')
                     ->badge()
                     ->formatStateUsing(fn ($state) => $state instanceof ResearchCategory ? $state->label() : ($state ? ResearchCategory::tryFrom((string) $state)?->label() : '—'))
-                    ->color(fn ($state): string => match ($state instanceof ResearchCategory ? $state->value : (string) $state) {
-                        'crop_science' => 'success',
-                        'animal_science' => 'info',
-                        'agribusiness' => 'warning',
-                        'plant_protection' => 'primary',
-                        default => 'gray',
-                    })
+                    ->color(fn ($state): string => ($state instanceof ResearchCategory ? $state : ResearchCategory::tryFrom((string) $state))?->color() ?? 'gray')
                     ->sortable(),
 
                 // 4. Milestone Stage (ProjectStatus)

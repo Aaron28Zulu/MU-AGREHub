@@ -49,7 +49,7 @@ class ArchiveDiscoveryTest extends TestCase
         return Project::create([
             'title' => $title,
             'abstract' => 'An abstract describing the study in enough detail to be catalogued.',
-            'category' => ResearchCategory::CROP_SCIENCE,
+            'category' => ResearchCategory::AGRICULTURE,
             'status' => $status,
             'student_id' => $this->student->id,
             'supervisor_id' => $this->supervisor->id,

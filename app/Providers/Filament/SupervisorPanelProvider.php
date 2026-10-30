@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace App\Providers\Filament;
 
+use App\Filament\Resources\AssociationEventResource;
+use App\Filament\Resources\ChallengeEntryResource;
+use App\Filament\Resources\InnovationChallengeResource;
 use App\Filament\Resources\ProjectResource;
+use App\Filament\Resources\ResearchSiteResource;
 use App\Filament\Supervisor\Pages\Dashboard;
 use App\Filament\Supervisor\Resources\SupervisorProjectResource;
 use App\Filament\Supervisor\Widgets\ReviewQueueWidget;
 use App\Filament\Supervisor\Widgets\SupervisorStatsOverviewWidget;
 use App\Filament\Widgets\EmergingGapsTable;
+use App\Filament\Widgets\ResearchOfficeStatsWidget;
 use App\Filament\Widgets\SaturatedDomainsChart;
 use App\Http\Middleware\EnsureUserIsSupervisor;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -42,7 +47,7 @@ class SupervisorPanelProvider extends PanelProvider
             ->default()
             ->id('supervisor')
             ->path('supervisor')
-            ->brandName('AgriHub Lecturer Portal')
+            ->brandName('RRIS Lecturer Portal')
             ->brandLogo(fn () => view('filament.brand.logo'))
             ->brandLogoHeight('2.5rem')
             ->favicon(asset('favicon.ico'))
@@ -61,6 +66,7 @@ class SupervisorPanelProvider extends PanelProvider
             ->databaseNotificationsPolling('60s')
             ->navigationGroups([
                 NavigationGroup::make('Supervision'),
+                NavigationGroup::make('Research & Innovation Office'),
                 NavigationGroup::make('Research intelligence'),
                 NavigationGroup::make('School oversight'),
                 NavigationGroup::make('Archive'),
@@ -76,6 +82,11 @@ class SupervisorPanelProvider extends PanelProvider
                     ->icon('heroicon-o-light-bulb')
                     ->group('Archive')
                     ->sort(2),
+                NavigationItem::make('Innovation pages')
+                    ->url(fn (): string => route('innovation'))
+                    ->icon('heroicon-o-sparkles')
+                    ->group('Archive')
+                    ->sort(3),
             ])
             ->userMenuItems([
                 MenuItem::make()
@@ -83,7 +94,7 @@ class SupervisorPanelProvider extends PanelProvider
                     ->url(fn (): string => route('home'))
                     ->icon('heroicon-o-arrow-uturn-left'),
             ])
-            // Layer the AgriHub skin over Filament's own stylesheet (a viteTheme() would replace it).
+            // Layer the RRIS skin over Filament's own stylesheet (a viteTheme() would replace it).
             ->renderHook(
                 PanelsRenderHook::HEAD_END,
                 fn (): string => file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot'))
@@ -92,16 +103,21 @@ class SupervisorPanelProvider extends PanelProvider
             )
             ->renderHook(
                 PanelsRenderHook::USER_MENU_BEFORE,
-                fn (): string => Blade::render('<span class="agrihub-role-pill">{{ auth()->user()?->role?->label() }}</span>'),
+                fn (): string => Blade::render('<span class="rris-role-pill">{{ auth()->user()?->role?->label() }}</span>'),
             )
             ->resources([
                 SupervisorProjectResource::class,
                 ProjectResource::class,
+                InnovationChallengeResource::class,
+                ChallengeEntryResource::class,
+                AssociationEventResource::class,
+                ResearchSiteResource::class,
             ])
             ->pages([
                 Dashboard::class,
             ])
             ->widgets([
+                ResearchOfficeStatsWidget::class,
                 SupervisorStatsOverviewWidget::class,
                 ReviewQueueWidget::class,
                 SaturatedDomainsChart::class,

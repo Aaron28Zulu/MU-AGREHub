@@ -63,7 +63,7 @@ class PublicRepository extends Component
     public string $viewMode = 'grid';
 
     /**
-     * Initialize parameters and adapt incoming legacy query params (e.g. ?category=crop_science).
+     * Initialize parameters and adapt incoming legacy query params (e.g. ?category=education).
      */
     public function mount(): void
     {
@@ -224,7 +224,7 @@ class PublicRepository extends Component
         return view('livewire.public-repository', [
             'projects' => $projects,
             'totalCatalogCount' => $totalCatalogCount,
-            'categories' => ResearchCategory::cases(),
+            'schools' => ResearchCategory::bySchool(),
             'categoryCounts' => $categoryCounts,
             'availableYears' => $availableYears,
             'savedIds' => $this->savedProjectIds(),

@@ -1,7 +1,7 @@
-# AGENTS.md — AI-Driven Engineering Guidelines for AgriHub
+# AGENTS.md — AI-Driven Engineering Guidelines for RRIS
 
 > **Project Overview:**  
-> **AgriHub** (MUSA AgriResearch) is a centralized Research Management and Project Database System developed for the School of Agriculture and Natural Resources (MUSAGRICA).  
+> **RRIS** (Research Repository Interface System) is a centralized Research Management and Project Database System for all schools and departments of Mulungushi University.  
 > The system tracks completed and ongoing student projects, provides RBAC-governed discovery, assists in research gap analysis, conducts AI-powered similarity/plagiarism detection, and streamlines student–supervisor review workflows.
 
 ---
@@ -145,7 +145,7 @@ When generating or modifying code, agents must adhere to the following:
 
 ## 6. AI & Intelligent Module Implementation Patterns
 
-AgriHub requires two distinct intelligent workflows:
+RRIS requires two distinct intelligent workflows:
 
 ### 6.1 Similarity & Plagiarism Pipeline
 1. Upload trigger: When a student uploads a draft/final report (`.pdf`, `.docx`), an event `ProjectDocumentUploaded` is dispatched.
@@ -158,7 +158,7 @@ AgriHub requires two distinct intelligent workflows:
 
 ### 6.2 Research Gap Analytics
 - As projects are marked `completed`, an asynchronous job analyzes the abstract, recommendations, and methodologies.
-- The system extracts "Future Research Directions" and clusters them under overarching research domains (e.g., Soil Fertility, Post-Harvest Loss, Crop Genetics).
+- The system extracts "Future Research Directions" and clusters them under overarching research domains (e.g., Soil Fertility, Maternal & Child Health, Governance & Public Policy).
 - The system flags saturated vs. under-explored topics on the administrative and student dashboards.
 
 ---

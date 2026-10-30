@@ -72,7 +72,7 @@ class StudentWorkspaceTest extends TestCase
         Livewire::test(StudentSubmissionWizard::class)
             ->assertSee('Institutional Duplication Prevention & Academic Gap Check')
             ->set('title', 'Biochar Soil Amendment in Northern Province Agrosystems')
-            ->set('category', ResearchCategory::CROP_SCIENCE->value)
+            ->set('category', ResearchCategory::AGRICULTURE->value)
             ->set('supervisor_id', $supervisor->id)
             ->set('abstract', 'Comprehensive empirical study evaluating biochar formulations on maize nitrogen dynamics over three seasons.')
             ->set('objectives_methodology', 'Objective 1: Measure nitrogen mineralization. Field trials randomized complete block design.')
@@ -85,7 +85,7 @@ class StudentWorkspaceTest extends TestCase
             'student_id' => $student->id,
             'supervisor_id' => $supervisor->id,
             'title' => 'Biochar Soil Amendment in Northern Province Agrosystems',
-            'category' => ResearchCategory::CROP_SCIENCE->value,
+            'category' => ResearchCategory::AGRICULTURE->value,
             'status' => ProjectStatus::PROPOSAL_SUBMITTED->value,
         ]);
 
@@ -107,7 +107,7 @@ class StudentWorkspaceTest extends TestCase
         $project = Project::create([
             'title' => 'Cassava Mosaic Resistance Dynamics',
             'abstract' => 'Study on viral resistance phenotypes in cassava.',
-            'category' => ResearchCategory::CROP_SCIENCE,
+            'category' => ResearchCategory::AGRICULTURE,
             'status' => ProjectStatus::UNDER_REVIEW,
             'student_id' => $student->id,
             'supervisor_id' => $supervisor->id,
@@ -139,7 +139,7 @@ class StudentWorkspaceTest extends TestCase
         $project = Project::create([
             'title' => 'Drip Irrigation Efficiency in Sweet Potato',
             'abstract' => 'Optimizing emitter spacing for root yield.',
-            'category' => ResearchCategory::CROP_SCIENCE,
+            'category' => ResearchCategory::AGRICULTURE,
             'status' => ProjectStatus::UNDER_SUPERVISION,
             'student_id' => $student->id,
             'supervisor_id' => $supervisor->id,
@@ -188,7 +188,7 @@ class StudentWorkspaceTest extends TestCase
         $project = Project::create([
             'title' => 'Completed Aquaculture Trial on Tilapia Feed',
             'abstract' => 'Optimized insect meal formulations.',
-            'category' => ResearchCategory::ANIMAL_SCIENCE,
+            'category' => ResearchCategory::NATURAL_SCIENCES,
             'status' => ProjectStatus::COMPLETED,
             'student_id' => $student->id,
             'supervisor_id' => $supervisor->id,
@@ -218,7 +218,7 @@ class StudentWorkspaceTest extends TestCase
         $project = Project::create([
             'title' => 'Hydroponic Nutrient Solutions in Greenhouses',
             'abstract' => 'Closed-loop recirculating NFT study.',
-            'category' => ResearchCategory::CROP_SCIENCE,
+            'category' => ResearchCategory::AGRICULTURE,
             'status' => ProjectStatus::UNDER_REVIEW,
             'student_id' => $student->id,
             'supervisor_id' => $supervisor->id,
@@ -269,7 +269,7 @@ class StudentWorkspaceTest extends TestCase
         $project = Project::create([
             'title' => 'Silage Quality Under Bacterial Inoculants',
             'abstract' => 'Fermentation kinetics study.',
-            'category' => ResearchCategory::ANIMAL_SCIENCE,
+            'category' => ResearchCategory::NATURAL_SCIENCES,
             'status' => ProjectStatus::UNDER_REVIEW,
             'student_id' => $student->id,
             'supervisor_id' => $supervisor->id,

@@ -1,7 +1,9 @@
-{{-- Strata mark: stacked soil horizons inside a field plot --}}
+{{-- Shelf mark: records from every school standing together on one shelf --}}
 <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" {{ $attributes }}>
     <rect width="32" height="32" rx="7" fill="#1a3428"/>
-    <path d="M7 11.5c3-1.6 6-1.6 9 0s6 1.6 9 0" stroke="#98bda4" stroke-width="1.8" stroke-linecap="round"/>
-    <path d="M7 16.5c3-1.6 6-1.6 9 0s6 1.6 9 0" stroke="#e1ece4" stroke-width="1.8" stroke-linecap="round"/>
-    <path d="M7 21.5c3-1.6 6-1.6 9 0s6 1.6 9 0" stroke="#d9b36a" stroke-width="1.8" stroke-linecap="round"/>
+    <rect x="7" y="10" width="3" height="13" rx="1" fill="#98bda4"/>
+    <rect x="11.25" y="7.5" width="3" height="15.5" rx="1" fill="#e1ece4"/>
+    <rect x="15.5" y="11" width="3" height="12" rx="1" fill="#98bda4"/>
+    <rect x="19.25" y="11" width="3" height="12" rx="1" fill="#d9b36a" transform="rotate(14 19.25 23)"/>
+    <path d="M6 24.5h20" stroke="#d9b36a" stroke-width="1.8" stroke-linecap="round"/>
 </svg>

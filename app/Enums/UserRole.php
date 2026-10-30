@@ -12,6 +12,7 @@ enum UserRole: string
     case ADMIN = 'admin';
     case DEAN = 'dean';
     case RESEARCH_DIRECTOR = 'research_director';
+    case RESEARCH_OFFICER = 'research_officer';
 
     public function label(): string
     {
@@ -22,6 +23,7 @@ enum UserRole: string
             self::ADMIN => 'System Administrator',
             self::DEAN => 'Dean of School',
             self::RESEARCH_DIRECTOR => 'Director of Research',
+            self::RESEARCH_OFFICER => 'Research & Innovation Office',
         };
     }
 }

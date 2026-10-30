@@ -8,6 +8,7 @@ use App\Enums\ProjectStatus;
 use App\Enums\ResearchCategory;
 use App\Enums\SimilarityCheckStatus;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -174,6 +175,37 @@ class Project extends Model
     }
 
     /**
+     * Completed archive records whose title or abstract share key terms with a proposed title,
+     * so students can spot duplicated topics before they submit.
+     *
+     * @return Collection<int, Project>
+     */
+    public static function catalogMatchesFor(string $title, int $limit = 5): Collection
+    {
+        $terms = collect(preg_split('/[^\pL\pN]+/u', mb_strtolower($title)) ?: [])
+            ->filter(fn (string $word): bool => mb_strlen($word) >= 5)
+            ->unique()
+            ->take(6);
+
+        if ($terms->isEmpty()) {
+            return new Collection;
+        }
+
+        return static::query()
+            ->publicCatalog()
+            ->select(['id', 'title', 'completion_year', 'category', 'student_id'])
+            ->with('student:id,name')
+            ->where(function (Builder $query) use ($terms): void {
+                foreach ($terms as $term) {
+                    $query->orWhere('title', 'like', "%{$term}%")->orWhere('abstract', 'like', "%{$term}%");
+                }
+            })
+            ->latest('completion_year')
+            ->take($limit)
+            ->get();
+    }
+
+    /**
      * Generate a secure, temporary signed URL pointing to the manuscript file for in-browser preview.
      */
     public function getDocumentUrl(): string
@@ -206,10 +238,11 @@ class Project extends Model
         $year = $this->completion_year ?? 'n.d.';
 
         return sprintf(
-            '%s (%s). %s [Research project]. School of Agriculture and Natural Resources, AgriHub Research Archive.',
+            '%s (%s). %s [Research project]. School of %s, Mulungushi University. Research Repository Interface System.',
             $author,
             $year,
-            $this->title
+            $this->title,
+            $this->category->school()
         );
     }
 }

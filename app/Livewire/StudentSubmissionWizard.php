@@ -11,7 +11,6 @@ use App\Models\User;
 use App\Repositories\Contracts\ProjectRepositoryInterface;
 use Filament\Notifications\Notification;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
@@ -103,27 +102,7 @@ class StudentSubmissionWizard extends Component
      */
     protected function similarRecords(): Collection
     {
-        $terms = collect(preg_split('/[^\pL\pN]+/u', mb_strtolower($this->title)) ?: [])
-            ->filter(fn (string $word): bool => mb_strlen($word) >= 5)
-            ->unique()
-            ->take(6);
-
-        if ($terms->isEmpty()) {
-            return new Collection;
-        }
-
-        return Project::query()
-            ->publicCatalog()
-            ->select(['id', 'title', 'completion_year', 'category', 'student_id'])
-            ->with('student:id,name')
-            ->where(function (Builder $query) use ($terms): void {
-                foreach ($terms as $term) {
-                    $query->orWhere('title', 'like', "%{$term}%")->orWhere('abstract', 'like', "%{$term}%");
-                }
-            })
-            ->latest('completion_year')
-            ->take(5)
-            ->get();
+        return Project::catalogMatchesFor($this->title);
     }
 
     /**
@@ -169,7 +148,7 @@ class StudentSubmissionWizard extends Component
         $supervisors = User::role('supervisor')->get(['id', 'name', 'department']);
 
         return view('livewire.student-submission-wizard', [
-            'categories' => ResearchCategory::cases(),
+            'schools' => ResearchCategory::bySchool(),
             'supervisors' => $supervisors,
             'similarRecords' => $this->similarRecords(),
         ])->title('Register a proposal');

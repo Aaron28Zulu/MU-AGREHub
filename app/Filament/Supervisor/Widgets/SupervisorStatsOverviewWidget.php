@@ -15,6 +15,14 @@ class SupervisorStatsOverviewWidget extends BaseWidget
     protected static ?int $sort = 1;
 
     /**
+     * Office members without supervision duties have no review queue.
+     */
+    public static function canView(): bool
+    {
+        return auth()->user()?->isFaculty() ?? false;
+    }
+
+    /**
      * Build the stats overview cards strictly scoped to the authenticated supervisor.
      *
      * @return array<Stat>

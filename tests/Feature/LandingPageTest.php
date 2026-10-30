@@ -33,8 +33,8 @@ class LandingPageTest extends TestCase
         $response = $this->get(route('home'));
 
         $response->assertOk();
-        $response->assertSee('Advancing Agricultural Innovation');
-        $response->assertSee('School of Agriculture &amp; Natural Resources', false);
+        $response->assertSee("Every school's research, in one place");
+        $response->assertSee('Research Repository Interface System');
         $response->assertSee('Explore Archive');
         $response->assertSee('Submit Research Proposal');
         $response->assertSee('Institutional Sign In');
@@ -48,7 +48,7 @@ class LandingPageTest extends TestCase
         $project = Project::create([
             'title' => 'Biochar Amendment in Sandy Loam Soils',
             'abstract' => 'Comprehensive investigation into biochar application and soil moisture dynamics.',
-            'category' => ResearchCategory::CROP_SCIENCE,
+            'category' => ResearchCategory::AGRICULTURE,
             'status' => ProjectStatus::COMPLETED,
             'student_id' => $student->id,
             'supervisor_id' => $supervisor->id,

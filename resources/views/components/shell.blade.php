@@ -8,6 +8,7 @@
     $navigation = array_filter([
         ['label' => 'Search', 'route' => 'repository', 'active' => ['repository', 'catalog', 'repository.show']],
         ['label' => 'Research gaps', 'route' => 'gaps', 'active' => ['gaps']],
+        ['label' => 'Innovation', 'route' => 'innovation', 'active' => ['innovation', 'innovation.*']],
         $isStudent ? ['label' => 'My research', 'route' => 'student.dashboard', 'active' => ['student.dashboard', 'student.proposal.*']] : null,
         $isStudent ? ['label' => 'Submissions', 'route' => 'student.manuscripts', 'active' => ['student.manuscripts']] : null,
         $user ? ['label' => 'Folder', 'route' => 'folder', 'active' => ['folder']] : null,
@@ -20,9 +21,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="description" content="{{ $description ?? 'AgriHub is the research archive and project database of the School of Agriculture and Natural Resources. Search completed studies, explore research gaps and manage supervised projects.' }}">
+    <meta name="description" content="{{ $description ?? 'The Research Repository Interface System (RRIS) is the research archive and project database of Mulungushi University. Search completed studies from every school, explore research gaps and manage supervised projects.' }}">
 
-    <title>{{ $title ? $title.' · ' : '' }}AgriHub Research Archive</title>
+    <title>{{ $title ? $title.' · ' : '' }}RRIS · Mulungushi University</title>
     <link rel="icon" href="{{ asset('favicon.ico') }}">
 
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
@@ -38,14 +39,14 @@
     <div class="bg-forest-950 text-[13px] text-forest-100">
         <div class="container-page flex h-9 items-center justify-between gap-4">
             <p class="truncate">
-                <span class="hidden sm:inline">School of Agriculture &amp; Natural Resources</span>
-                <span class="sm:hidden">MUSAGRICA</span>
+                <span class="hidden sm:inline">Mulungushi University</span>
+                <span class="sm:hidden">MU</span>
                 <span class="mx-2 text-forest-400" aria-hidden="true">/</span>
-                <span class="text-forest-300">Research Archive &amp; Project Database</span>
+                <span class="text-forest-300">Research Repository Interface System</span>
             </p>
             <div class="flex shrink-0 items-center gap-4">
-                @if ($isFaculty)
-                    <a href="{{ url('/supervisor') }}" class="font-medium text-white hover:underline">Lecturer portal</a>
+                @if ($isFaculty || $user?->isResearchOfficer())
+                    <a href="{{ url('/supervisor') }}" class="font-medium text-white hover:underline">{{ $isFaculty ? 'Lecturer portal' : 'Office workspace' }}</a>
                 @endif
                 @auth
                     <span class="hidden text-forest-300 md:inline">{{ $user->role?->label() }}</span>
@@ -58,11 +59,11 @@
     <header x-data="{ open: false }" class="sticky top-0 z-40 border-b border-line bg-white/95 backdrop-blur">
         <div class="container-page flex h-16 items-center justify-between gap-6">
             <div class="flex h-full items-center gap-10">
-                <a href="{{ route('home') }}" class="flex items-center gap-3" aria-label="AgriHub home">
+                <a href="{{ route('home') }}" class="flex items-center gap-3" aria-label="RRIS home">
                     <x-brand-mark class="h-8 w-8" />
                     <span class="leading-none">
-                        <span class="block text-lg font-bold tracking-tight text-ink">AgriHub</span>
-                        <span class="mt-0.5 block text-[11px] font-medium tracking-wide text-muted">Research Archive</span>
+                        <span class="block text-lg font-bold tracking-tight text-ink">RRIS</span>
+                        <span class="mt-0.5 block text-[11px] font-medium tracking-wide text-muted">Research Repository</span>
                     </span>
                 </a>
 
@@ -91,7 +92,7 @@
                             <span class="flex h-8 w-8 items-center justify-center rounded-full bg-forest-100 text-xs font-bold text-forest-800">{{ str($user->name)->explode(' ')->map(fn ($part) => mb_substr($part, 0, 1))->take(2)->implode('') }}</span>
                             <span class="hidden leading-tight md:block">
                                 <span class="block text-sm font-medium text-ink">{{ $user->name }}</span>
-                                <span class="block text-xs text-muted">{{ $user->department ?? 'School of Agriculture' }}</span>
+                                <span class="block text-xs text-muted">{{ $user->department ?? 'Mulungushi University' }}</span>
                             </span>
                             <x-glyph name="chevron-down" class="h-4 w-4 text-subtle" />
                         </button>
@@ -160,10 +161,10 @@
             <div class="lg:col-span-2">
                 <div class="flex items-center gap-3">
                     <x-brand-mark class="h-7 w-7" />
-                    <span class="text-base font-bold tracking-tight">AgriHub</span>
+                    <span class="text-base font-bold tracking-tight">Research Repository Interface System</span>
                 </div>
                 <p class="mt-3 max-w-md text-sm leading-relaxed text-muted">
-                    The research archive and project database of the School of Agriculture &amp; Natural Resources (MUSAGRICA). Completed studies are catalogued for discovery; manuscripts, data and assessments stay with their authors, supervisors and faculty.
+                    The research archive and project database of Mulungushi University, open to every school and department. Completed studies are catalogued for discovery; manuscripts, data and assessments stay with their authors, supervisors and faculty.
                 </p>
             </div>
             <div>
@@ -171,6 +172,7 @@
                 <ul class="mt-3 space-y-2 text-sm">
                     <li><a href="{{ route('repository') }}" class="text-ink-soft hover:text-forest-800">Search the archive</a></li>
                     <li><a href="{{ route('gaps') }}" class="text-ink-soft hover:text-forest-800">Research gaps</a></li>
+                    <li><a href="{{ route('innovation') }}" class="text-ink-soft hover:text-forest-800">Research &amp; Innovation Office</a></li>
                     <li><a href="{{ route('home') }}#subjects" class="text-ink-soft hover:text-forest-800">Browse subjects</a></li>
                 </ul>
             </div>
@@ -185,8 +187,8 @@
         </div>
         <div class="border-t border-line">
             <div class="container-page flex flex-col gap-2 py-5 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
-                <p>&copy; {{ date('Y') }} School of Agriculture &amp; Natural Resources. All rights reserved.</p>
-                <p>Full texts are access-controlled under the school's academic integrity policy.</p>
+                <p>&copy; {{ date('Y') }} Mulungushi University. All rights reserved.</p>
+                <p>Full texts are access-controlled under the university's academic integrity policy.</p>
             </div>
         </div>
     </footer>

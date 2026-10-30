@@ -46,7 +46,7 @@ class ResearchGapAnalysisService
 
         DB::transaction(function () use ($project, $extractedItems, &$savedGaps): void {
             foreach ($extractedItems as $item) {
-                $domainName = trim($item['domain_name'] ?? 'General Agricultural Sciences');
+                $domainName = trim($item['domain_name'] ?? 'General Research');
                 $gapText = trim($item['gap_text'] ?? '');
 
                 if (empty($gapText)) {

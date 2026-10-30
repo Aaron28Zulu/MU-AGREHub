@@ -17,6 +17,14 @@ class ReviewQueueWidget extends BaseWidget
 {
     protected static ?int $sort = 2;
 
+    /**
+     * Office members without supervision duties have no review queue.
+     */
+    public static function canView(): bool
+    {
+        return auth()->user()?->isFaculty() ?? false;
+    }
+
     protected int|string|array $columnSpan = 'full';
 
     protected static ?string $heading = 'Waiting for your review';

@@ -1,8 +1,7 @@
-# AgriHub UI/UX Design System & AI Development Instructions
+# RRIS UI/UX Design System & AI Development Instructions
 
-**Project:** AgriHub --- Research Management & Project Database System\
-**Institution:** School of Agriculture and Natural Resources
-(MUSAGRICA)\
+**Project:** RRIS (Research Repository Interface System) --- Research Management & Project Database System\
+**Institution:** Mulungushi University (all schools and departments)\
 **Framework:** Laravel\
 **Purpose:** Canonical UI/UX instructions for AI-assisted development
 
@@ -12,7 +11,7 @@
 
 This document defines the visual language, interaction principles,
 component behavior, and implementation standards that AI coding agents
-must follow when creating or modifying AgriHub interfaces.
+must follow when creating or modifying RRIS interfaces.
 
 **Treat this document as a design contract, not a collection of optional
 suggestions.**
@@ -21,31 +20,32 @@ The existing interface has a generic SaaS appearance and relies too
 heavily on pale gradients, large rounded containers, dark navy controls,
 and conventional dashboard/card patterns. Future development must move
 toward a more distinctive institutional research platform: calm,
-editorial, precise, academic, and subtly connected to agriculture and
-natural resources.
+editorial, precise, academic, and grounded in the university's own
+research across every discipline.
 
-The goal is **not** to make AgriHub look like a farm-management
-application.
+The goal is **not** to make RRIS look like a themed application for any
+single discipline.
 
-AgriHub is a **research information system**. Its agricultural identity
-should therefore be expressed through restrained visual cues, natural
-materials, scientific structure, typography, imagery, terminology, and
-color---not through excessive leaves, crops, tractors, farm
-illustrations, or decorative green gradients.
+RRIS is a **research information system** serving every school. Its
+identity should therefore be expressed through restrained visual cues,
+archival materials, scientific structure, typography, terminology, and
+a calm forest-and-ochre palette---not through discipline-specific
+illustrations or decorative green gradients.
 
 ------------------------------------------------------------------------
 
 # 2. Core Visual Direction
 
-AgriHub should feel like:
+RRIS should feel like:
 
 -   A modern university research portal.
 -   A serious academic information system.
 -   A curated digital research archive.
 -   A professional institutional platform.
 -   Calm, intelligent, trustworthy, and organized.
--   Connected to agriculture and natural resources without becoming
-    visually themed or childish.
+-   Equally at home with agriculture, education, health, business,
+    engineering and social science research, without becoming visually
+    themed or childish.
 -   Designed for researchers, supervisors, students, administrators, and
     institutional decision-makers.
 
@@ -68,8 +68,8 @@ The AI agent must actively avoid:
 -   Excessive pill-shaped UI.
 -   Dark navy blocks used merely for contrast.
 -   Overuse of icons.
--   Stock "farm" illustrations.
--   Cartoon agriculture graphics.
+-   Stock discipline-themed illustrations.
+-   Cartoon subject graphics (crops, test tubes, mortarboards).
 -   Leaf icons everywhere.
 -   Visually noisy dashboards.
 -   Excessive borders around every element.
@@ -82,7 +82,7 @@ The AI agent must actively avoid:
 
 # 3. Brand Personality
 
-AgriHub's visual personality should communicate four things immediately:
+RRIS's visual personality should communicate four things immediately:
 
 ### 3.1 Academic credibility
 
@@ -103,12 +103,13 @@ Avoid making the interface look like a consumer marketplace.
 
 ### 3.2 Natural intelligence
 
-Agriculture and natural resources should influence the visual language
-subtly.
+Natural and archival materials should influence the visual language
+subtly. The forest-and-ochre palette is inherited from the system's
+origins and now stands for the university as a whole, not one school.
 
 Good references include:
 
--   Soil layers.
+-   Archive shelves and stacked records.
 -   Botanical forms.
 -   Field patterns.
 -   Topographic contours.
@@ -122,7 +123,7 @@ not become decoration.
 
 ### 3.3 Modern technology
 
-AgriHub should still feel like a contemporary digital product.
+RRIS should still feel like a contemporary digital product.
 
 Use:
 
@@ -204,7 +205,7 @@ subordinate to the content.
 
 # 5. Typography
 
-Typography is one of the main ways AgriHub should distinguish itself
+Typography is one of the main ways RRIS should distinguish itself
 from generic SaaS products.
 
 Use a clean, highly legible sans-serif system for the application
@@ -240,7 +241,7 @@ not decoration.
 
 # 6. Layout Philosophy
 
-AgriHub should use a **content-first editorial layout**.
+RRIS should use a **content-first editorial layout**.
 
 The page should not feel like a collection of floating cards.
 
@@ -314,7 +315,7 @@ with the page.
 
 # 8. Research Repository / Public Catalog
 
-This is one of AgriHub's most important surfaces.
+This is one of RRIS's most important surfaces.
 
 The repository should resemble a **digital academic archive**, not an
 e-commerce catalog.
@@ -548,9 +549,9 @@ Charts must have meaningful empty/zero states.
 
 ------------------------------------------------------------------------
 
-# 14. Agriculture & Natural Resources Visual Language
+# 14. Institutional Visual Language
 
-The agricultural identity should be subtle and sophisticated.
+The institutional identity should be subtle and sophisticated.
 
 ### Good visual references
 
@@ -561,39 +562,35 @@ The agricultural identity should be subtle and sophisticated.
 -   Natural paper tones.
 -   Fine botanical linework.
 -   Topographic contour patterns.
--   Scientific field photography.
--   Soil/terrain textures.
--   Agricultural landscape photography used selectively.
+-   Documentary photography of research in any discipline.
+-   Archive, shelf and paper textures used sparingly.
 
 ### Bad visual references
 
--   Cartoon crops.
+-   Discipline-specific clip art (cartoon crops, stethoscopes, gears).
 -   Large leaf illustrations.
 -   Green gradients covering entire pages.
--   Tractor imagery as decoration.
--   Generic farm icons.
 -   Excessive plant motifs.
 -   Bright lime green.
 -   "Eco startup" aesthetics.
 
-AgriHub should look like **research about agriculture**, not a farming
-application.
+RRIS should look like **a university's research archive**, not a
+product themed around one field.
 
 ------------------------------------------------------------------------
 
 # 15. Imagery
 
-When imagery is appropriate, favor authentic academic/agricultural
-imagery:
+When imagery is appropriate, favor authentic academic imagery from
+across the schools:
 
 -   Field research.
--   Soil analysis.
 -   Laboratory work.
--   Crop research.
--   Forestry.
--   Water resources.
--   Agricultural economics.
--   Students conducting fieldwork.
+-   Classrooms and teaching practice.
+-   Clinical and community health work.
+-   Engineering and computing labs.
+-   Libraries and archives.
+-   Students conducting fieldwork or interviews.
 -   Research equipment.
 
 Photography should be documentary/editorial rather than
@@ -788,7 +785,7 @@ Do not communicate status using color alone.
 
 # 22. Access-Control UX
 
-Because AgriHub manages academic research and potentially sensitive
+Because RRIS manages academic research and potentially sensitive
 documents, access control must be visible and understandable.
 
 Public users may see:
@@ -872,7 +869,7 @@ Do not turn every workflow into a large graphic.
 
 # 25. Research Gap Discovery
 
-Research gaps are an important differentiating feature of AgriHub.
+Research gaps are an important differentiating feature of RRIS.
 
 The UI should make patterns understandable.
 
@@ -993,7 +990,7 @@ Never sacrifice accessibility for visual minimalism.
 
 # 30. Responsive Design
 
-AgriHub must be mobile-first.
+RRIS must be mobile-first.
 
 ### Mobile
 
@@ -1098,7 +1095,7 @@ When implementing a new interface, the agent should ask:
 -   What is secondary?
 -   What can be removed?
 -   Does this look like an academic research platform?
--   Is the agriculture/natural-resources influence subtle enough?
+-   Does it work equally well for research from every school?
 -   Does the interface still look professional without the decorative
     styling?
 -   Does the design remain usable on mobile?
@@ -1114,7 +1111,7 @@ The agent must **not** automatically:
 -   Add icons to every label.
 -   Add rounded corners to every component.
 -   Create a dashboard-style KPI section unnecessarily.
--   Introduce bright green simply because the project is agricultural.
+-   Introduce bright green simply because the palette is green.
 -   Add stock imagery without a functional reason.
 -   Replace a simple list with cards merely for aesthetics.
 -   Add animations without a UX purpose.
@@ -1218,7 +1215,7 @@ Before considering a UI task complete, the AI agent must verify:
 -   [ ] No excessive rounded containers.
 -   [ ] No excessive shadows.
 -   [ ] Typography has clear hierarchy.
--   [ ] Agriculture identity is subtle and professional.
+-   [ ] Institutional identity is subtle and professional, and fits every school.
 -   [ ] Page does not look like a generic SaaS template.
 -   [ ] Spacing is consistent.
 -   [ ] Visual hierarchy is obvious.
@@ -1262,7 +1259,7 @@ Before considering a UI task complete, the AI agent must verify:
 
 # 38. Reference Direction for the Current Repository Interface
 
-The existing AgriHub repository screen should be redesigned rather than
+The existing RRIS repository screen should be redesigned rather than
 cosmetically adjusted.
 
 In particular, reconsider:
@@ -1290,10 +1287,10 @@ The research content should become the visual hero.
 
 # 39. Desired End State
 
-When someone opens AgriHub, the immediate impression should be:
+When someone opens RRIS, the immediate impression should be:
 
-> "This is a serious institutional research platform, designed
-> specifically around agricultural and natural-resources research."
+> "This is a serious institutional research platform for the whole
+> university's research."
 
 Not:
 
@@ -1303,8 +1300,8 @@ The interface should be recognizable through its **composition,
 typography, information architecture, restrained botanical palette,
 editorial treatment of research, and subtle natural references**.
 
-The design should remain credible if all decorative agriculture imagery
-is removed.
+The design should remain credible if all decorative imagery is
+removed.
 
 That is an important test.
 
@@ -1312,14 +1309,14 @@ That is an important test.
 
 # 40. Final Instruction to AI Agents
 
-When making UI/UX changes to AgriHub:
+When making UI/UX changes to RRIS:
 
 **Do not ask, "How can I make this screen look more impressive?"**
 
 Ask:
 
 **"How can I make this research workflow clearer, calmer, more
-trustworthy, and more distinctive while preserving the AgriHub visual
+trustworthy, and more distinctive while preserving the RRIS visual
 language?"**
 
 Prioritize:
@@ -1329,5 +1326,5 @@ Institutional character → Decoration**
 
 Decoration is always the last priority.
 
-A successful AgriHub interface should feel **quietly distinctive**, not
+A successful RRIS interface should feel **quietly distinctive**, not
 loudly designed.
